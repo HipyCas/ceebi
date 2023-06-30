@@ -1,0 +1,14 @@
+<template>
+  <ion-app>
+    <ion-router-outlet />
+  </ion-app>
+</template>
+
+<script lang="ts" setup>
+import {
+  IonApp,
+  IonRouterOutlet,
+  alertController,
+  toastController,
+} from '@ionic/vue';
+</script>

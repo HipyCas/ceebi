@@ -1,0 +1,26 @@
+{
+  "name": "register",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/register/src",
+  "targets": {
+    "tauri": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tauri"
+      }
+    },
+    "tauri:dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tauri dev"
+      }
+    },
+    "tauri:build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tauri build"
+      }
+    }
+  }
+}

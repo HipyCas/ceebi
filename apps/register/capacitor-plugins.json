@@ -1,0 +1,23 @@
+[
+  "@capacitor-community/barcode-scanner",
+  "@capacitor-community/screen-brightness",
+  "@capacitor-mlkit/translation",
+  "@capacitor/android",
+  "@capacitor/app",
+  "@capacitor/browser",
+  "@capacitor/core",
+  "@capacitor/device",
+  "@capacitor/filesystem",
+  "@capacitor/haptics",
+  "@capacitor/ios",
+  "@capacitor/keyboard",
+  "@capacitor/local-notifications",
+  "@capacitor/network",
+  "@capacitor/preferences",
+  "@capacitor/push-notifications",
+  "@capacitor/splash-screen",
+  "@capacitor/status-bar",
+  "@capawesome/capacitor-app-update",
+  "capacitor-native-biometric",
+  "capacitor-native-settings"
+]

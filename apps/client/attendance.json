@@ -1,0 +1,187 @@
+[
+  {
+    "name": "Martes 17.30 - 20.00",
+    "hasEvents": false,
+    "hours": 2.5,
+    "events": [
+      "Charla de bienvenida y explicación del II CEEBI",
+      "Conferencia Inaugural: El salseo celular al descubierto: todo sobre las conversaciones más íntimas de la comunicación celular",
+      "Acto de inauguración"
+    ],
+    "eventHours": [1, 1, 0.5]
+  },
+  {
+    "name": "Miércoles 09.30 - 10.45",
+    "hasEvents": false,
+    "hours": 1.25,
+    "events": ["Conferencia: Nacer en la prehistoria"],
+    "eventHours": [1.25]
+  },
+  {
+    "name": "Miércoles 11.15 - 14.00",
+    "hasEvents": true,
+    "events": [
+      "Microcurso \"Fabricación de tejidos artificiales mediante ingeniería tisular\"",
+      "Microcurso \"Técnicas de trabajo en micropaleontología. Tratamiento y observación de microfósiles\"",
+      "Microcurso \"Estudio anatómico del encéfalo, miembros inferiores y superiores\"",
+      "Microcurso \"Visita Guiada al Aula Museo de Paleontología\"",
+      "Microcurso \"Análisis de la obtención de ácidos grasos de cadena corta por parte de la microbiota intestinal mediante HPLC\"",
+      "Microcurso \"Nuevas formas de interacción humano-máquina. Aplicaciones a la biología\"",
+      "Microcurso \"Irradiación experimental de cultivos celulares tumorales y sus aplicaciones en investigación y radiobiología\"",
+      "Microcurso \"Perspectivas profesionales para estudiantes de biociencias: orientación sobre becas, ayudas, prácticas, oposiciones y voluntariados\"",
+      "Microcurso \"¿Quieres aprender a escribir un Proyecto de Investigación Biosanitaria? Aprueba tu TFG o TFM a la primera\"",
+      "Microcurso \"Análisis de expresión génica mediante PCR cuantitativa (qPCR)\"",
+      "Microcurso \"Cómo hablar, divulgar y comunicar en público y ante los medios de comunicación\"",
+      "Microcurso \"Investigación Traslacional y Terapias Avanzadas en Dermatología: de la investigación básica a la clínica\"",
+      "Microcurso \"Estudio de las enfermedades genéticas humanas: análisis molecular mediante el uso de herramientas online\"",
+      "Microcurso \"Uso de parámetros usados actualmente en la Antropología Física y Forense. Identificación de restos óseos, patologías y traumatismos\"",
+      "Microcurso \"Diseño digital e Impresión 3D para el desarrollo de dispositivos personalizados en biomedicina\"",
+      "Microcurso \"Técnicas de (Bio)Impresión 3D y desarrollo de biotintas para aplicación en biomedicina\"",
+      "Microcurso \"Difracción de rayos X. Identificación de fases sólidas en muestras mono y polifásicas. Informaciones complementarias que ofrece la técnica\"",
+      "Microcurso \"Bases moleculares de la nutrición personalizada: Nutrigenómica\"",
+      "Microcurso \"HANDS-ON! Aprende las diferencias técnicas para el análisis de la microbiota intestinal con ejemplos prácticos\""
+    ],
+    "hours": 2.5,
+    "eventHours": [2.5]
+  },
+  {
+    "name": "Miércoles 16.15 - 18.30",
+    "hasEvents": false,
+    "hours": 2.25,
+    "events": [
+      "Conferencia: Exploración de nuevos mecanismos de adaptación a condiciones extremas en microorganismos y su empleo en biotecnología",
+      "Face to Face: \"Ética en el uso de animales en experimentación\""
+    ],
+    "eventHours": [1, 1.25]
+  },
+  {
+    "name": "Miércoles 19.00 - 20.30",
+    "hasEvents": false,
+    "hours": 1.5,
+    "events": [
+      "Conferencia: Diseño y desarrollo de fármacos futuros para la esclerosis lateral amiotrófica (ELA)",
+      "Conferencia: Los Profesionales de la Biología en la Agricultura: Bota, Bata y Corbata"
+    ],
+    "eventHours": [0.75, 0.75]
+  },
+  {
+    "name": "Jueves 09.30 - 10.45",
+    "hasEvents": false,
+    "hours": 1.25,
+    "events": [
+      "Conferencia: ¿Biotecnología en mi ensalada? ¡Biotecnología hasta en la sopa!"
+    ],
+    "eventHours": [1.25]
+  },
+  {
+    "name": "Jueves 11.15 - 14.00",
+    "hasEvents": true,
+    "events": [
+      "Microcurso \"Parásitos en los alimentos de origen animal y vegetal: aislamiento e identificación de helmintos en pescado y carne animal\"",
+      "Microcurso \"Visita al centro de investigación Genyo – Seminario: “Cómo desarrollar terapias dirigidas contra las bases moleculares del cáncer”\"",
+      "Microcurso \"Visita guiada al Biobanco del Sistema Sanitario Público de Andalucía (SSPA)\"",
+      "Microcurso \"Análisis celular por Microscopía Confocal. Preparación y visualización de muestras\"",
+      "Microcurso \"Jornada de puertas abiertas y visita guiada: Plataforma de Animalario y Cirugía Experimental del ibs.GRANADA\"",
+      "Microcurso \"Introducción de herramientas bioinformáticas para estudios de evolución\"",
+      "Microcurso \"Uso de huevos hechos con impresora 3D en estudios de comportamiento animal\"",
+      "Microcurso \"La importancia de la disección en anatomía: región torácica y abdominal\"",
+      "Microcurso \"Investigación Traslacional y Terapias Avanzadas en Dermatología: de la investigación básica a la clínica\"",
+      "Microcurso \"Estudio de las enfermedades genéticas humanas: análisis molecular mediante el uso de herramientas online\"",
+      "Microcurso \"Uso de parámetros usados actualmente en la Antropología Física y Forense. Identificación de restos óseos, patologías y traumatismos\"",
+      "Microcurso \"Diseño digital e Impresión 3D para el desarrollo de dispositivos personalizados en biomedicina\"",
+      "Microcurso \"Técnicas de (Bio)Impresión 3D y desarrollo de biotintas para aplicación en biomedicina\"",
+      "Microcurso \"Difracción de rayos X. Identificación de fases sólidas en muestras mono y polifásicas. Informaciones complementarias que ofrece la técnica\"",
+      "Microcurso \"Bases moleculares de la nutrición personalizada: Nutrigenómica\"",
+      "Microcurso \"HANDS-ON! Aprende las diferencias técnicas para el análisis de la microbiota intestinal con ejemplos prácticos\""
+    ],
+    "hours": 2.5,
+    "eventHours": [2.5]
+  },
+  {
+    "name": "Jueves 16.15 - 18.30",
+    "hasEvents": false,
+    "hours": 2.25,
+    "events": [
+      "Conferencia: Engineering biology for plastic degradation and upcycling",
+      "Mesa Redonda: \"Divulgación del conocimiento\""
+    ],
+    "eventHours": [1, 1.25]
+  },
+  {
+    "name": "Jueves 19.00 - 20.30",
+    "hasEvents": false,
+    "hours": 1.5,
+    "events": [
+      "Conferencia: Biofabricación y (bio)impresión 3D como paradigma en medicina de precisión",
+      "Conferencia: "
+    ],
+    "eventHours": [0.75, 0.75]
+  },
+  {
+    "name": "Viernes 09.30 - 11.00: Pechakuchas",
+    "hasEvents": false,
+    "hours": 1.5,
+    "events": ["Pechakuchas"],
+    "eventHours": [1.5]
+  },
+  {
+    "name": "Viernes 11.00 - 12.00: Microcharlas, talleres y foro (Turno 1)",
+    "hasEvents": true,
+    "hours": 1,
+    "eventHours": [1],
+    "events": [
+      "Taller: \"Botánica y ciencia ciudadana: Aplicaciones para la identificación de especies.\"",
+      "Taller: \"¿Cómo utilizar la divulgación y comunicación a tu favor en el sector científico?\"",
+      "Taller: \"A un metro de la buena alimentación\"",
+      "Taller: \"Alphafold: Deep Learning como solución al problema del plegamiento de proteínas\"",
+      "Taller: \"Perfiles del investigador\"",
+      "Microcharlas"
+    ]
+  },
+  {
+    "name": "Viernes 12.30 - 13.30: Microcharlas, talleres y foro (Turno 2)",
+    "hasEvents": true,
+    "hours": 1,
+    "eventHours": [1],
+    "events": [
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Microcharlas"
+    ]
+  },
+  {
+    "name": "Viernes 13.30 - 14.30: Microcharlas, talleres y foro (Turno 3)",
+    "hasEvents": true,
+    "hours": 1,
+    "eventHours": [1],
+    "events": [
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Taller: \"\"",
+      "Microcharlas"
+    ]
+  },
+  {
+    "name": "Viernes 16.15 - 18.15",
+    "hasEvents": false,
+    "hours": 2,
+    "events": [
+      "Conferencia: El poder de las historias. Cómo salvar la biodiversidad a través del storytelling",
+      "Conferencia: Investigación en fecundación in vitro: interés ganadero y modelo en la especie humana"
+    ],
+    "eventHours": [1, 1]
+  },
+  {
+    "name": "Viernes 18.45 - 20.00",
+    "hasEvents": false,
+    "hours": 1.25,
+    "events": ["Conferencia: Genes, Big Data y Salud", "Acto de clausura"],
+    "eventHours": [0.75, 0.5]
+  }
+]

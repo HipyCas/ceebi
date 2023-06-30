@@ -1,0 +1,25 @@
+{
+  "name": "admin",
+  "version": "2.0.0",
+  "description": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "release": "release-it"
+  },
+  "author": "",
+  "license": "ISC",
+  "release-it": {
+    "git": false,
+    "npm": {
+      "publish": false
+    },
+    "plugins": {
+      "@release-it/keep-a-changelog": {
+        "filename": "CHANGELOG.md",
+        "addUnreleased": true
+      }
+    }
+  }
+}

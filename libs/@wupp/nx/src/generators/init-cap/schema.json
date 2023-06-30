@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "InitCap",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The project where the Capacitor will be set-up.",
+      "x-prompt": "Which project will you like to init Capacitor in?",
+      "x-dropdown": "projects"
+    },
+    "name": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like for the app?"
+    },
+    "packageId": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "Select a package id ending (es.biociencias.<input>):"
+    }
+  },
+  "required": ["project", "name", "packageId"]
+}

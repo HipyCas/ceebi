@@ -1,0 +1,5 @@
+[workspace]
+
+members = [
+  "./apps/register/src-tauri"
+]

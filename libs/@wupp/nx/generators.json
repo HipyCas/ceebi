@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "init-cap": {
+      "factory": "./src/generators/init-cap/generator",
+      "schema": "./src/generators/init-cap/schema.json",
+      "description": "init-cap generator"
+    }
+  }
+}

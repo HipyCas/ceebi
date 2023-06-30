@@ -1,0 +1,30 @@
+{
+  "name": "supabase",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/supabase/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/supabase/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["coverage/libs/supabase"],
+      "options": {
+        "jestConfig": "libs/supabase/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "gen-types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpx supabase gen types typescript --project-id \"wdnhocgzsoziljwnvvbo\" --schema public > ./libs/supabase/src/types.ts"
+      }
+    }
+  },
+  "tags": []
+}

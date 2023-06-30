@@ -1,0 +1,380 @@
+<template>
+  <ion-page>
+    <Header id="header" />
+    <!-- Date selection -->
+    <ion-toolbar class="border-b" v-if="connected">
+      <ion-segment
+        _mode="ios"
+        v-model="day"
+        @ionChange="segmentChanged($event)"
+      >
+        <ion-segment-button value="2">
+          <ion-label>M 18</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="3">
+          <ion-label>X 19</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="4">
+          <ion-label>J 20</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="5">
+          <ion-label>V 21</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+    <ion-content :fullscreen="true">
+      <NoConnection v-if="!connected">
+        {{ $t('message.scheduleGoOnline') }}
+      </NoConnection>
+      <div class="swiper" v-else>
+        <Swiper
+          class="swiper"
+          @swiper="setSwiperInstance"
+          @slideChange="daySwiped"
+          :modules="swiperModules"
+          :auto-height="true"
+          :grab-cursor="true"
+        >
+          <swiper-slide class="slide"
+            ><SkeletonTimeline v-if="tuesdayLoading"></SkeletonTimeline>
+            <Timeline v-else :events="tuesdayEvents"
+              >Martes</Timeline
+            > </swiper-slide
+          ><swiper-slide class="slide">
+            <SkeletonTimeline v-if="wednesdayLoading"></SkeletonTimeline>
+            <Timeline v-else :events="wednesdayEvents"
+              >Miercoles</Timeline
+            ></swiper-slide
+          ><swiper-slide class="slide">
+            <SkeletonTimeline v-if="thursdayLoading"></SkeletonTimeline
+            ><Timeline v-else :events="thursdayEvents"
+              >Jueves</Timeline
+            > </swiper-slide
+          ><swiper-slide class="slide">
+            <SkeletonTimeline v-if="fridayLoading"></SkeletonTimeline
+            ><Timeline v-else :events="fridayEvents"
+              >Viernes</Timeline
+            ></swiper-slide
+          >
+        </Swiper>
+      </div>
+    </ion-content>
+  </ion-page>
+</template>
+
+<script setup lang="ts">
+import 'swiper/css';
+import {
+  IonPage,
+  IonContent,
+  IonToolbar,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonicSlides,
+  isPlatform,
+  onIonViewWillEnter,
+} from '@ionic/vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import Header from '../components/Header.vue';
+import Timeline from '../components/Timeline.vue';
+import SkeletonTimeline from '../components/SkeletonTimeline.vue';
+import NoConnection from '../components/NoConnection.vue';
+
+import { ref } from 'vue';
+import { Preferences } from '@capacitor/preferences';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { Network } from '@capacitor/network';
+import { useI18n } from 'vue-i18n';
+import { Translation, Language } from '@capacitor-mlkit/translation';
+import * as locales from 'locale-codes';
+import { MEC } from '@code/mec-ts';
+import { debug } from '../util';
+
+import { Event } from '@code/mec-ts';
+// import { extractContent } from '../util';
+
+const { locale } = useI18n();
+let currentLanguage;
+
+console.info('[SCHEDULE] have locale', locale.value, ', getting dates');
+const _today = new Date().getTime();
+const _first = new Date(2023, 6, 18).getTime();
+const _lastPlus = new Date(2023, 6, 22).getTime();
+
+function today(): number {
+  const day = new Date().getDay();
+  return day < 2 || day > 5 || _today <= _first || _today >= _lastPlus
+    ? 2
+    : day;
+}
+
+console.info('[SCHEDULE] configure swiper');
+const swiper = ref();
+const setSwiperInstance = (_swiper: any) => {
+  console.info('setting swipper instance', _swiper);
+  swiper.value = _swiper;
+  _swiper.slideTo(today() - 2, 300);
+};
+
+const day = ref(today());
+
+function daySwiped() {
+  console.info(swiper.value.activeIndex);
+  day.value = swiper.value.activeIndex + 2;
+}
+
+console.info('[SCHEDULE] setup events');
+// // Get thursday events
+const tuesdayEvents = ref([] as Event[]);
+const tuesdayLoading = ref(true);
+// async function loadTuesday() {
+//   const res = await fetch(
+//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
+//   );
+
+//   res.json().then((json) => {
+//     tuesdayEvents.value = json.content_json['2022-07-19'];
+//     tuesdayLoading.value = false;
+//   });
+// }
+// loadTuesday();
+
+// // Get wednesday events
+const wednesdayEvents = ref([] as Event[]);
+const wednesdayLoading = ref(true);
+// async function loadWednesday() {
+//   const res = await fetch(
+//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
+//   );
+
+//   res.json().then((json) => {
+//     wednesdayEvents.value = json.content_json['2022-07-20'];
+//     wednesdayLoading.value = false;
+//   });
+// }
+// loadWednesday();
+
+// // Get thursday events
+const thursdayEvents = ref([] as Event[]);
+const thursdayLoading = ref(true);
+// async function loadThursday() {
+//   const res = await fetch(
+//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
+//   );
+
+//   res.json().then((json) => {
+//     thursdayEvents.value = json.content_json['2022-07-21'];
+//     thursdayLoading.value = false;
+//   });
+// }
+// loadThursday();
+
+// // Get friday events
+const fridayEvents = ref([] as Event[]);
+const fridayLoading = ref(true);
+// async function loadFriday() {
+//   const res = await fetch(
+//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
+//   );
+
+//   res.json().then(async (json) => {
+//     fridayEvents.value = json.content_json['2022-07-22'];
+//     console.log('here', Array.isArray(fridayEvents.value));
+//     for (let ev of fridayEvents.value) {
+//       ev['data']['post']['post_title'] = (
+//         await Translation.translate({
+//           text: ev['data']['post']['post_title'],
+//           sourceLanguage: Language.Spanish,
+//           targetLanguage: Language[locales.getByTag(locale).name],
+//         })
+//       ).text;
+//     }
+
+//     console.log(
+//       'there please',
+//       Array.isArray(fridayEvents.value),
+//       fridayEvents.value[0]['data']['post']['post_title']
+//     );
+//     fridayLoading.value = false;
+//   });
+// }
+// loadFriday();
+
+console.info('[EVENTS TRANSLATE] declaring event load func');
+const loadEvents = async () => {
+  console.info('[EVENTS TRANSLATE] load MEC');
+  const mec = await MEC.init(
+    'https://biociencias.es/wp-json/mecexternal/v1/calendar/5518'
+  );
+
+  console.info(
+    '[EVENTS TRANSLATE] locale',
+    locale.toString(),
+    JSON.stringify(locale)
+  );
+
+  const translate = async (text: string) => {
+    return (
+      await Translation.translate({
+        text,
+        sourceLanguage: Language.Spanish,
+        targetLanguage: (Language as Record<string, string>)[
+          locales.getByTag(locale.toString()).name
+        ] as Language,
+      })
+    ).text;
+  };
+  // if (locale.toString() !== 'es' && isPlatform('capacitor')) {
+  //   console.info('[EVENTS TRANSLATE] locale is not "es"');
+  //   await mec.translate()
+  // }
+
+  const tmpTuesdayEvents = mec.get('2023-07-18');
+  if (locale.toString() !== 'es' && isPlatform('capacitor')) {
+    console.info('[EVENTS TRANSLATE] translate tuesday');
+    tmpTuesdayEvents.translate(translate).then((evs) => {
+      tuesdayEvents.value = evs.resolve();
+      tuesdayLoading.value = false;
+    });
+  } else {
+    tuesdayEvents.value = tmpTuesdayEvents.resolve();
+    tuesdayLoading.value = false;
+  }
+
+  const tmpWednesdayEvents = mec.get('2023-07-19');
+  if (locale.toString() !== 'es' && isPlatform('capacitor')) {
+    console.info('[EVENTS TRANSLATE] translate wednesday');
+    tmpWednesdayEvents.translate(translate).then((evs) => {
+      wednesdayEvents.value = evs.resolve();
+      wednesdayLoading.value = false;
+    });
+  } else {
+    wednesdayEvents.value = tmpWednesdayEvents.resolve();
+    wednesdayLoading.value = false;
+  }
+
+  const tmpThursdayEvents = mec.get('2023-07-20');
+  if (locale.toString() !== 'es' && isPlatform('capacitor'))
+    tmpThursdayEvents.translate(translate).then((evs) => {
+      thursdayEvents.value = evs.resolve();
+      thursdayLoading.value = false;
+    });
+  else {
+    thursdayEvents.value = tmpThursdayEvents.resolve();
+    thursdayLoading.value = false;
+  }
+
+  const tmpFridayEvents = mec.get('2023-07-21');
+  if (locale.toString() !== 'es' && isPlatform('capacitor'))
+    tmpFridayEvents.translate(translate).then((evs) => {
+      fridayEvents.value = evs.resolve();
+      fridayLoading.value = false;
+    });
+  else {
+    fridayEvents.value = tmpFridayEvents.resolve();
+    fridayLoading.value = false;
+  }
+
+  currentLanguage = locale.toString();
+};
+loadEvents();
+
+const connected = ref(true);
+(async () => {
+  const status = await Network.getStatus();
+  connected.value = status.connected;
+})();
+Network.addListener('networkStatusChange', (status) => {
+  connected.value = status.connected;
+  if (status) {
+    loadEvents();
+  }
+});
+
+console.info('Schedule:92 > Setting up schedule');
+if (isPlatform('capacitor')) {
+  LocalNotifications.createChannel({
+    id: 'testchannel',
+    name: 'Event reminders',
+    importance: 3,
+    vibration: true,
+  })
+    .then(() => {
+      Preferences.get({ key: 'localNotifications' }) // It is of the form wants;registered
+        .then(({ value }) => {
+          const split = (value == undefined ? 'false;false' : value).split(';');
+          const wants = split[0] == 'true';
+          const registered = split[1] == 'true';
+          if (wants && !registered) {
+            tuesdayEvents.value.forEach((event: any) => {
+              LocalNotifications.checkPermissions().then((check) => {
+                if (check.display === 'granted') {
+                  LocalNotifications.schedule({
+                    notifications: [
+                      {
+                        title: `${event.name} empizeza en 10 minutos!`,
+                        body: `El evento ${event.name} va a empezar en 10 minutos en ${event.location}`,
+                        id: Number(event.startTime.toUTCString()),
+                      },
+                    ],
+                  });
+                } else {
+                  console.warn('Schedule:121 > Permissions not granted');
+                }
+              });
+            });
+            Preferences.set({
+              key: 'localNotifications',
+              value: 'true;true',
+            });
+          } else {
+            console.log(
+              'Schedule:128 > Notifications set, take a look: ',
+              JSON.stringify(LocalNotifications.getPending(), undefined, '  ')
+            );
+          }
+        });
+    })
+    .catch((e) => console.warn('Schedule:134 > error creating channel', e));
+}
+
+function segmentChanged(event: CustomEvent): void {
+  console.log('Segment changed: ', event);
+  console.info(day);
+  swiper.value.slideTo(day.value - 2, 300);
+}
+
+const swiperModules = [IonicSlides];
+
+onIonViewWillEnter(() => {
+  if (
+    locale.toString() !== 'es' &&
+    isPlatform('capacitor') &&
+    locale !== currentLanguage
+  ) {
+    loadEvents();
+  }
+});
+</script>
+
+<style scoped>
+#header {
+  z-index: 50;
+}
+
+body.dark .border-b {
+  box-shadow: 0px 5px 15px -8px rgba(55, 55, 55, 0.5);
+}
+
+.swiper {
+  min-height: 100%;
+  /* overflow-y: hidden; */
+}
+
+.slide {
+  min-height: 79.4vh;
+  /* min-height: 100%; */
+  height: max-content;
+}
+</style>
