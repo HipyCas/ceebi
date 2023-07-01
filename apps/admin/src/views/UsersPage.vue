@@ -9,7 +9,11 @@
       v-model="searchQuery"
     ></IonSearchbar>
 
-    <IonLoading :is-open="loading" message="Cargando"></IonLoading>
+    <PlainLoading
+      v-if="loading"
+      text="Cargando Usuarios"
+      :spinner-tailwind-size="10"
+    ></PlainLoading>
     <IonList>
       <RecycleScroller
         v-if="!loading"
@@ -19,16 +23,14 @@
         class="scroller"
         v-slot="{ item: user }"
       >
-        <ion-item
-          button
-          detail
-          class="id-item relative h-[74px]"
-          :router-link="`/p/users/${user.id}/${user.name}`"
-          router-direction="forward"
-          lines="full"
+        <router-link
+          :to="`/p/users/${user.id}/${user.name}`"
+          direction="forward"
         >
-          <ion-text>{{ user.name }}</ion-text>
-        </ion-item>
+          <ion-item button detail class="id-item h-47" lines="full">
+            <ion-text>{{ user.name }}</ion-text>
+          </ion-item>
+        </router-link>
       </RecycleScroller>
     </IonList>
 
@@ -52,13 +54,10 @@ import { RecycleScroller } from 'vue-virtual-scroller';
 
 // TODO Alert if some users are out of sync with a banner on top
 import { person, codeOutline } from 'ionicons/icons';
-
+import { PlainLoading } from '@code/ceebi-ui';
 import {
   alertController,
   modalController,
-  IonItem,
-  IonList,
-  IonText,
   IonFab,
   IonFabButton,
   IonIcon,

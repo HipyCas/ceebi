@@ -153,8 +153,6 @@
 
 import PageWrapper from '../components/PageWrapper.vue';
 import JSONViewerVue from '../components/JSONViewer.vue';
-import { ref, watch, computed } from 'vue';
-import { useRoute } from 'vue-router';
 import {
   toastController,
   loadingController,
@@ -171,11 +169,9 @@ import {
 } from '@ionic/vue';
 import { alertCircleOutline, code } from 'ionicons/icons';
 
-import { useSupabase } from '@code/supabase';
 import { useCacheable } from '../cache';
 import type { DefinedCacheable } from '../cache';
 import { Database } from 'libs/supabase/src/types';
-import { WPUser } from '@code/wp-types';
 import { wpapi } from '../req';
 import { authHeaders } from '../wpauth';
 

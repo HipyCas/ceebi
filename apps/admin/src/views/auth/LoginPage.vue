@@ -34,6 +34,14 @@
             >Acceder</ion-button
           >
           <!-- TODO Add button to login with biometrics -->
+          <ion-button
+            @click="verifyWithBiometrics"
+            fill="clear"
+            color="secondary"
+            expand="block"
+          >
+            Iniciar con huella/facial
+          </ion-button>
         </form>
       </main>
     </ion-content>
@@ -52,7 +60,11 @@ import {
   loadingController,
   toastController,
 } from '@ionic/vue';
-import { alertCircleOutline, shieldHalfOutline } from 'ionicons/icons';
+import {
+  alertCircleOutline,
+  closeCircleOutline,
+  shieldHalfOutline,
+} from 'ionicons/icons';
 import logoBlanco from '../../assets/logo_horizontal_blanco_compressed_70px.png';
 import logoNegro from '../../assets/logo_horizontal.png';
 import { NativeBiometric, BiometryType } from 'capacitor-native-biometric';
@@ -120,15 +132,27 @@ const getBiometricType = (type: BiometryType) => {
 const verifyWithBiometrics = async () => {
   log.trace('auth:verifyWithBiometrics', 'start');
 
-  const res = await NativeBiometric.isAvailable();
-  log.trace('auth:verifyWithBiometrics', 'Biometric Type', res.biometryType);
+  let res;
+  try {
+    res = await NativeBiometric.isAvailable();
+    log.trace('auth:verifyWithBiometrics', 'Biometric Type', res.biometryType);
 
-  if (!res.isAvailable)
-    (
-      await alertController.create({
-        message: 'Biometrics not available',
-      })
-    ).present();
+    if (!res.isAvailable) {
+      (
+        await alertController.create({
+          message: 'Biometrics not available',
+        })
+      ).present();
+      return;
+    }
+  } catch (e) {
+    useToast({
+      message: 'Biometrics not available',
+      color: 'danger',
+      icon: closeCircleOutline,
+    });
+    return;
+  }
 
   log.trace('auth:verifyWithBiometrics', 'Starting Verification');
   const verified = await NativeBiometric.verifyIdentity({

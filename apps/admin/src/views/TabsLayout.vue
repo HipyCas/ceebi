@@ -1,7 +1,10 @@
 <template>
   <ion-page>
     <div class="fab-flex">
-      <ion-fab class="fab" @click="initScan()">
+      <ion-fab
+        class="fab"
+        @click="attendanceAllowed ? initScan() : noPermission()"
+      >
         <ion-fab-button :translucent="true">
           <ion-icon :md="barcode" :ios="barcodeOutline" />
         </ion-fab-button>
@@ -47,6 +50,7 @@ import {
   IonFab,
   IonFabButton,
   actionSheetController,
+  alertController,
 } from '@ionic/vue';
 import {
   search,
@@ -61,8 +65,28 @@ import {
   peopleOutline,
 } from 'ionicons/icons';
 import attendance from '../../attendance.json';
+import { getUser } from '../user';
 
 const router = useIonRouter();
+
+const user = getUser();
+const attendanceAllowed = computed(() => user.value?.supabase.allow_attendance);
+const noPermission = () => {
+  console.log('Hi?');
+  alertController
+    .create({
+      header: 'Acción no permitida',
+      message:
+        'No dispones de permisos para tomar asistencia. Para más información, contacta con la organización del evento',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel',
+        },
+      ],
+    })
+    .then((al) => al.present());
+};
 
 const sessionSelected = (session: string, event?: string) => {
   // console.log(session);

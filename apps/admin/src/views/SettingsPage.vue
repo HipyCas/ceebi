@@ -58,7 +58,6 @@
 
 <script lang="ts" setup>
 import { user } from '../lib/user';
-import { Preferences } from '@capacitor/preferences';
 import {
   IonTitle,
   IonCard,
@@ -77,7 +76,6 @@ import {
   isPlatform,
 } from '@ionic/vue';
 import { NativeBiometric } from 'capacitor-native-biometric';
-import { ref } from 'vue';
 import DevSettingsModal from '../components/DevSettingsModal.vue';
 import { open, openOutline } from 'ionicons/icons';
 import {

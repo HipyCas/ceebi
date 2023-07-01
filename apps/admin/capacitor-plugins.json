@@ -1,0 +1,13 @@
+[
+  "capacitor-native-biometric",
+  "capacitor-native-settings",
+  "@capacitor/app",
+  "@capacitor/toast",
+  "@capacitor/haptics",
+  "@capacitor/preferences",
+  "@capacitor/network",
+  "@capacitor/filesystem",
+  "@capacitor/share",
+  "@capacitor-community/barcode-scanner",
+  "@capacitor-community/firebase-crashlytics"
+]

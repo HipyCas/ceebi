@@ -31,6 +31,11 @@
     <router-link to="/dev/notifications-import" @click="cancel()">
       <IonButton expand="block">Importar notificaciones</IonButton>
     </router-link>
+    <IonButton
+      expand="block"
+      @click="crash({ message: 'Crash from dev settings' })"
+      >Crash</IonButton
+    >
   </ion-content>
 </template>
 
@@ -52,6 +57,7 @@ import {
 } from '@ionic/vue';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 import { ref, watch } from 'vue';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
 const cancel = modalController.dismiss;
 const save = () => {
@@ -63,6 +69,8 @@ const save = () => {
   // });
   modalController.dismiss();
 };
+
+const crash = FirebaseCrashlytics.crash;
 
 const settings = ref([
   {

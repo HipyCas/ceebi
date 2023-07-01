@@ -1,16 +1,3 @@
-// const { createGlobPatternsForDependencies } = require('@nx-plus/vite/');
-const { join } = require('path');
+import baseTailwindCSSConfig from '../../tailwind.config';
 
-module.exports = {
-  content: [
-    join(
-      __dirname,
-      '{src,pages,components,app,index}/**/*!(*.stories|*.spec).{ts,tsx,html,vue}'
-    ),
-    // ...createGlobPatternsForDependencies(__dirname),
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-};
+module.exports = baseTailwindCSSConfig(__dirname);

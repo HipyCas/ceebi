@@ -1,11 +1,16 @@
 <template>
   <page-wrapper>
     <div class="ion-padding">
-      <ion-button expand="block" size="large" @click="newNotification"
+      <ion-button
+        expand="block"
+        size="large"
+        @click="notificationsAllowed ? newNotification() : noPermission()"
         ><ion-icon slot="start" :icon="createOutline"></ion-icon> Nueva
         notificación</ion-button
       >
     </div>
+
+    <PlainLoading v-if="isLoading" :spinner-tailwind-size="10" />
 
     <ion-card v-for="notification in notifications" :key="notification.id">
       <img
@@ -40,7 +45,11 @@
         v-html="extractContent(notification.body || '').slice(0, 150) + '...'"
       >
       </ion-card-content>
-      <ion-button fill="clear" @click="editNotification(notification)"
+      <ion-button
+        fill="clear"
+        @click="
+          notificationsAllowed ? editNotification(notification) : noPermission()
+        "
         >Editar</ion-button
       >
       <ion-button
@@ -64,13 +73,20 @@ import {
   IonCardSubtitle,
   IonBadge,
   modalController,
+  alertController,
 } from '@ionic/vue';
 import PageWrapper from '../components/PageWrapper.vue';
 import { createOutline } from 'ionicons/icons';
 import NotificationEditor from '../components/NotificationModal.vue';
 import intlFormat from 'date-fns/intlFormat';
 import isAfter from 'date-fns/isAfter';
-import { showNotification } from '@code/ceebi-ui';
+import { showNotification, PlainLoading } from '@code/ceebi-ui';
+import { wpapi } from '../req';
+import type { WPNotification } from '@code/wp-types';
+import getUnixTime from 'date-fns/getUnixTime';
+import { useAsyncState } from '@vueuse/core';
+import * as ionicons from 'ionicons/icons';
+import { getUser } from '../user';
 
 interface FetchNotification {
   id: number;
@@ -79,9 +95,29 @@ interface FetchNotification {
   schedule: Date;
 }
 
-const supabase = useSupabase();
+const logger = useLogger();
+const user = getUser();
 
-const notifications = ref([] as FetchNotification[]);
+const notificationsAllowed = computed(
+  () => user.value?.supabase.allow_notifications
+);
+
+const noPermission = () => {
+  console.log('Hi?');
+  alertController
+    .create({
+      header: 'Acción no permitida',
+      message:
+        'No dispones de permisos para modificar o crear notificaciones. Para más información, contacta con la organización del evento',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel',
+        },
+      ],
+    })
+    .then((al) => al.present());
+};
 
 const extractContent = (html: string) => {
   const span = document.createElement('span');
@@ -113,7 +149,7 @@ const editNotification = ({ id }: FetchNotification) => {
 };
 
 const previewNotification = (notification: FetchNotification) =>
-  showNotification(supabase, notification.id);
+  showNotification(notification);
 
 const notificationPrettyStatus = computed(
   () =>
@@ -121,16 +157,46 @@ const notificationPrettyStatus = computed(
       isAfter(new Date(), schedule) ? 'Publicada' : 'Programada'
 );
 
-onMounted(async () => {
-  const { data, error } = await supabase
-    .from('notifications')
-    .select('id,title,body,schedule');
-  if (error) {
-  } else {
-    notifications.value = data.map((not) => ({
-      ...not,
-      schedule: new Date(not.schedule || Date.now()),
-    }));
+const loadNotifications = async () => {
+  try {
+    const data = await wpapi
+      .get('wp/v2/notificacion', {
+        searchParams: {
+          _fields: 'id,acf,title',
+          per_page: 100,
+        },
+      })
+      .json<Array<WPNotification>>();
+    return data
+      ?.map((not) => ({
+        id: not.id,
+        shortname: not.acf.shortname,
+        schedule: new Date(not.acf.schedule || Date.now()),
+        title: not.title?.rendered,
+        body: not.acf.body,
+        buttons: Object.values(not.acf.buttons)
+          .filter((b) => b.text)
+          .map((but) => ({
+            ...but,
+            //@ts-expect-error Cannot index ionicons with this, but I'm sure it will be an ionicon valid key
+            ionIcon: ionicons[but.icon || 'openOutline'],
+          })),
+      }))
+      .sort((a, b) => getUnixTime(b.schedule) - getUnixTime(a.schedule));
+  } catch (error) {
+    logger.error(
+      'notifications:loadNotifications',
+      'error fetching notifications from server',
+      {
+        error,
+      }
+    );
+    return [];
   }
-});
+};
+
+const { state: notifications, isLoading } = useAsyncState(
+  loadNotifications,
+  []
+);
 </script>

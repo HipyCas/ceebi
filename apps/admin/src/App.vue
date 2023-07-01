@@ -6,11 +6,16 @@
 
 <script lang="ts" setup>
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
 const logger = useLogger();
 
 onMounted(async () => {
-  window.onerror = (event, source, lineno, colno, error) => {
+  window.onerror = async (event, source, lineno, colno, error) => {
+    const stacktrace = await StackTrace.fromError(
+      error || new Error('undefined error')
+    );
+
     logger.error('window:onerror', 'global window error', {
       window,
       event,
@@ -18,6 +23,11 @@ onMounted(async () => {
       lineno,
       colno,
       error,
+      stacktrace,
+    });
+    await FirebaseCrashlytics.recordException({
+      message: `Unhandled error ocurred: ${event}`,
+      stacktrace,
     });
 
     return true;

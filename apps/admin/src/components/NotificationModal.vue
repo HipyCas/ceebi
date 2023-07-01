@@ -206,8 +206,12 @@
           <IonRippleEffect></IonRippleEffect>
           <IconUnlink></IconUnlink>
         </button>
+        <button @click="fireContextMenu" v-show="editor.isActive('link')">
+          <IonRippleEffect></IonRippleEffect>
+          <IconUnlink></IconUnlink>
+        </button>
       </bubble-menu>
-        <EditorContent @contextmenu.prevent="{}" class="editor" :editor="editor"></EditorContent>
+        <EditorContent @contextmenu="checkContextMenu($event)" class="editor" :editor="editor"></EditorContent>
     </div>
   </ion-content>
 </template>
@@ -227,12 +231,8 @@ import {
   IonDatetime,
   IonDatetimeButton,
   IonModal,
-  IonTextarea,
   IonAccordion,
   IonAccordionGroup,
-  IonLoading,
-  IonCheckbox,
-  IonSpinner,
   IonText,
   modalController,
 IonRippleEffect,
@@ -246,8 +246,6 @@ import {
 import * as ionicons from 'ionicons/icons';
 import IconSearchModal from './IconSearchModal.vue';
 import {IconBold, IconItalic, IconStrikethrough, IconCode, IconHeading, IconList, IconListNumbers, IconLink, IconUnlink} from '@tabler/icons-vue'
-import { ref, watch, onMounted } from 'vue';
-import type { Ref } from 'vue';
 import { nanoid } from 'nanoid';
 import LoadingStep from './LoadingStep.vue';
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
@@ -264,7 +262,7 @@ interface Button {
   icon: string;
 }
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     action?: 'create' | 'edit' | 'view'
     notificationId?: number;
@@ -273,6 +271,21 @@ const props = withDefaults(
     action: 'view'
   }
 );
+
+// FIXME I think it's not working
+const fireContextMenu = () => {
+  const evt = new MouseEvent('contextmenu', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+      buttons: 2
+    })
+  document.querySelector('.editor')?.dispatchEvent(evt)
+}
+const checkContextMenu = (ev: Event) => {
+  if (ev.isTrusted) ev.preventDefault()
+
+}
 
 const editor= new Editor({
     content: '',
@@ -303,8 +316,7 @@ const selectIcon = async () => {
   });
   m.present();
 
-  const { data, role } = await m.onWillDismiss();
-  console.log('hjhjhj', data, role);
+  const { data } = await m.onWillDismiss();
 
   if (data !== undefined) {
     selectedIcon.value = data;

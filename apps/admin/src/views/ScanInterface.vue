@@ -154,8 +154,8 @@ const deleteCode = (index: number) => {
 
 //#region Scan
 const showBorder = ref(false);
-const flashBorder = (succeded = true) => {
-  scanSucceded.value = succeded;
+const flashBorder = (succeeded = true) => {
+  scanSucceded.value = succeeded;
   showBorder.value = true;
   setTimeout(() => (showBorder.value = false), 200);
 };

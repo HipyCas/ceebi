@@ -5,19 +5,6 @@ import './index.css';
 
 import { IonicVue } from '@ionic/vue';
 
-import '@fontsource/source-sans-pro/200.css';
-import '@fontsource/source-sans-pro/300.css';
-import '@fontsource/source-sans-pro/400.css';
-import '@fontsource/source-sans-pro/600.css';
-import '@fontsource/source-sans-pro/700.css';
-import '@fontsource/source-sans-pro/900.css';
-import '@fontsource/source-sans-pro/200-italic.css';
-import '@fontsource/source-sans-pro/300-italic.css';
-import '@fontsource/source-sans-pro/400-italic.css';
-import '@fontsource/source-sans-pro/600-italic.css';
-import '@fontsource/source-sans-pro/700-italic.css';
-import '@fontsource/source-sans-pro/900-italic.css';
-
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
 
@@ -38,17 +25,27 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 
 import '.../../libs/ceebi-ui/src/common.css';
+import 'unfonts.css';
 
-console.log('doing things');
+import * as StackTrace from 'stacktrace-js';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
 const app = createApp(App).use(IonicVue).use(router);
 
 const logger = useLogger();
-app.config.errorHandler = (error, instance, info) => {
+app.config.errorHandler = async (error, instance, info) => {
+  const stacktrace = await StackTrace.fromError(
+    new Error(`ERROR ${error} in instance ${instance}: ${info}`)
+  );
   logger.error('vueApp:errorHandler', 'error in vue app', {
     info,
     error,
     instance,
+    stacktrace,
+  });
+  await FirebaseCrashlytics.recordException({
+    message: `Unhandled error ocurred: ${info}`,
+    stacktrace,
   });
 };
 app.config.warnHandler = (msg, instance, trace) => {

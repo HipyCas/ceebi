@@ -68,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, withDefaults, ref } from 'vue';
 import {
   settingsOutline,
   logOutOutline,
@@ -91,7 +90,6 @@ import {
 } from '@ionic/vue';
 import { getUser, clearUser } from '../user';
 import { clearWPToken } from '../wpauth';
-import { useRoute } from 'vue-router';
 
 withDefaults(
   defineProps<{
