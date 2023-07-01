@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// import { IonButton, IonPage, IonContent, IonApp } from '@ionic/vue';
 import { IconCopy } from '@tabler/icons-vue';
 import { emit, listen } from '@tauri-apps/api/event';
 import { invoke } from '@tauri-apps/api/tauri';
@@ -85,7 +84,7 @@ const running = ref(true);
       class="fixed bottom-[2vw] w-[96vw] mx-[2vw] uppercase py-3 rounded transition-all hover:shadow-sm hover:scale-[.98]"
       :class="
         running
-          ? 'bg-red-800 hover:shadow-red-900'
+          ? 'bg-cred-800 hover:shadow-cred-900'
           : 'bg-green-800 hover:shadow-green-900'
       "
       @click="toggle"
@@ -94,7 +93,7 @@ const running = ref(true);
     </button>
     <div class="p-4 pb-16">
       <div
-        class="bg-opacity-50 bg-black h-screen w-screen flex flex-col gap-2 items-center justify-center fixed z-50 inset-0"
+        class="bg-opacity-50 bg-cblack h-screen w-screen flex flex-col gap-2 items-center justify-center fixed z-50 inset-0"
         v-show="loading"
       >
         <div class="lds-ring">
@@ -115,7 +114,7 @@ const running = ref(true);
         >
           {{ id }}
           <button
-            class="uppercase transition-[box-shadow,background-color] shadow-none hover:shadow-md hover:shadow-blue-400 hover:bg-blue-800 p-1 -m-0.5 rounded"
+            class="uppercase transition-[box-shadow,background-color] shadow-none hover:shadow-md hover:shadow-cblue-400 hover:bg-cblue-800 p-1 -m-0.5 rounded"
             @click="() => copy(id)"
           >
             <IconCopy></IconCopy>
@@ -128,7 +127,7 @@ const running = ref(true);
     <div class="p-4 pb-16">
       <h1 class="text-4xl font-bold my-2">Select a scanner</h1>
       <div
-        class="flex flex-col px-4 py-3 bg-zinc-950 shadow-lg shadow-zinc-950 rounded-lg mb-4"
+        class="flex flex-col px-4 py-3 bg-cblack-950 shadow-lg shadow-cblack-950 rounded-lg mb-4"
         v-for="port in availablePorts"
         @click="startWithPort(port.port_name)"
       >
@@ -138,13 +137,3 @@ const running = ref(true);
     </div>
   </template>
 </template>
-
-<style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
-}
-</style>
