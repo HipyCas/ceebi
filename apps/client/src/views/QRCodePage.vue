@@ -4,7 +4,10 @@
     <ion-content :fullscreen="true">
       <div class="center-content">
         <canvas id="qrcode" height="300" width="300" v-show="user"></canvas>
-        <ion-button v-if="user" class="asistencia" @click="openJesus">{{
+        <template v-if="loadingUser">
+          <PlainLoading text="Iniciando sesión..." />
+        </template>
+        <ion-button v-else-if="user" class="asistencia" @click="openJesus">{{
           $t('message.viewAttendance')
         }}</ion-button>
         <template v-else>
@@ -39,7 +42,9 @@ import AccessSVG from '../../public/assets/undraw_access_account_re_8spm.svg';
 import Header from '../components/Header.vue';
 import AttendanceModal from '../components/AttendanceModal.vue';
 import QRCode from 'qrcode';
-import { getUser } from '../user';
+import { getUser, loadingUser } from '../user';
+import { PlainLoading } from '@code/ceebi-ui';
+import { watchOnce } from '@vueuse/core';
 
 const logger = useLogger();
 
@@ -93,6 +98,10 @@ const main = async () => {
 };
 
 main();
+
+watchOnce(loadingUser, () => {
+  genCode();
+});
 
 //* BRIGHTNESS
 const brightness = ref(0);

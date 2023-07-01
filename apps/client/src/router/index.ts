@@ -1,6 +1,6 @@
 import { Preferences } from '@capacitor/preferences';
 import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import Tabs from '../views/TabsLayout.vue';
 
 const routes: Array<RouteRecordRaw> = [
@@ -51,15 +51,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'settings',
         component: () => import('../views/SettingsPage.vue'),
       },
-      {
-        path: 'logs',
-        component: () => import('../views/LogsPage.vue'),
-      },
     ],
-  },
-  {
-    path: '/auth/recovery',
-    component: () => import('../views/auth/Recovery.vue'),
   },
   {
     path: '/auth/login',

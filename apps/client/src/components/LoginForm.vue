@@ -1,6 +1,7 @@
 <template>
   <ion-item style="margin-top: 1.5rem" class="input-item">
     <ion-input
+      fill="outline"
       label="Correo electrónico"
       label-placement="floating"
       type="email"
@@ -9,6 +10,7 @@
   </ion-item>
   <ion-item style="margin-top: 0.5rem" class="input-item">
     <ion-input
+      fill="outline"
       label="Contraseña"
       label-placement="floating"
       type="password"

@@ -5,11 +5,7 @@
       <div class="event__icon">
         <ion-icon :icon="icon(event)"></ion-icon>
       </div>
-      <div
-        class="event__header"
-        data-animation="ripple"
-        @click="eventModal(event)"
-      >
+      <div class="event__header" v-wave @click="eventModal(event)">
         <p class="event__start-time">
           {{ event.startTime }}
         </p>
@@ -31,13 +27,9 @@
 // TODO Change to script setup
 import { IonIcon, modalController } from '@ionic/vue';
 import * as ionicons from 'ionicons/icons';
-
 import type { Event } from '@wupp/mec-ts';
 import { EVENT_ICON_FIELD_LABEL } from '../vars';
-
-import { computed, onMounted } from 'vue';
-
-import ripplet from 'ripplet.js';
+import { computed } from 'vue';
 import EventDetailsModalVue from './EventDetailsModal.vue';
 
 defineProps<{
@@ -59,11 +51,11 @@ const icon = computed(() => {
   };
 });
 
-onMounted(() => {
-  const buttons = document.querySelectorAll('[data-animation="ripple"]');
+// onMounted(() => {
+//   const buttons = document.querySelectorAll('[data-animation="ripple"]');
 
-  buttons.forEach((b) => b.addEventListener('click', ripplet));
-});
+//   buttons.forEach((b) => b.addEventListener('click', ripplet));
+// });
 
 async function eventModal(event: Event) {
   const modal = await modalController.create({
@@ -232,6 +224,6 @@ async function eventModal(event: Event) {
 }
 
 body.dark .event__description {
-  color: rgb(170, 170, 170);
+  color: #efefef !important;
 }
 </style>

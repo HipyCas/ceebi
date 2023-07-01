@@ -1,0 +1,15 @@
+[
+  "@capacitor/app",
+  "@capacitor/browser",
+  "@capacitor/core",
+  "@capacitor/preferences",
+  "@capacitor/network",
+  "@capacitor/filesystem",
+  "@capacitor/share",
+  "@capacitor/push-notifications",
+  "@capacitor/local-notifications",
+  "@capacitor/splash-screen",
+  "@capawesome/capacitor-app-update",
+  "@capacitor-mlkit/translation",
+  "@capacitor-community/screen-brightness"
+]

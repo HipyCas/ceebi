@@ -1,10 +1,3 @@
-const { join } = require('path');
+const basePostCSSConfig = require('../../postcss.config');
 
-module.exports = {
-  plugins: {
-    tailwindcss: {
-      config: join(__dirname, 'tailwind.config.js'),
-    },
-    autoprefixer: {},
-  },
-};
+module.exports = basePostCSSConfig(__dirname);

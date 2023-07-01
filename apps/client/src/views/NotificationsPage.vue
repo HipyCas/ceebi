@@ -45,8 +45,25 @@ import { extractContent } from '../util';
 import { useAsyncState } from '@vueuse/core';
 import isAfter from 'date-fns/isAfter';
 import { showNotification } from '@code/ceebi-ui';
+import { wpapi } from '../req';
+import type { WPNotification } from '@code/wp-types';
+import getUnixTime from 'date-fns/getUnixTime';
 
-const supabase = useSupabase();
+interface RenderableNotification {
+  id: number;
+  title: string;
+  shortname: string;
+  body: string;
+  ionIcon: string;
+  schedule: Date;
+  buttons: Array<{
+    icon: string;
+    text: string;
+    shortname?: string;
+    ionIcon: string;
+    link: string;
+  }>;
+}
 const logger = useLogger();
 
 //#region CONNECTION
@@ -64,29 +81,46 @@ const today = new Date();
 
 // TODO Proper error handling
 const loadNotifications = async () => {
-  const { data, error } = await supabase
-    .from('notifications')
-    .select('id,schedule,title,icon,body');
-  if (error) {
+  try {
+    const data = await wpapi
+      .get('wp/v2/notificacion', {
+        searchParams: {
+          _fields: 'id,acf,title',
+          per_page: 100,
+        },
+      })
+      .json<Array<WPNotification>>();
+    return data
+      ?.map(
+        (not) =>
+          ({
+            id: not.id,
+            shortname: not.acf.shortname,
+            schedule: new Date(not.acf.schedule || Date.now()),
+            title: not.title?.rendered,
+            body: not.acf.body,
+            //@ts-expect-error Cannot index ionicons with this, but I'm sure it will be an ionicon valid key
+            ionIcon: ionicons[not.acf.icon || 'paperPlaneOutline'],
+            buttons: Object.values(not.acf.buttons)
+              .filter((b) => b.text)
+              .map((but) => ({
+                ...but,
+                //@ts-expect-error Cannot index ionicons with this, but I'm sure it will be an ionicon valid key
+                ionIcon: ionicons[but.icon || 'openOutline'],
+              })),
+          } as RenderableNotification)
+      )
+      .sort((a, b) => getUnixTime(b.schedule) - getUnixTime(a.schedule));
+  } catch (error) {
     logger.error(
       'notifications:loadNotifications',
-      'supabase returned an error',
+      'error fetching notifications from server',
       {
-        data,
         error,
       }
     );
     return [];
   }
-  return data?.map((not) => ({
-    ...not,
-    schedule: new Date(not.schedule || Date.now()),
-    ionIcon:
-      ((not.icon || '').includes('logo') // @ts-expect-error Cannot index ionicons with string, but I ensure I'm indexing with a icon name
-        ? ionicons[not.icon] // @ts-expect-error Cannot index ionicons with string, but I ensure I'm indexing with a icon name
-        : ionicons[`${not.icon || 'paperPlane'}Outline`]) ||
-      ionicons.paperPlaneOutline,
-  }));
 };
 
 const { state: notifications, isLoading } = useAsyncState(
@@ -99,10 +133,10 @@ const showableNotifications = computed(() =>
 );
 
 let notificationOpen = false;
-const modal = (notification: (typeof notifications.value)[0]) => {
+const modal = (notification: RenderableNotification) => {
   if (!notificationOpen) {
     notificationOpen = true;
-    showNotification(supabase, notification.id).then((modal) =>
+    showNotification(notification).then((modal) =>
       modal.onWillDismiss().then(() => (notificationOpen = false))
     );
   }

@@ -5,7 +5,12 @@
       <h1 class="ion-margin-top title font-bold text-4xl">
         {{ $t('message.settingsTitle') }}
       </h1>
-      <div class="mx-5 my-3 flex flex-row items-center" v-if="user">
+      <PlainLoading
+        v-if="loadingUser"
+        text="Iniciando sesión..."
+        class="my-10"
+      />
+      <div class="mx-5 my-3 flex flex-row items-center" v-else-if="user">
         <IonAvatar class="mr-3">
           <img :src="user.avatar_urls['96']" />
         </IonAvatar>
@@ -60,6 +65,16 @@
                 >{{ getLocaleName(locale) }}</ion-select-option
               >
             </ion-select>
+          </ion-item>
+          <ion-item
+            lines="inset"
+            button
+            :detail="false"
+            :disabled="$i18n.locale === 'es'"
+          >
+            <ion-toggle v-model="translateSchedule"
+              >Traducir horario</ion-toggle
+            >
           </ion-item>
           <div>
             <ion-item lines="inset" button :detail="false">
@@ -116,9 +131,10 @@
             Preguntas frecuentes y más info
             <IonIcon slot="end" :icon="openOutline"></IonIcon>
           </ion-item>
-          <router-link to="/logs">
-            <ion-item lines="inset" button detail class="item"> Logs </ion-item>
-          </router-link>
+          <ion-item @click="preshareLogs()" lines="inset" button class="item">
+            Compartir registro de errores
+            <IonIcon slot="end" :icon="paperPlaneOutline"></IonIcon>
+          </ion-item>
         </ion-card-content>
       </ion-card>
       <ion-button fill="clear" expand="full" @click="router.push('/slides')">
@@ -132,13 +148,11 @@
 import {
   IonPage,
   IonContent,
-  IonTitle,
   IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
   IonItem,
-  IonLabel,
   IonSelect,
   IonSelectOption,
   IonToggle,
@@ -148,22 +162,47 @@ import {
   useIonRouter,
   SelectCustomEvent,
   IonAvatar,
+  alertController,
 } from '@ionic/vue';
-import { openOutline } from 'ionicons/icons';
+import { openOutline, paperPlaneOutline } from 'ionicons/icons';
 import Header from '../components/Header.vue';
 import * as locale from 'locale-codes';
-import { KEY_LOCALE, KEY_DARK_MODE } from '../vars';
-import { debug } from '../util';
+import { KEY_LOCALE, KEY_DARK_MODE, KEY_TRANSLATE_SCHEDULE } from '../vars';
 import { toggleDarkMode } from '../ui';
 import { getDarkMode, isDarkMode, setDarkMode } from '../darkMode';
-import { getUser } from '../user';
+import { getUser, loadingUser } from '../user';
 import { clearWPToken } from '../wpauth';
+import { shareLogs, PlainLoading } from '@code/ceebi-ui';
+import { getTranslateSchedule } from '../translateSchedule';
 
 const router = useIonRouter();
 const i18n = useI18n();
 const logger = useLogger();
 
 const user: Ref<WPUser> = getUser();
+
+const preshareLogs = async () => {
+  const alert = alertController.create({
+    header: 'Compartir registro de errores',
+    message:
+      'Comparte este archivo con los desarrolladores de la aplicación via correo a app@biociencias.es o por Telegram a @HipyCas para que se revisen y se intenten arreglar los problemas que hayan surgido',
+    buttons: [
+      {
+        text: 'cancelar',
+        role: 'cancel',
+      },
+      {
+        text: 'enviar',
+        handler: () =>
+          shareLogs(logger, 'ceebiclient', {
+            dialogTitle: 'Comparte este archivo con la organización',
+            title: 'Logs aplicación CEEBI',
+          }),
+      },
+    ],
+  });
+  (await alert).present();
+};
 
 const logout = () => {
   clearWPToken();
@@ -198,6 +237,15 @@ const saveLocale = (ev: SelectCustomEvent) => {
 };
 
 const getLocaleName = (tag: string): string => locale.getByTag(tag).name;
+
+const translateSchedule = getTranslateSchedule();
+
+watch(translateSchedule, (translate) =>
+  Preferences.set({
+    key: KEY_TRANSLATE_SCHEDULE,
+    value: translate ? 'true' : 'false',
+  })
+);
 
 const darkMode = ref(getDarkMode());
 

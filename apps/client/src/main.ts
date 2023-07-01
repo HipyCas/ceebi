@@ -1,21 +1,9 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import VWave from 'v-wave';
 
 import { IonicVue, alertController } from '@ionic/vue';
-
-import '@fontsource/source-sans-pro/200.css';
-import '@fontsource/source-sans-pro/300.css';
-import '@fontsource/source-sans-pro/400.css';
-import '@fontsource/source-sans-pro/600.css';
-import '@fontsource/source-sans-pro/700.css';
-import '@fontsource/source-sans-pro/900.css';
-import '@fontsource/source-sans-pro/200-italic.css';
-import '@fontsource/source-sans-pro/300-italic.css';
-import '@fontsource/source-sans-pro/400-italic.css';
-import '@fontsource/source-sans-pro/600-italic.css';
-import '@fontsource/source-sans-pro/700-italic.css';
-import '@fontsource/source-sans-pro/900-italic.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -35,6 +23,7 @@ import './theme/variables.css';
 
 import './index.css';
 import '../../../libs/ceebi-ui/src/common.css';
+import 'unfonts.css';
 
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
@@ -43,7 +32,13 @@ import * as locale from 'locale-codes';
 import messages, { SupportedLanguages } from './translations';
 import type { Translation } from './translations';
 import { KEY_LOCALE, KEY_WP_TOKEN } from './vars';
-import { setWPToken, updateUserFromServer, validateWPToken } from './wpauth';
+import {
+  clearWPToken,
+  setWPToken,
+  updateUserFromServer,
+  validateWPToken,
+} from './wpauth';
+import { loadingUser } from './user';
 
 //* I18n
 const i18n = createI18n<[Translation], SupportedLanguages>({
@@ -80,8 +75,9 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
       setWPToken(token || '');
       const validated = await validateWPToken();
       if (validated.valid) {
-        updateUserFromServer();
+        updateUserFromServer().then(() => (loadingUser.value = false));
       } else {
+        loadingUser.value = false;
         alertController
           .create({
             header: 'Sesión caducada',
@@ -91,6 +87,7 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
               {
                 text: 'No iniciar',
                 role: 'cancel',
+                handler: clearWPToken,
               },
               {
                 text: 'Iniciar sesión',
@@ -101,13 +98,15 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
           .then((a) => a.present());
       }
     });
+  } else {
+    loadingUser.value = false;
   }
   //* =====
 });
 //* =====
 
 //* ===== Vue
-const app = createApp(App).use(IonicVue).use(i18n).use(router);
+const app = createApp(App).use(IonicVue).use(i18n).use(VWave, {}).use(router);
 
 router.isReady().then(() => {
   app.mount('#app');

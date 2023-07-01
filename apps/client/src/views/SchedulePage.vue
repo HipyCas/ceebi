@@ -90,12 +90,15 @@ import { Translation, Language } from '@capacitor-mlkit/translation';
 import * as locales from 'locale-codes';
 import { MEC } from '@code/mec-ts';
 import { debug } from '../util';
+import { getTranslateSchedule } from '../translateSchedule';
 
 import { Event } from '@code/mec-ts';
 // import { extractContent } from '../util';
 
 const { locale } = useI18n();
 let currentLanguage;
+
+const translateSchedule = getTranslateSchedule();
 
 console.info('[SCHEDULE] have locale', locale.value, ', getting dates');
 const _today = new Date().getTime();
@@ -128,78 +131,18 @@ console.info('[SCHEDULE] setup events');
 // // Get thursday events
 const tuesdayEvents = ref([] as Event[]);
 const tuesdayLoading = ref(true);
-// async function loadTuesday() {
-//   const res = await fetch(
-//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
-//   );
-
-//   res.json().then((json) => {
-//     tuesdayEvents.value = json.content_json['2022-07-19'];
-//     tuesdayLoading.value = false;
-//   });
-// }
-// loadTuesday();
 
 // // Get wednesday events
 const wednesdayEvents = ref([] as Event[]);
 const wednesdayLoading = ref(true);
-// async function loadWednesday() {
-//   const res = await fetch(
-//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
-//   );
-
-//   res.json().then((json) => {
-//     wednesdayEvents.value = json.content_json['2022-07-20'];
-//     wednesdayLoading.value = false;
-//   });
-// }
-// loadWednesday();
 
 // // Get thursday events
 const thursdayEvents = ref([] as Event[]);
 const thursdayLoading = ref(true);
-// async function loadThursday() {
-//   const res = await fetch(
-//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
-//   );
-
-//   res.json().then((json) => {
-//     thursdayEvents.value = json.content_json['2022-07-21'];
-//     thursdayLoading.value = false;
-//   });
-// }
-// loadThursday();
 
 // // Get friday events
 const fridayEvents = ref([] as Event[]);
 const fridayLoading = ref(true);
-// async function loadFriday() {
-//   const res = await fetch(
-//     'https://biociencias.es/wp-json/mecexternal/v1/calendar/1565'
-//   );
-
-//   res.json().then(async (json) => {
-//     fridayEvents.value = json.content_json['2022-07-22'];
-//     console.log('here', Array.isArray(fridayEvents.value));
-//     for (let ev of fridayEvents.value) {
-//       ev['data']['post']['post_title'] = (
-//         await Translation.translate({
-//           text: ev['data']['post']['post_title'],
-//           sourceLanguage: Language.Spanish,
-//           targetLanguage: Language[locales.getByTag(locale).name],
-//         })
-//       ).text;
-//     }
-
-//     console.log(
-//       'there please',
-//       Array.isArray(fridayEvents.value),
-//       fridayEvents.value[0]['data']['post']['post_title']
-//     );
-//     fridayLoading.value = false;
-//   });
-// }
-// loadFriday();
 
 console.info('[EVENTS TRANSLATE] declaring event load func');
 const loadEvents = async () => {
@@ -230,8 +173,12 @@ const loadEvents = async () => {
   //   await mec.translate()
   // }
 
+  const shouldTranslate =
+    locale.toString() !== 'es' &&
+    isPlatform('capacitor') &&
+    translateSchedule.value;
   const tmpTuesdayEvents = mec.get('2023-07-18');
-  if (locale.toString() !== 'es' && isPlatform('capacitor')) {
+  if (shouldTranslate) {
     console.info('[EVENTS TRANSLATE] translate tuesday');
     tmpTuesdayEvents.translate(translate).then((evs) => {
       tuesdayEvents.value = evs.resolve();
@@ -243,7 +190,7 @@ const loadEvents = async () => {
   }
 
   const tmpWednesdayEvents = mec.get('2023-07-19');
-  if (locale.toString() !== 'es' && isPlatform('capacitor')) {
+  if (shouldTranslate) {
     console.info('[EVENTS TRANSLATE] translate wednesday');
     tmpWednesdayEvents.translate(translate).then((evs) => {
       wednesdayEvents.value = evs.resolve();
@@ -255,7 +202,7 @@ const loadEvents = async () => {
   }
 
   const tmpThursdayEvents = mec.get('2023-07-20');
-  if (locale.toString() !== 'es' && isPlatform('capacitor'))
+  if (shouldTranslate)
     tmpThursdayEvents.translate(translate).then((evs) => {
       thursdayEvents.value = evs.resolve();
       thursdayLoading.value = false;
@@ -266,7 +213,7 @@ const loadEvents = async () => {
   }
 
   const tmpFridayEvents = mec.get('2023-07-21');
-  if (locale.toString() !== 'es' && isPlatform('capacitor'))
+  if (shouldTranslate)
     tmpFridayEvents.translate(translate).then((evs) => {
       fridayEvents.value = evs.resolve();
       fridayLoading.value = false;
@@ -351,7 +298,8 @@ onIonViewWillEnter(() => {
   if (
     locale.toString() !== 'es' &&
     isPlatform('capacitor') &&
-    locale !== currentLanguage
+    locale !== currentLanguage &&
+    translateSchedule.value
   ) {
     loadEvents();
   }

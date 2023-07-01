@@ -9,6 +9,7 @@ export const KEY_LOCALE = STORAGE_PREFIX + 'Locale';
 export const KEY_NOTIFICATIONS = STORAGE_PREFIX + 'Notifications';
 export const KEY_DARK_MODE = STORAGE_PREFIX + 'DarkMode';
 export const KEY_WP_TOKEN = STORAGE_PREFIX + 'WPToken';
+export const KEY_TRANSLATE_SCHEDULE = STORAGE_PREFIX + 'TranslateSchedule';
 
 //* MEC Properties for events
 export const EVENT_ICON_FIELD_LABEL = 'Icono';

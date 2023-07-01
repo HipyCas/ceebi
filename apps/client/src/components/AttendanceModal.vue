@@ -13,8 +13,7 @@
     </no-connection>
 
     <div v-else-if="loading" class="wrapper">
-      <ion-spinner></ion-spinner>
-      <span>{{ $t('message.loading') }}...</span>
+      <PlainLoading :spinner-tailwind-size="10"></PlainLoading>
     </div>
 
     <template v-else-if="items.length > 0">
@@ -95,6 +94,7 @@ import {
   modalController,
   actionSheetController,
 } from '@ionic/vue';
+import type { ActionSheetButton } from '@ionic/vue';
 // import { VueEllipseProgress } from 'vue-ellipse-progress';
 import confetti from 'canvas-confetti';
 import NoConnection from './NoConnection.vue';
@@ -103,20 +103,28 @@ import CircleProgress from 'vue3-circle-progress';
 import { getUser } from '../user';
 import attendanceSchema from '../../attendance.json';
 import parseISO from 'date-fns/parseISO';
+import { computedEager, until, useMounted } from '@vueuse/core';
+import type { WPUser } from '@code/wp-types';
+import isBefore from 'date-fns/isBefore';
+import { imageOutline, stopwatchOutline, closeOutline } from 'ionicons/icons';
+import { PlainLoading } from '@code/ceebi-ui';
 
 // defineProps<{
 //   dni: string;
 // }>();
 
 const supabase = useSupabase();
+const logger = useLogger();
+
 const user = getUser();
+const isMounted = useMounted();
 
 const style = getComputedStyle(document.body);
 
 // const hoursDone = 13;
 
 const connected = ref(true);
-const loading = ref(false);
+const loading = ref(true);
 const items = ref(
   [] as {
     time: Date;
@@ -136,7 +144,7 @@ const hoursDone = computed(
   () =>
     items.value
       .map((item) => item.hours)
-      .reduce((prev, curr) => prev + curr) as number
+      .reduce((prev, curr) => prev + curr, 0) as number
 );
 
 // const removeDuplicates = (duplicates: DocumentData[]) => {
@@ -157,7 +165,6 @@ const main = async () => {
     .from('attendance')
     .select('*')
     .eq('attendant_id', user.value.acf.id_base_de_datos_app);
-  console.log(data);
   if (!error && data) {
     items.value = data?.map((att) => ({
       time: parseISO(att.date || ''),
@@ -170,8 +177,10 @@ const main = async () => {
       hours: attendanceSchema.find((schema) => schema.name === att.session)
         ?.hours,
     }));
+    loading.value = false;
 
     if (hoursDone.value >= 25 * 0.8) {
+      await until(isMounted).toBe(true);
       const canvas = document.getElementsByClassName('canvas-confetti')[0];
       //@ts-expect-error I am sure canvas will not be null
       const con = confetti.create(canvas, { resize: true });
@@ -185,18 +194,53 @@ const main = async () => {
         colors: ['#24272A', '#34B6ED', '#70C1B3', '#FFE066', '#E8451E'],
       });
     }
+  } else {
+    logger.error(
+      'attendance:main',
+      'error when loading attendance data from supabase',
+      { data, error }
+    );
   }
 };
 main();
+
+const certButtons = computedEager(() => {
+  const buts: ActionSheetButton[] = [];
+  if (hoursDone.value >= 25 * 0.8) {
+    buts.push({
+      text: 'Asistencia',
+      icon: stopwatchOutline,
+      handler: () => {
+        if (hoursDone.value >= 25 * 0.8) {
+          // TODO Share cert
+        }
+      },
+    });
+  }
+  if ((user.value as WPUser).acf.has_poster)
+    buts.push({
+      text: 'Póster',
+      icon: imageOutline,
+      handler: () => {
+        if (isBefore(new Date(), new Date(2023, 6, 21, 23, 59, 59))) return; // TODO Show some alert or toast saying that it is only available after the congress itself
+        if ((user.value as WPUser).acf.has_poster) {
+        } // Share here
+      },
+    });
+  return buts;
+});
 
 const downloadCerts = () => {
   actionSheetController
     .create({
       header: 'Seleccionar certificado',
+      subHeader: 'Elige el certificado que deseas descargar',
       buttons: [
+        ...certButtons.value,
         {
-          text: 'Attendance',
-          handler: () => {},
+          text: 'Cancelar',
+          icon: closeOutline,
+          cssClass: 'cancel-button',
         },
       ],
     })
@@ -272,5 +316,15 @@ const downloadCerts = () => {
   height: 100%;
   width: 100%;
   pointer-events: none;
+}
+</style>
+
+<style>
+.cancel-button {
+  color: var(--ion-color-danger) !important;
+}
+
+.cancel-button * {
+  color: var(--ion-color-danger) !important;
 }
 </style>

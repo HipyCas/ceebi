@@ -4,6 +4,7 @@
       <swiper
         style="height: 100vh; overflow-y: hidden"
         :modules="modules"
+        watch-slides-progress
         :pagination="true"
       >
         <swiper-slide>
@@ -241,5 +242,15 @@ body.dark .notice {
 .input-item {
   --background: var(--ion-background-color);
   width: 60%;
+}
+</style>
+
+<style>
+.swiper .swiper-pagination-bullet {
+  background-color: hsl(0, 0%, 50%) !important;
+}
+
+.swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  background-color: var(--ion-color-primary) !important;
 }
 </style>
