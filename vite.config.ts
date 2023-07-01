@@ -1,10 +1,11 @@
-import vue from '@vitejs/plugin-vue';
+import { load as loadEnv } from 'dotenv-extended';
 import { defineConfig } from 'vite';
 import type { PluginOption, UserConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import Unfonts from 'unplugin-fonts/vite';
 import AutoImport from 'unplugin-auto-import/vite';
-import { load as loadEnv } from 'dotenv-extended';
 
 loadEnv();
 
@@ -34,6 +35,12 @@ export const extendBaseConfig = (
           },
         },
         ...extraConfig?.plugins?.extend?.createHtmlPlugin,
+      }),
+      Unfonts({
+        fontsource: {
+          families: ['Source Sans Pro'],
+        },
+        ...extraConfig?.plugins?.extend?.Unfonts,
       }),
       AutoImport({
         include: [
@@ -83,7 +90,7 @@ export const extendBaseConfig = (
           },
           {
             from: '@code/wp-types',
-            imports: ['WPUser'],
+            imports: ['WPUser', 'WPNotification'],
             type: true,
           },
           {
@@ -116,6 +123,11 @@ export const extendBaseConfig = (
       outDir: `../../dist/apps/${projectName}/web`,
       emptyOutDir: true,
     },
+    server: {
+      fs: {
+        allow: [__dirname],
+      },
+    },
     // resolve: {
     //   alias: Object.entries(baseTsConfig.compilerOptions.paths).reduce(
     //     (acc, [key, paths]) => ({
@@ -131,7 +143,7 @@ export const extendBaseConfig = (
 export interface ExtraConfig {
   plugins?: {
     extend?: Record<
-      'vue' | 'tsconfigPaths' | 'createHtmlPlugin' | 'AutoImport',
+      'vue' | 'tsconfigPaths' | 'createHtmlPlugin' | 'AutoImport' | 'Unfonts',
       any
     >;
     include?: PluginOption[];

@@ -2,6 +2,7 @@ const { join } = require('path');
 
 /** @type {(string) => import('tailwindcss').Config} */
 module.exports = (dirname) => ({
+  presets: [require('./tailwind.preset')],
   content: [
     join(
       dirname,
@@ -9,8 +10,8 @@ module.exports = (dirname) => ({
     ),
     // ...createGlobPatternsForDependencies(__dirname),
   ],
-  theme: {
-    extend: {},
-  },
+  // corePlugins: {
+  //   preflight: false,
+  // },
   plugins: [],
 });
