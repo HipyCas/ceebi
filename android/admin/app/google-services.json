@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "192356291351",
+    "project_id": "ceebi-admin",
+    "storage_bucket": "ceebi-admin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192356291351:android:dda9d9f02dd96d55395d52",
+        "android_client_info": {
+          "package_name": "es.biociencias.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192356291351-svah4jg1pmgahf55nsk38le86h5nrkis.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.biociencias.admin",
+            "certificate_hash": "dbc013945884bbe081dcb726b87d063a818da41c"
+          }
+        },
+        {
+          "client_id": "192356291351-qtkj9sq13href36mbmjh0s6j3pn3lsct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQEN1Ku29K1JH1ZAfEkMYq6s79vSkK3EY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192356291351-qtkj9sq13href36mbmjh0s6j3pn3lsct.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
