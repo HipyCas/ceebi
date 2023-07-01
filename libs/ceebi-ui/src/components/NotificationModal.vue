@@ -28,7 +28,7 @@
     <ion-item
       v-for="button in notification.buttons || []"
       :key="(button.icon || 'undef') + button.text"
-      @click="open(button.link)"
+      @click="open(button.link, button.shortname)"
       button
       lines="full"
     >
@@ -37,8 +37,7 @@
         v-if="button.icon !== undefined"
         slot="start"
         class="ion-margin-right"
-        :md="getIcon(button.icon)"
-        :ios="getIcon(button.icon)"
+        :icon="button.ionIcon"
       ></ion-icon>
       <!--:color="button.color"-->
       <ion-text>{{ button.text }}</ion-text>
@@ -60,7 +59,6 @@ import {
   modalController,
 } from '@ionic/vue';
 import * as ionicons from 'ionicons/icons';
-import type { Database } from '@code/supabase';
 import { Browser } from '@capacitor/browser';
 
 defineProps<{
@@ -69,8 +67,20 @@ defineProps<{
   // body: string;
   // date: Date;
   // buttons?: ButtonSettings[];
-  notification: Database['public']['Tables']['notifications']['Row'] & {
+  notification: {
+    id: number;
+    title: string;
+    shortname?: string;
+    body: string;
     schedule: Date;
+    ionIcon: string;
+    buttons: Array<{
+      icon: string;
+      text: string;
+      shortname?: string;
+      ionIcon: string;
+      link: string;
+    }>;
   };
 }>();
 
@@ -79,10 +89,6 @@ const $t = (msg: string) => 'Cerrar';
 const dismissModal = () => {
   modalController.dismiss();
 };
-
-const getIcon = (name: string): string =>
-  //@ts-expect-error Cant index ionicons with string
-  name.includes('logo') ? ionicons[name] : ionicons[`${name}Outline`];
 
 const open = (url: string, buttonId?: string) => {
   // if (buttonId !== undefined)

@@ -1,5 +1,9 @@
 <template>
-  <IonButton expand="block" color="dark" @click="shareLogs">
+  <IonButton
+    expand="block"
+    color="dark"
+    @click="shareLogs(logger, exportFileName)"
+  >
     Compartir
     <IonIcon :icon="shareSocialOutline" slot="end"></IonIcon>
   </IonButton>
@@ -50,9 +54,7 @@ import {
 import JSONViewer from './JSONViewer.vue';
 import formatISO9075 from 'date-fns/formatISO9075';
 import uniqolor from 'uniqolor';
-import { encode } from 'js-base64';
-import { Share } from '@capacitor/share';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { shareLogs } from '../';
 
 const props = defineProps<{
   logger: Logger;
@@ -108,31 +110,5 @@ const openLog = (msg: LoggerMsg) => {
       },
     })
     .then((m) => m.present());
-};
-
-const shareLogs = async () => {
-  const data = encode(
-    props.logger.stream
-      .map(
-        (log) =>
-          `${log.time.toISOString()};${log.level};${log.scope};${JSON.stringify(
-            log.parts
-          )}`
-      )
-      .join('\n')
-  );
-  await Filesystem.writeFile({
-    path: `${props.exportFileName}.log`,
-    data,
-    directory: Directory.Cache,
-  });
-  const file = await Filesystem.getUri({
-    path: `${props.exportFileName}.log`,
-    directory: Directory.Cache,
-  });
-  Share.share({
-    dialogTitle: 'Logs export',
-    files: [file.uri],
-  });
 };
 </script>

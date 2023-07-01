@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -14,7 +14,7 @@ export interface Database {
           attendant_id: string
           created_by: string
           date: string | null
-          event: string
+          event: string | null
           id: number
           session: string
         }
@@ -22,7 +22,7 @@ export interface Database {
           attendant_id: string
           created_by: string
           date?: string | null
-          event: string
+          event?: string | null
           id?: number
           session: string
         }
@@ -30,7 +30,7 @@ export interface Database {
           attendant_id?: string
           created_by?: string
           date?: string | null
-          event?: string
+          event?: string | null
           id?: number
           session?: string
         }
@@ -48,39 +48,6 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
-      }
-      notifications: {
-        Row: {
-          body: string | null
-          buttons: Json[] | null
-          created_at: string | null
-          icon: string | null
-          id: number
-          schedule: string | null
-          shortname: string | null
-          title: string | null
-        }
-        Insert: {
-          body?: string | null
-          buttons?: Json[] | null
-          created_at?: string | null
-          icon?: string | null
-          id?: number
-          schedule?: string | null
-          shortname?: string | null
-          title?: string | null
-        }
-        Update: {
-          body?: string | null
-          buttons?: Json[] | null
-          created_at?: string | null
-          icon?: string | null
-          id?: number
-          schedule?: string | null
-          shortname?: string | null
-          title?: string | null
-        }
-        Relationships: []
       }
       users: {
         Row: {

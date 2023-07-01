@@ -1,8 +1,11 @@
 import * as components from './components';
 import type { App } from 'vue';
-import type { Database } from '@code/supabase';
-import type { createClient } from '@supabase/supabase-js';
 import { modalController } from '@ionic/vue';
+import { encode } from 'js-base64';
+import type { Logger } from '@code/logger';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import type { ShareOptions } from '@capacitor/share';
 
 export default {
   install(vue: App) {
@@ -13,29 +16,50 @@ export default {
   },
 };
 
-export const showNotification = async (
-  supabase: ReturnType<typeof createClient<Database>>,
-  notificationId: number
-) => {
+export const showNotification = async (notification: any) => {
   // TODO Error handling
-  const { data } = await supabase
-    .from('notifications')
-    .select('*')
-    .eq('id', notificationId)
-    .single();
+  // const { data } = await supabase
+  //   .from('notifications')
+  //   .select('*')
+  //   .eq('id', notificationId)
+  //   .single();
   const modal = await modalController.create({
     component: components.NotificationModal,
     breakpoints: [0, 0.45, 0.65, 1],
     initialBreakpoint: 0.45,
     componentProps: {
-      notification: {
-        ...data,
-        schedule: new Date(data?.schedule || Date.now()),
-      },
+      notification,
     },
   });
   modal.present();
   return modal;
+};
+
+export const shareLogs = async (
+  logger: Logger,
+  exportFileName: string,
+  shareOptions?: ShareOptions
+) => {
+  const data = encode(
+    logger.stream
+      .map(
+        (log) =>
+          `${log.time.toISOString()};${log.level};${log.scope};${JSON.stringify(
+            log.parts
+          )}`
+      )
+      .join('\n')
+  );
+  const file = await Filesystem.writeFile({
+    path: `${exportFileName}.log`,
+    data,
+    directory: Directory.Cache,
+  });
+  Share.share({
+    dialogTitle: 'Logs export',
+    files: [file.uri],
+    ...shareOptions,
+  });
 };
 
 export * from './components';

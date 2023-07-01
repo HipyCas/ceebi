@@ -38,6 +38,7 @@ export interface WPUser {
   };
   acf: {
     id_base_de_datos_app: string;
+    has_poster: boolean;
   };
   yoast_head: string;
   yoast_head_json: {
@@ -67,4 +68,61 @@ export interface WPUser {
       href: string;
     }>;
   };
+}
+
+export interface WPNotification {
+  id: number;
+  date: string;
+  date_gmt: string;
+  guid: {
+    rendered: string;
+  };
+  modified: string;
+  modified_gmt: string;
+  slug: string;
+  status: 'draft' | 'publish';
+  type: 'notificacion';
+  link: string;
+  title?: {
+    rendered: string;
+  };
+  featured_media: number;
+  template: '';
+  acf: {
+    shortname: string;
+    /** HTML body */
+    body: string;
+    /** Schedule date in format `Y-m-d H:i:s`*/
+    schedule: string;
+    /** Icon from IonIcons in full name format */
+    icon: string;
+    buttons: Record<
+      'button_1' | 'button_2' | 'button_3' | 'button_4' | 'button_5',
+      WPNotificationButton
+    >;
+  };
+  _links: {
+    self: WPInternalLink[];
+    collection: [WPInternalLink];
+    about: WPInternalLink[];
+    'wp:attachment': WPInternalLink[];
+    curies: [
+      {
+        name: 'wp';
+        href: string;
+        templated: boolean;
+      }
+    ];
+  };
+}
+
+interface WPNotificationButton {
+  shortname: '' | string;
+  text: '' | string;
+  icon: false | string;
+  link: '' | string;
+}
+
+interface WPInternalLink {
+  href: string;
 }
