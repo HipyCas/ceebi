@@ -5,6 +5,8 @@ import { Preferences } from '@capacitor/preferences';
 import { KEY_WP_TOKEN } from './vars';
 import { HTTPError } from 'ky';
 
+const logger = useLogger();
+
 export const wpToken = ref(null as string | null);
 
 export const wpLogin = async (username: string, password: string) => {
@@ -16,15 +18,31 @@ export const wpLogin = async (username: string, password: string) => {
       },
     })
     .json<WPJWTResponse>();
+  logger.trace('wpauth:wpLogin', 'logged in', res, res.token);
 
   setWPToken(res.token);
+  logger.trace('wpauth:wpLogin', 'saved wordpress token in memory');
 
   Preferences.set({
     key: KEY_WP_TOKEN,
     value: res.token,
-  });
-
+  })
+    .then(() =>
+      logger.trace(
+        'wpauth:wpLogin',
+        'saved wp token with Capacitor Preferences'
+      )
+    )
+    .catch((e) =>
+      logger.error(
+        'wpauth:wpLogin',
+        'error when trying to save token to device',
+        { error: e }
+      )
+    );
   await updateUserFromServer();
+
+  logger.trace('wpauth:wpLogin', 'updated user from server');
 
   return res;
 };
