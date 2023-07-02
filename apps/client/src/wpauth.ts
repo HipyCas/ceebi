@@ -10,14 +10,23 @@ const logger = useLogger();
 export const wpToken = ref(null as string | null);
 
 export const wpLogin = async (username: string, password: string) => {
-  const res = await wpapi
-    .post('jwt-auth/v1/token', {
-      json: {
-        username,
-        password,
-      },
-    })
-    .json<WPJWTResponse>();
+  let res;
+  try {
+    res = await wpapi
+      .post('jwt-auth/v1/token', {
+        json: {
+          username,
+          password,
+        },
+      })
+      .json<WPJWTResponse>();
+  } catch (e) {
+    logger.error('wpauth:wpLogin', 'error when fetching token from wp', {
+      error: e,
+    });
+    throw new Error('error when fetching token from wp');
+    return;
+  }
   logger.trace('wpauth:wpLogin', 'logged in', res, res.token);
 
   setWPToken(res.token);
