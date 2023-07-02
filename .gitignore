@@ -40,3 +40,5 @@ testem.log
 Thumbs.db
 
 **/auto-imports.d.ts
+
+keystores/
