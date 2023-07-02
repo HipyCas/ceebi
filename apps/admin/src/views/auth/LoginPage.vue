@@ -80,8 +80,8 @@ import { useSupabase } from '@code/supabase';
 import { trace } from 'firebase/performance';
 import { performance } from '../../firebase';
 
-const log = useLogger();
-log.trace('auth', 'setup');
+const logger = useLogger();
+logger.trace('auth', 'setup');
 
 const router = useIonRouter();
 const supabase = useSupabase();
@@ -110,7 +110,7 @@ onIonViewDidEnter(() => {
   Preferences.get({
     key: 'ceebiAdmin.biometricsEnabled',
   }).then((res) => {
-    log.trace(
+    logger.trace(
       'auth',
       'ceebiAdmin.biometricsEnabled preferences value',
       res.value
@@ -140,12 +140,16 @@ const getBiometricType = (type: BiometryType) => {
 };
 
 const verifyWithBiometrics = async () => {
-  log.trace('auth:verifyWithBiometrics', 'start');
+  logger.trace('auth:verifyWithBiometrics', 'start');
 
   let res;
   try {
     res = await NativeBiometric.isAvailable();
-    log.trace('auth:verifyWithBiometrics', 'Biometric Type', res.biometryType);
+    logger.trace(
+      'auth:verifyWithBiometrics',
+      'Biometric Type',
+      res.biometryType
+    );
 
     if (!res.isAvailable) {
       (
@@ -164,7 +168,7 @@ const verifyWithBiometrics = async () => {
     return;
   }
 
-  log.trace('auth:verifyWithBiometrics', 'Starting Verification');
+  logger.trace('auth:verifyWithBiometrics', 'Starting Verification');
   const verified = await NativeBiometric.verifyIdentity({
     reason: 'Quicker login',
     title: `Acceder con ${getBiometricType(res.biometryType)}`,
@@ -184,7 +188,7 @@ const verifyWithBiometrics = async () => {
     NativeBiometric.getCredentials({
       server: 'es.biociencias.admin',
     }).then(({ username: thisUsername, password: thisPassword }) => {
-      log.trace(
+      logger.trace(
         'auth:verifyWithBiometrics',
         'Verified identity, credentials',
         thisUsername,
@@ -227,7 +231,7 @@ async function login() {
   const loginTrace = trace(performance, 'login');
   loginTrace.putAttribute('platform', Capacitor.getPlatform());
 
-  log.trace('auth:login', 'start login', email.value);
+  logger.trace('auth:login', 'start login', email.value);
 
   const loading = await loadingController.create({
     message: 'Iniciando sesión',
@@ -250,7 +254,7 @@ async function login() {
     loginTrace.putAttribute('is_error', 'true');
     loginTrace.putAttribute('error', 'not found');
     loginTrace.stop();
-    log.error('auth:login', 'supabase error', supabase_user, error);
+    logger.error('auth:login', 'supabase error', supabase_user, error);
     useToast({
       message: 'Usuario no encontrado',
       color: 'danger',
@@ -294,10 +298,7 @@ async function login() {
       })
       .json<WPJWTResponse>();
 
-    // user.value = {
-    //   username: username.value,
-    //   password: password.value,
-    // };
+    logger.trace('auth:login', 'response from WordPress', res);
 
     setWPToken(res.token);
     setUser({
@@ -311,6 +312,14 @@ async function login() {
 
     loginTrace.stop();
     loginTrace.putAttribute('is_error', 'false');
+
+    logger.trace(
+      'auth:login',
+      'redirecting to',
+      route.query.next === undefined
+        ? '/p/notifications'
+        : route.query.next + '?back=/p/notifications'
+    );
     router.push(
       route.query.next === undefined
         ? '/p/notifications'
