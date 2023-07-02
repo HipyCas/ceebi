@@ -24,6 +24,15 @@ def capacitor_pods
   pod 'CapacitorCommunityFirebaseCrashlytics', :path => '../../../node_modules/.pnpm/@capacitor-community+firebase-crashlytics@3.0.0_@capacitor+core@4.8.0/node_modules/@capacitor-community/firebase-crashlytics'
 end
 
+def firebase_pods
+  pod 'FirebaseAnalytics'
+  pod 'Firebase/AnalyticsWithoutAdIdSupport'
+
+  pod 'FirebaseAppDistribution'
+  pod 'FirebaseMessaging'
+  pod 'FirebaseCrashlytics'
+  pod 'FirebasePerformance'
+
 target 'App' do
   capacitor_pods
   # Add your Pods here
