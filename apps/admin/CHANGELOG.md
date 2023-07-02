@@ -1,5 +1,25 @@
 # CEEBI Admin App Changelog
 
+## [2.0.0-rc.2]
+
+### Added
+
+- Performance monitoring using Firebase Performance Monitoring both the Android SDK and the web SDK, using the latter for custom traces
+- Changing admin permissions for admins should now work
+- Admins with the permission to modify admins can now make a user an admin
+- When changing permissions from admin, if it gets an error from supabase, it will report them to firebase Crashlytics
+- Autofocus email field on login page
+- Hide login with biometrics button in login page if biometrics login is not enabled
+
+### Fixed
+
+- Activating login with biometrics in settings now properly saves user and password for login
+- Deactivating biometric login now works
+
+### Changed
+
+- Removed some bits of code that were not being used
+
 ## [2.0.0-rc.1] - 2023/07/01
 
 ### Added

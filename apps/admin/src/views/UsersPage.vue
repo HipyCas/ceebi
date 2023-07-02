@@ -62,13 +62,14 @@ import {
   IonFabButton,
   IonIcon,
   IonSearchbar,
-  IonLoading,
 } from '@ionic/vue';
 import PageWrapper from '../components/PageWrapper.vue';
 import { wpapi } from '../req';
 import { authHeaders } from '../wpauth';
-import { HTTPError } from 'ky';
+import type { HTTPError } from 'ky';
 import { setListableUsers, getListableUsers } from '../listableUsers';
+import { performance } from '../firebase';
+import { trace } from 'firebase/performance';
 
 const logger = useLogger();
 
@@ -128,6 +129,12 @@ onMounted(async () => {
     const listableUsers = getListableUsers();
     if (listableUsers.value.length > 0) return;
 
+    const usersLoadTrace = trace(performance, 'loadAllUsersWP');
+    usersLoadTrace.putAttribute('fields', 'id,name');
+    usersLoadTrace.putAttribute('per_page', '100');
+    usersLoadTrace.putAttribute('platform', Capacitor.getPlatform());
+
+    usersLoadTrace.start();
     const res = await wpapi.get('wp/v2/users', {
       headers: authHeaders({}),
       searchParams: {
@@ -146,7 +153,7 @@ onMounted(async () => {
     const total_pages = Number.parseInt(
       res.headers.get('X-WP-TotalPages') || '0'
     );
-    console.info('[UPDATE USERS] Total pages:', total_pages);
+    usersLoadTrace.putMetric('total_pages', total_pages);
     users.value.push(...(await res.json<WPUser[]>()));
 
     for (let page = 1; page <= total_pages; page++) {
@@ -160,6 +167,9 @@ onMounted(async () => {
       console.log('[UPDATE USERS] Fetched page ' + page, res);
       users.value.push(...(await res.json<WPUser[]>()));
     }
+    usersLoadTrace.stop();
+
+    usersLoadTrace.putMetric('total_users', users.value.length);
 
     console.info('[UPDATE USERS] users', users);
 

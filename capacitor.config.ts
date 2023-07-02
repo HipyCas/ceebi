@@ -14,6 +14,9 @@ export default (
     android: {
       path: join(dirname, '../../android', project), // ? Change this to /dist/apps/admin/apps?
     },
+    ios: {
+      path: join(dirname, '../../ios', project),
+    },
     includePlugins: plugins,
     ...customConfig,
   } as CapacitorConfig);

@@ -87,6 +87,8 @@ import getUnixTime from 'date-fns/getUnixTime';
 import { useAsyncState } from '@vueuse/core';
 import * as ionicons from 'ionicons/icons';
 import { getUser } from '../user';
+import { trace } from 'firebase/performance';
+import { performance } from '../firebase';
 
 interface FetchNotification {
   id: number;
@@ -103,7 +105,6 @@ const notificationsAllowed = computed(
 );
 
 const noPermission = () => {
-  console.log('Hi?');
   alertController
     .create({
       header: 'Acción no permitida',
@@ -158,6 +159,12 @@ const notificationPrettyStatus = computed(
 );
 
 const loadNotifications = async () => {
+  const loadTrace = trace(performance, 'loadNotifications');
+  loadTrace.putAttribute('fields', 'id,acf,title');
+  loadTrace.putAttribute('per_page', '100');
+  loadTrace.putAttribute('platform', Capacitor.getPlatform());
+
+  loadTrace.start();
   try {
     const data = await wpapi
       .get('wp/v2/notificacion', {
@@ -167,6 +174,9 @@ const loadNotifications = async () => {
         },
       })
       .json<Array<WPNotification>>();
+
+    loadTrace.stop();
+    loadTrace.putMetric('total_users', data.length);
     return data
       ?.map((not) => ({
         id: not.id,
@@ -184,6 +194,12 @@ const loadNotifications = async () => {
       }))
       .sort((a, b) => getUnixTime(b.schedule) - getUnixTime(a.schedule));
   } catch (error) {
+    loadTrace.stop();
+    loadTrace.putAttribute('is_error', 'true');
+    loadTrace.putAttribute(
+      'error',
+      (error as { toString: () => string }).toString()
+    );
     logger.error(
       'notifications:loadNotifications',
       'error fetching notifications from server',

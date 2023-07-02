@@ -12,6 +12,8 @@
               label="Email"
               label-placement="floating"
               autocomplete="username"
+              required
+              autofocus
             ></ion-input>
           </ion-item>
           <ion-item lines="full" class="item">
@@ -39,6 +41,7 @@
             fill="clear"
             color="secondary"
             expand="block"
+            v-if="biometricsEnabled"
           >
             Iniciar con huella/facial
           </ion-button>
@@ -74,6 +77,8 @@ import type { WPJWTResponse } from '../../wpauth';
 import { setWPToken, authHeaders } from '../../wpauth';
 import { setUser } from '../../user';
 import { useSupabase } from '@code/supabase';
+import { trace } from 'firebase/performance';
+import { performance } from '../../firebase';
 
 const log = useLogger();
 log.trace('auth', 'setup');
@@ -90,6 +95,8 @@ onMounted(() => {
   )
     isDark.value = true;
 });
+
+const biometricsEnabled = ref(false);
 
 const email = ref('');
 const password = ref('');
@@ -108,7 +115,10 @@ onIonViewDidEnter(() => {
       'ceebiAdmin.biometricsEnabled preferences value',
       res.value
     );
-    if (res.value || '' != '') verifyWithBiometrics();
+    if (res.value || '' != '') {
+      biometricsEnabled.value = true;
+      verifyWithBiometrics();
+    }
   });
 });
 
@@ -214,6 +224,9 @@ async function login() {
   //   })
   //   .then((res) => console.info(res));
 
+  const loginTrace = trace(performance, 'login');
+  loginTrace.putAttribute('platform', Capacitor.getPlatform());
+
   log.trace('auth:login', 'start login', email.value);
 
   const loading = await loadingController.create({
@@ -226,6 +239,7 @@ async function login() {
   //   password: password.value,
   // });
 
+  loginTrace.start();
   const { data: supabase_user, error } = await supabase
     .from('users')
     .select('*')
@@ -233,6 +247,9 @@ async function login() {
     .single();
 
   if (supabase_user === null || error) {
+    loginTrace.putAttribute('is_error', 'true');
+    loginTrace.putAttribute('error', 'not found');
+    loginTrace.stop();
     log.error('auth:login', 'supabase error', supabase_user, error);
     useToast({
       message: 'Usuario no encontrado',
@@ -244,6 +261,9 @@ async function login() {
   }
 
   if (!supabase_user?.is_admin) {
+    loginTrace.stop();
+    loginTrace.putAttribute('is_error', 'true');
+    loginTrace.putAttribute('error', 'not admin');
     useToast({
       message: 'App restringida a administradores',
       color: 'danger',
@@ -289,12 +309,20 @@ async function login() {
       supabase: supabase_user,
     });
 
+    loginTrace.stop();
+    loginTrace.putAttribute('is_error', 'false');
     router.push(
       route.query.next === undefined
         ? '/p/notifications'
         : route.query.next + '?back=/p/notifications'
     );
   } catch (error) {
+    loginTrace.stop();
+    loginTrace.putAttribute('is_error', 'true');
+    loginTrace.putAttribute(
+      'error',
+      (error as { toString: () => string }).toString()
+    );
     console.log(
       'error stuff',
       (error as HTTPError).response.json(),
