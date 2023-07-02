@@ -1,6 +1,10 @@
 import UIKit
 import Capacitor
 import FirebaseCore
+import FirebaseAnalytics
+import FirebaseCrashlytics
+import FirebaseMessaging
+import FirebasePerformance
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
