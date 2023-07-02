@@ -22,7 +22,9 @@ export const wpLogin = async (username: string, password: string) => {
       .json<WPJWTResponse>();
   } catch (e) {
     logger.error('wpauth:wpLogin', 'error when fetching token from wp', {
-      error: e,
+      response: (e as HTTPError).response,
+      cause: (e as HTTPError).cause,
+      stack: (e as HTTPError).stack,
     });
     throw new Error('error when fetching token from wp');
     return;
