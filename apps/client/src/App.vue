@@ -241,6 +241,9 @@ onMounted(async () => {
 
   // Override global error handling to send report to Firebase Crashlytics
   window.onerror = (ev, source, lineno, colno, error) => {
+    FirebaseCrashlytics.addLogMessage({
+      message: 'fired window.onerror',
+    });
     (async () => {
       const stacktrace = await StackTrace.fromError(
         error ||

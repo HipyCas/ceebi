@@ -13,6 +13,10 @@ const logger = useLogger();
 
 onMounted(async () => {
   window.onerror = async (event, source, lineno, colno, error) => {
+    FirebaseCrashlytics.addLogMessage({
+      message: 'fired window.onerror',
+    });
+
     const stacktrace = await StackTrace.fromError(
       error || new Error('undefined error')
     );

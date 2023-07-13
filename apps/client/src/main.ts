@@ -106,6 +106,9 @@ const app = createApp(App).use(IonicVue).use(i18n).use(VWave, {}).use(router);
 
 const logger = useLogger();
 app.config.errorHandler = async (error, instance, info) => {
+  FirebaseCrashlytics.addLogMessage({
+    message: 'fired Vue app errorHandler',
+  });
   const stacktrace = await StackTrace.fromError(
     new Error(`ERROR ${error}: ${info}`)
   );
@@ -121,6 +124,9 @@ app.config.errorHandler = async (error, instance, info) => {
   });
 };
 app.config.warnHandler = (msg, instance, trace) => {
+  FirebaseCrashlytics.addLogMessage({
+    message: 'fired Vue app warnHandler',
+  });
   logger.warn('vueApp:warnHandler', 'warning in vue app', {
     msg,
     instance,
