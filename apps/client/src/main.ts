@@ -35,6 +35,7 @@ import {
 } from './wpauth';
 import { loadingUser } from './user';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
+import loadSettings from './loadSettings';
 
 //* I18n
 const i18n = createI18n<[Translation], SupportedLanguages>({
@@ -100,6 +101,8 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
   //* =====
 });
 //* =====
+
+loadSettings();
 
 //* ===== Vue
 const app = createApp(App).use(IonicVue).use(i18n).use(VWave, {}).use(router);

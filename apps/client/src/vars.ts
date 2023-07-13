@@ -6,7 +6,10 @@ export const STORAGE_PREFIX = 'ceebi';
 // TODO Manually type these so it doesn't run the sum each time the file is imported
 export const KEY_ID = STORAGE_PREFIX + 'ID';
 export const KEY_LOCALE = STORAGE_PREFIX + 'Locale';
-export const KEY_NOTIFICATIONS = STORAGE_PREFIX + 'Notifications';
+export const KEY_PUSH_ENABLED = STORAGE_PREFIX + 'PushNotifications';
+export const KEY_EVENTS_NOTIFICATIONS = STORAGE_PREFIX + 'EventNotifications';
+export const KEY_EVENTS_NOTIFICATIONS_TIME =
+  STORAGE_PREFIX + 'EventNotificationsTime';
 export const KEY_DARK_MODE = STORAGE_PREFIX + 'DarkMode';
 export const KEY_WP_TOKEN = STORAGE_PREFIX + 'WPToken';
 export const KEY_TRANSLATE_SCHEDULE = STORAGE_PREFIX + 'TranslateSchedule';

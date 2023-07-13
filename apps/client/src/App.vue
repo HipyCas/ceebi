@@ -27,7 +27,7 @@ import {
   AppUpdateAvailability,
   FlexibleUpdateInstallStatus,
 } from '@capawesome/capacitor-app-update';
-import { KEY_NOTIFICATIONS, KEY_DARK_MODE } from './vars';
+import { KEY_PUSH_ENABLED, KEY_DARK_MODE } from './vars';
 // import { logEvent } from 'firebase/analytics';
 import * as StackTrace from 'stacktrace-js';
 // import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
@@ -84,7 +84,7 @@ if (false && isPlatform('capacitor')) {
         );
       // Save notification
       const { value: notificationsJSON } = await Preferences.get({
-        key: KEY_NOTIFICATIONS,
+        key: KEY_PUSH_ENABLED,
       });
       const notifications: PushNotificationSchema[] = JSON.parse(
         notificationsJSON || ''
@@ -92,7 +92,7 @@ if (false && isPlatform('capacitor')) {
       console.info('PUSH >>>> Saving notification');
       notifications.push(notification);
       Preferences.set({
-        key: KEY_NOTIFICATIONS,
+        key: KEY_PUSH_ENABLED,
         value: JSON.stringify(notifications),
       })
         .catch((e) => console.error('PUSH >>>> Error while saving push: ' + e))

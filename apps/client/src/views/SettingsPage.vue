@@ -32,9 +32,13 @@
           >Inicia sesión para poder registrar tu asistencia y ver notificaciones
           exclusivas para asistentes</IonText
         >
-        <router-link to="/auth/login">
-          <ion-button expand="block" class="mt-2">¡Inicia sesión!</ion-button>
-        </router-link>
+        <ion-button
+          router-link="/auth/login"
+          @click="logNavigation('login')"
+          expand="block"
+          class="mt-2"
+          >¡Inicia sesión!</ion-button
+        >
       </div>
       <!--* INTERFACE *-->
       <ion-card class="first-card">
@@ -127,6 +131,7 @@
             lines="inset"
             href="https://biociencias.es/app"
             :detail="false"
+            @click="logEvent(analytics, 'open_appPage')"
           >
             Preguntas frecuentes y más info
             <IonIcon slot="end" :icon="openOutline"></IonIcon>
@@ -144,7 +149,12 @@
           </ion-item>
         </ion-card-content>
       </ion-card>
-      <ion-button fill="clear" expand="full" @click="router.push('/slides')">
+      <ion-button
+        router-link="/slides"
+        @click="logNavigation('slides')"
+        fill="clear"
+        expand="full"
+      >
         Ver introducción de nuevo
       </ion-button>
     </ion-content>
@@ -178,7 +188,13 @@ import {
 } from 'ionicons/icons';
 import Header from '../components/Header.vue';
 import * as locales from 'locale-codes';
-import { KEY_LOCALE, KEY_DARK_MODE, KEY_TRANSLATE_SCHEDULE } from '../vars';
+import {
+  KEY_LOCALE,
+  KEY_DARK_MODE,
+  KEY_TRANSLATE_SCHEDULE,
+  KEY_EVENTS_NOTIFICATIONS,
+  KEY_EVENTS_NOTIFICATIONS_TIME,
+} from '../vars';
 import { toggleDarkMode } from '../ui';
 import { getDarkMode, isDarkMode, setDarkMode } from '../darkMode';
 import { getUser, loadingUser } from '../user';
@@ -188,10 +204,12 @@ import { getTranslateSchedule } from '../translateSchedule';
 import { logCatchError } from '@code/capacitor-utils';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 import { useI18n } from 'vue-i18n';
+import { analytics } from '../firebase';
+import { logEvent, setUserProperties } from 'firebase/analytics';
+import { useEventReminders } from '../eventReminders';
 
 const router = useIonRouter();
 const { locale } = useI18n({ useScope: 'global' });
-console.info('i18n', locale);
 const logger = useLogger();
 
 const user: Ref<WPUser> = getUser();
@@ -231,13 +249,15 @@ const logout = () => {
     message: 'Sesión cerrada con éxito',
     color: 'success',
   });
-  link('/auth/login');
+  logEvent(analytics, 'logout');
+  router.push('/auth/login');
 };
 
-const link = (to: string) => router.push(to);
+const logNavigation = (to: string) => logEvent(analytics, `navigate_${to}`);
 
 const saveLocale = async (ev: SelectCustomEvent) => {
   try {
+    if (ev.detail.value === 'es') translateSchedule.value = false;
     // logger.trace('settings:saveLocale', `Updating locale to ${locale}`);
     // locale = ev.detail.value;
     logger.info('settings:saveLocale', `Updated locale to ${ev.detail.value}`, {
@@ -305,25 +325,34 @@ watch(darkMode, (val) => {
     key: KEY_DARK_MODE,
     value: val.toString(),
   });
+  setUserProperties(analytics, {
+    darkModeOn: val,
+  });
 }); // TODO Not properly loading or saving value
 
 watch(isDarkMode, (val) => (darkMode.value = val));
 
-// FIXME This looks like not being saved in device, change that
-const eventRemindersOn = ref(false);
-const eventRemindersTime = ref(15);
+const [eventRemindersOn, eventRemindersTime] = useEventReminders();
 
 watch(eventRemindersOn, (value) => {
-  // setUserProperties(analytics, {
-  //   eventRemindersOn: value,
-  // });
+  setUserProperties(analytics, {
+    eventRemindersOn: value,
+  });
+  Preferences.set({
+    key: KEY_EVENTS_NOTIFICATIONS,
+    value: value ? 'true' : 'false',
+  });
 });
 
 // Esto no lo está guardando en preferences, por eso no funcionaba xd
 watch(eventRemindersTime, (value) => {
-  // setUserProperties(analytics, {
-  //   eventRemindersTime: value,
-  // });
+  setUserProperties(analytics, {
+    eventRemindersTime: value,
+  });
+  Preferences.set({
+    key: KEY_EVENTS_NOTIFICATIONS_TIME,
+    value: value.toString(),
+  });
 });
 </script>
 

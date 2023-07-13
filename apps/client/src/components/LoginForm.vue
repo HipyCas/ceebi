@@ -36,6 +36,8 @@
 
 <script setup lang="ts">
 import { IonItem, IonInput, IonButton, IonText } from '@ionic/vue';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../firebase';
 
 defineProps<{
   buttonText: string;
@@ -54,11 +56,13 @@ const emit = defineEmits<{
 const username = ref('');
 const password = ref('');
 
-const login = () =>
+const login = () => {
+  logEvent(analytics, 'login');
   emit('login', {
     username: username.value,
     password: password.value,
   });
+};
 </script>
 
 <style scoped>
