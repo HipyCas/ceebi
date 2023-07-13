@@ -34,6 +34,7 @@ import {
   validateWPToken,
 } from './wpauth';
 import { loadingUser } from './user';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
 //* I18n
 const i18n = createI18n<[Translation], SupportedLanguages>({
@@ -102,6 +103,30 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
 
 //* ===== Vue
 const app = createApp(App).use(IonicVue).use(i18n).use(VWave, {}).use(router);
+
+const logger = useLogger();
+app.config.errorHandler = async (error, instance, info) => {
+  const stacktrace = await StackTrace.fromError(
+    new Error(`ERROR ${error}: ${info}`)
+  );
+  logger.error('vueApp:errorHandler', 'error in vue app', {
+    info,
+    error,
+    instance,
+    stacktrace,
+  });
+  await FirebaseCrashlytics.recordException({
+    message: `Unhandled error ocurred: ${info}`,
+    stacktrace,
+  });
+};
+app.config.warnHandler = (msg, instance, trace) => {
+  logger.warn('vueApp:warnHandler', 'warning in vue app', {
+    msg,
+    instance,
+    trace,
+  });
+};
 
 router.isReady().then(() => {
   app.mount('#app');
