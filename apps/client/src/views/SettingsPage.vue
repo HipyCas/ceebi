@@ -81,7 +81,7 @@
           </ion-item>
         </ion-card-content>
       </ion-card>
-      <!-- Notifications -->
+      <!--** EVENT NOTIFICATIONS **-->
       <ion-card>
         <ion-card-header
           ><ion-card-title>
@@ -89,11 +89,13 @@
           </ion-card-title></ion-card-header
         >
         <ion-card-content>
+          <!--* Toggle Local event notifications *-->
           <ion-item lines="inset" button :detail="false">
             <ion-toggle v-model="eventRemindersOn">{{
               $t('message.settingsEventRemindersToggle')
             }}</ion-toggle>
           </ion-item>
+          <!--* Time before event selection *-->
           <ion-item lines="inset" class="item">
             <ion-select
               v-model="eventRemindersTime"
@@ -114,11 +116,13 @@
           </ion-item>
         </ion-card-content>
       </ion-card>
+      <!--* HELP *-->
       <ion-card>
         <ion-card-header
           ><ion-card-title> Ayuda </ion-card-title></ion-card-header
         >
         <ion-card-content>
+          <!--* Link to web *-->
           <ion-item
             lines="inset"
             href="https://biociencias.es/app"
@@ -127,6 +131,7 @@
             Preguntas frecuentes y más info
             <IonIcon slot="end" :icon="openOutline"></IonIcon>
           </ion-item>
+          <!--* Share logs *-->
           <ion-item
             @click="preshareLogs()"
             lines="inset"
