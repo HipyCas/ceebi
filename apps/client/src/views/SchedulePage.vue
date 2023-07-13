@@ -287,7 +287,7 @@ if (isPlatform('capacitor')) {
 function segmentChanged(event: CustomEvent): void {
   console.log('Segment changed: ', event);
   console.info(day);
-  swiper.value.slideTo(day.value - 2, 300);
+  swiper.value.slideTo(Number.parseInt(day.value) - 2, 300);
 }
 
 const swiperModules = [IonicSlides];
