@@ -36,7 +36,7 @@
           <ion-button expand="block" class="mt-2">¡Inicia sesión!</ion-button>
         </router-link>
       </div>
-      <!-- Interface -->
+      <!--* INTERFACE *-->
       <ion-card class="first-card">
         <ion-card-header
           ><ion-card-title>
@@ -44,16 +44,12 @@
           </ion-card-title></ion-card-header
         >
         <ion-card-content>
+          <!--* Locale *-->
           <ion-item lines="inset">
             <ion-select
               v-model="$i18n.locale"
               interface="popover"
               :label="$t('message.localeSelection')"
-              :_value="
-                $i18n.locale && $i18n.availableLocales.includes($i18n.locale)
-                  ? $i18n.locale
-                  : $i18n.fallbackLocale
-              "
               @ion-change="saveLocale($event)"
             >
               <ion-select-option
@@ -66,6 +62,7 @@
               >
             </ion-select>
           </ion-item>
+          <!--* Translate schedule *-->
           <ion-item
             lines="inset"
             button
@@ -76,13 +73,12 @@
               >Traducir horario</ion-toggle
             >
           </ion-item>
-          <div>
-            <ion-item lines="inset" button :detail="false">
-              <ion-toggle v-model="darkMode">{{
-                $t('message.darkMode')
-              }}</ion-toggle>
-            </ion-item>
-          </div>
+          <!--* Dark Mode *-->
+          <ion-item lines="inset" button :detail="false">
+            <ion-toggle v-model="darkMode">{{
+              $t('message.darkMode')
+            }}</ion-toggle>
+          </ion-item>
         </ion-card-content>
       </ion-card>
       <!-- Notifications -->
@@ -170,9 +166,13 @@ import {
   IonAvatar,
   alertController,
 } from '@ionic/vue';
-import { openOutline, paperPlaneOutline } from 'ionicons/icons';
+import {
+  alertCircleOutline,
+  openOutline,
+  paperPlaneOutline,
+} from 'ionicons/icons';
 import Header from '../components/Header.vue';
-import * as locale from 'locale-codes';
+import * as locales from 'locale-codes';
 import { KEY_LOCALE, KEY_DARK_MODE, KEY_TRANSLATE_SCHEDULE } from '../vars';
 import { toggleDarkMode } from '../ui';
 import { getDarkMode, isDarkMode, setDarkMode } from '../darkMode';
@@ -182,9 +182,11 @@ import { shareLogs, PlainLoading } from '@code/ceebi-ui';
 import { getTranslateSchedule } from '../translateSchedule';
 import { logCatchError } from '@code/capacitor-utils';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
+import { useI18n } from 'vue-i18n';
 
 const router = useIonRouter();
-const i18n = useI18n();
+const { locale } = useI18n({ useScope: 'global' });
+console.info('i18n', locale);
 const logger = useLogger();
 
 const user: Ref<WPUser> = getUser();
@@ -229,19 +231,34 @@ const logout = () => {
 
 const link = (to: string) => router.push(to);
 
-const saveLocale = (ev: SelectCustomEvent) => {
+const saveLocale = async (ev: SelectCustomEvent) => {
   try {
-    i18n.locale = ev.detail.value;
+    // logger.trace('settings:saveLocale', `Updating locale to ${locale}`);
+    // locale = ev.detail.value;
+    logger.info('settings:saveLocale', `Updated locale to ${ev.detail.value}`, {
+      key: KEY_LOCALE,
+      event: ev,
+      locale,
+    });
+    await Preferences.set({
+      key: KEY_LOCALE,
+      value: ev.detail.value,
+    });
   } catch (e) {
+    useToast({
+      message: 'Error al guardar el idioma',
+      color: 'danger',
+      icon: alertCircleOutline,
+    });
     logger.error(
       'settings:saveLocale',
-      `error when updating locale to ${ev.detail.value} from ${i18n.locale.value}`,
-      { error: e, event: ev, i18n }
+      `error when updating locale to ${ev.detail.value} from ${locale.value}`,
+      { error: e, event: ev, locale }
     );
     FirebaseCrashlytics.setContext({
       key: 'i18n.locale',
       type: 'string',
-      value: i18n.locale.value,
+      value: typeof locale.value === 'string' ? locale.value : 'ERROR',
     });
     FirebaseCrashlytics.setContext({
       key: 'eventValue',
@@ -251,23 +268,14 @@ const saveLocale = (ev: SelectCustomEvent) => {
     logCatchError(
       logger,
       'settings:saveLocale',
-      `error when updating locale to ${ev.detail.value} from ${i18n.locale.value}`,
+      `error when updating locale to ${ev.detail.value} from ${locale.value}`,
       e,
       false
     );
   }
-  logger.info('settings:saveLocale', `Updated locale to ${ev.detail.value}`, {
-    key: KEY_LOCALE,
-    event: ev,
-    i18n,
-  });
-  Preferences.set({
-    key: KEY_LOCALE,
-    value: i18n.locale.value,
-  });
 };
 
-const getLocaleName = (tag: string): string => locale.getByTag(tag).name;
+const getLocaleName = (tag: string): string => locales.getByTag(tag).name;
 
 const translateSchedule = getTranslateSchedule();
 

@@ -24,7 +24,7 @@ import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { createI18n } from 'vue-i18n';
 import * as locale from 'locale-codes';
-import messages, { SupportedLanguages } from './translations';
+import { default as messages, SupportedLanguages } from './translations';
 import type { Translation } from './translations';
 import { KEY_LOCALE, KEY_WP_TOKEN } from './vars';
 import {
@@ -38,29 +38,29 @@ import { loadingUser } from './user';
 //* I18n
 const i18n = createI18n<[Translation], SupportedLanguages>({
   locale: 'en',
-  fallbackLocale: 'en',
+  fallbackLocale: 'es',
   messages,
   legacy: false,
+  globalInjection: true,
 });
 Preferences.keys().then(({ keys }: { keys: string[] }) => {
   if (!keys.includes(KEY_LOCALE))
     Device.getLanguageCode().then(({ value }: { value: string }) => {
-      i18n.global.locale =
+      // @ts-expect-error After a couple tries this is what works, even though the types are messed up
+      i18n.global.locale.value =
         (locale.getByTag(value.toLowerCase()) ?? { 'iso639-1': 'en' })[
           'iso639-1'
         ] ?? 'en';
-      console.log(
-        'device locale: ',
-        value,
-        '. Set locale: ',
-        i18n.global.locale
-      );
     });
-  else
+  else {
+    console.info('LOAD > locale is saved so loading from preferences');
     Preferences.get({ key: KEY_LOCALE }).then(
-      ({ value }: { value: string | null }) =>
-        (i18n.global.locale = value ?? 'en') // The saved value will always be a valid locale code
+      ({ value }: { value: string | null }) => {
+        // @ts-expect-error After a couple tries this is what works, even though the types are messed up
+        i18n.global.locale.value = value ?? 'en'; // The saved value will always be a valid locale code
+      }
     );
+  }
 
   // TODO Make some loading ref so app can show loading while not finished the login checks
   // TODO Move this to App.vue and show alert that Sesión caducó and suggest log in
