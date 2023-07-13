@@ -185,3 +185,5 @@ console.log('decrypt', decrypted.toString(CryptoJS.enc.Latin1), 'base64', decryp
 //   );
 //   console.info('decrypted', decrypted);
 ```
+
+TODO Migrate to [fluent-vue](https://fluent-vue.demivan.me) smaller and surely works better xd
