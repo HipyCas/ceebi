@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Gradient to attendance progress
 - Certificate download from the attendance Modal
 - Re-added many analytics stuff
+- Overwritten Vue app error and warn handler to use logger and Crashlytics
 
 ### Fixed
 
@@ -21,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - (ios) Sharing logs item button now renders without the arrow
 - Updated used plugins to match changes and solve breaks
 - Sliding through schedule now updates top segments
+- Selected language is properly saved to permanent preferences
 
 ### Changed
 
@@ -29,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Clean up lots of code
 - Removed unused dependencies and optimized other
 - Moved translate function declaration in schedule
+- Improved error logging on overwritten error and warning handlers
 
 ## [2.0.0-rc.2] - 2023/07/01
 

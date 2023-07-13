@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Removed unused dependencies and optimized other
+- Improved error logging on overwritten error and warning handlers
 
 ## [2.0.0-rc.4]
 
