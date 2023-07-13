@@ -122,12 +122,13 @@ const setSwiperInstance = (_swiper: any) => {
   _swiper.slideTo(today() - 2, 300);
 };
 
-const day = ref(today());
+const day = ref(today().toString());
 
 function daySwiped() {
-  console.info(swiper.value.activeIndex);
-  day.value = swiper.value.activeIndex + 2;
+  day.value = (swiper.value.activeIndex + 2).toString();
 }
+
+watch(day, (val) => console.info('day changed', val));
 
 logger.trace('schedule:setup', 'setup events');
 // // Get thursday events
@@ -146,6 +147,18 @@ const thursdayLoading = ref(true);
 const fridayEvents = ref([] as Event[]);
 const fridayLoading = ref(true);
 
+const translate = async (text: string) => {
+  return (
+    await Translation.translate({
+      text,
+      sourceLanguage: Language.Spanish,
+      targetLanguage: (Language as Record<string, string>)[
+        locales.getByTag(locale.toString()).name
+      ] as Language,
+    })
+  ).text;
+};
+
 const loadEvents = async () => {
   logger.trace('schedule:loadEvents', 'load MEC');
   const mec = await MEC.init(
@@ -156,18 +169,6 @@ const loadEvents = async () => {
     localeStr: locale.toString(),
     // localeJSON: JSON.stringify(locale),
   });
-
-  const translate = async (text: string) => {
-    return (
-      await Translation.translate({
-        text,
-        sourceLanguage: Language.Spanish,
-        targetLanguage: (Language as Record<string, string>)[
-          locales.getByTag(locale.toString()).name
-        ] as Language,
-      })
-    ).text;
-  };
 
   const shouldTranslate =
     locale.toString() !== 'es' &&

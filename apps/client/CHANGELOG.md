@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Include all JS Sourcemap to make error debugging in Crashlytics easier
 - Gradient to attendance progress
+- Certificate download from the attendance Modal
+- Re-added many analytics stuff
 
 ### Fixed
 
@@ -18,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Titles in slides and login page are now properly styled
 - (ios) Sharing logs item button now renders without the arrow
 - Updated used plugins to match changes and solve breaks
+- Sliding through schedule now updates top segments
 
 ### Changed
 
@@ -25,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added `expand="inset"` to the `IonAccordionGroup` in the event details to make it rounded and better looking, also removed the lines in the items inside for each speaker
 - Clean up lots of code
 - Removed unused dependencies and optimized other
+- Moved translate function declaration in schedule
 
 ## [2.0.0-rc.2] - 2023/07/01
 

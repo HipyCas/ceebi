@@ -44,13 +44,14 @@
         </span>
       </div>
       <div class="grid place-items-center py-2">
-        <IonButton
-          :size="hoursDone >= 25 * 0.8 ? 'large' : undefined"
-          :disabled="!(hoursDone >= 25 * 0.8)"
-          :color="hoursDone >= 25 * 0.8 ? 'success' : 'medium'"
-          @click.capture="downloadCerts"
-          >Download Certificates</IonButton
-        >
+        <div @click="downloadCerts">
+          <IonButton
+            :size="canDownloadCertificates ? 'large' : undefined"
+            :disabled="!canDownloadCertificates"
+            :color="canDownloadCertificates ? 'success' : 'medium'"
+            >Download Certificates</IonButton
+          >
+        </div>
       </div>
       <ion-list>
         <ion-list-header class="text-lg underline">
@@ -111,12 +112,14 @@ import {
   closeOutline,
   alertCircleOutline,
   schoolOutline,
+  hourglassOutline,
 } from 'ionicons/icons';
 import { PlainLoading } from '@code/ceebi-ui';
 import type { WPUser } from '@code/wp-types';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 import { CapacitorHttp } from '@capacitor/core';
-import { logCatchError } from '@code/capacitor-utils';
+import { logCatchError, logPostgrestError } from '@code/capacitor-utils';
+import isAfter from 'date-fns/isAfter';
 
 const supabase = useSupabase();
 const logger = useLogger();
@@ -156,11 +159,20 @@ const hoursDone = computed(
       .reduce((prev, curr) => (prev ?? 0) + (curr ?? 0), 0) as number
 );
 
+const canDownloadCertificates = computed(
+  () =>
+    isAfter(new Date(), new Date(2023, 6, 21, 19, 35)) &&
+    (hoursDone.value >= 25 * 0.8 ||
+      user.value.acf.has_poster ||
+      microcursosDone.value.length > 0)
+);
+
 const main = async () => {
   const { data, error } = await supabase
     .from('attendance')
     .select('*')
     .eq('attendant_id', user.value.acf.id_base_de_datos_app);
+
   if (!error && data) {
     items.value = data?.map((att) => ({
       time: parseISO(att.date || ''),
@@ -191,10 +203,11 @@ const main = async () => {
       });
     }
   } else {
-    logger.error(
+    logPostgrestError(
       'attendance:main',
       'error when loading attendance data from supabase',
-      { data, error }
+      data,
+      error
     );
   }
 };
@@ -311,20 +324,27 @@ const certButtons = () => {
 };
 
 const downloadCerts = () => {
-  actionSheetController
-    .create({
-      header: 'Seleccionar certificado',
-      subHeader: 'Elige el certificado que deseas descargar',
-      buttons: [
-        ...certButtons(),
-        {
-          text: 'Cancelar',
-          icon: closeOutline,
-          cssClass: 'cancel-button',
-        },
-      ],
-    })
-    .then((sheet) => sheet.present());
+  if (!canDownloadCertificates.value)
+    useToast({
+      message: 'Disponible al terminar el evento',
+      icon: hourglassOutline,
+      cssClass: undefined,
+    });
+  else
+    actionSheetController
+      .create({
+        header: 'Seleccionar certificado',
+        subHeader: 'Elige el certificado que deseas descargar',
+        buttons: [
+          ...certButtons(),
+          {
+            text: 'Cancelar',
+            icon: closeOutline,
+            cssClass: 'cancel-button',
+          },
+        ],
+      })
+      .then((sheet) => sheet.present());
 };
 </script>
 
