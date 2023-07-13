@@ -10,17 +10,10 @@
         <ion-button v-else-if="user" class="asistencia" @click="openJesus">{{
           $t('message.viewAttendance')
         }}</ion-button>
-        <template v-else>
-          <img :src="AccessSVG" class="w-7/12 mb-6" />
-          <ion-label class="w-9/12 text-center"
-            >Inicia sesión para poder registrar la asistencia</ion-label
-          >
-          <router-link to="/auth/login">
-            <ion-button class="ion-margin-top" router-link="/id-change"
-              >Inicia sesión</ion-button
-            >
-          </router-link>
-        </template>
+        <LoginRequired
+          v-else
+          reason="registrar y ver tu asistencia"
+        ></LoginRequired>
         <!-- TODO Comprobar letra DNI con el algoritmo de comprobación: dni_del_numero / 23 -> tomas resto -->
       </div>
     </ion-content>
@@ -31,20 +24,19 @@
 import {
   IonPage,
   IonContent,
-  IonLabel,
   IonButton,
   modalController,
   onIonViewWillEnter,
   onIonViewWillLeave,
   onIonViewDidEnter,
 } from '@ionic/vue';
-import AccessSVG from '../../public/assets/undraw_access_account_re_8spm.svg';
 import Header from '../components/Header.vue';
 import AttendanceModal from '../components/AttendanceModal.vue';
 import QRCode from 'qrcode';
 import { getUser, loadingUser } from '../user';
 import { PlainLoading } from '@code/ceebi-ui';
 import { watchOnce } from '@vueuse/core';
+import LoginRequired from '../components/LoginRequired.vue';
 
 const logger = useLogger();
 

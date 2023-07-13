@@ -30,6 +30,8 @@ https://github.com/robingenz/capacitor-plugin-demo
 
 ## TODO
 
+https://scribe.rip/ionic-capacitor-from-app-to-ios-ipa-without-a-mac-9b8616900528
+
 Update inputs to new format
 https://github.com/validatorjs/validator.js
 https://github.com/capawesome-team/capacitor-plugins/tree/main/packages/datetime-picker
@@ -119,3 +121,67 @@ TODO https://www.npmjs.com/package/responsive-images-generator
 TODO Mostrar ciertas notificaciones sólo a usuarios con sesión iniciada
 
 https://github.com/feat-agency/vite-plugin-webfont-dl
+
+TODO On every icon button, when holding show a toast or tooltip with description of what the icon is
+
+TODO Make aria labels and all that to make it more accessible
+
+#### My attempts at encryption
+
+```ts
+const byteArrayToWordArray = (ba) => {
+  const wa: number[] = [];
+  let i: number;
+  for (i = 0; i < ba.length; i++) {
+    wa[(i / 4) | 0] |= ba[i] << (24 - 8 * i);
+  }
+
+  return CryptoJS.lib.WordArray.create(wa, ba.length);
+};
+// TODO Share cert
+console.log('attendance/' + user.value.acf.id_base_de_datos_app + '.pdf.pem');
+console.log(await supabase.storage.from('certificates').list());
+console.log(await supabase.storage.from('certificates').list('attendance'));
+console.log(JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY), CryptoJS.lib.WordArray.create(JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY)), byteArrayToWordArray(JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY)));
+
+const arrayToString = (arr) => arr.reduce((str, code) => str + String.fromCharCode(code), '');
+const original = new Uint8Array(await buf.arrayBuffer());
+const originalString = arrayToString(original);
+console.log('original', original, originalString);
+const decrypted = CryptoJS.AES.decrypt(originalString, byteArrayToWordArray(JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY)), {
+  mode: CryptoJS.mode.ECB,
+  padding: CryptoJS.pad.Pkcs7,
+  iv: CryptoJS.enc.Utf8.parse(''),
+  keySize: 32,
+});
+console.log('decrypt', decrypted.toString(CryptoJS.enc.Latin1), 'base64', decrypted.toString(CryptoJS.enc.Base64), 'latin1 -> base64', encode(decrypted.toString(CryptoJS.enc.Latin1)));
+// console.log('buf', '' + data, buf, encode(buf));
+// const dechiper = CryptoJS.AES.decrypt(
+//   CryptoJS.lib.CipherParams.create({
+//     ciphertext: CryptoJS.enc.Base64.parse(buf),
+//   }),
+//   byteArrayToWordArray(
+//     JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY)
+//   ),
+//   {
+//     mode: CryptoJS.mode.ECB,
+//     padding: CryptoJS.pad.Pkcs7,
+//     iv: CryptoJS.enc.Utf8.parse(''),
+//     keySize: 32,
+//   }
+// ); // FIXME continue here
+// console.log(
+//   '>> decrytpted',
+//   dechiper.toString(CryptoJS.enc.Base64)
+// );
+// const reader = new FileReader();
+// reader.onload = async () => {
+//   console.log('res', reader.result);
+//   const decrypted = CryptoJS.AES.decrypt(
+//     reader.result as string,
+//     byteArrayToWordArray(
+//       JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY)
+//     )
+//   );
+//   console.info('decrypted', decrypted);
+```

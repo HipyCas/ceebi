@@ -58,30 +58,14 @@ import {
   IonIcon,
   modalController,
 } from '@ionic/vue';
-import * as ionicons from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
+import type { NotificationContents } from '../';
+import { logEvent } from 'firebase/analytics';
+import type { Analytics } from 'firebase/analytics';
 
-defineProps<{
-  // id: string;
-  // title: string;
-  // body: string;
-  // date: Date;
-  // buttons?: ButtonSettings[];
-  notification: {
-    id: number;
-    title: string;
-    shortname?: string;
-    body: string;
-    schedule: Date;
-    ionIcon: string;
-    buttons: Array<{
-      icon: string;
-      text: string;
-      shortname?: string;
-      ionIcon: string;
-      link: string;
-    }>;
-  };
+const props = defineProps<{
+  notification: NotificationContents;
+  analytics?: Analytics;
 }>();
 
 const $t = (msg: string) => 'Cerrar';
@@ -91,8 +75,11 @@ const dismissModal = () => {
 };
 
 const open = (url: string, buttonId?: string) => {
-  // if (buttonId !== undefined)
-  // logEvent(analytics, `notification_${props.id}_${buttonId}`);
+  if (buttonId !== undefined && props.analytics)
+    logEvent(
+      props.analytics,
+      `notification_${props.notification.shortname || '_'}_${buttonId}`
+    );
   Browser.open({ url });
 };
 </script>

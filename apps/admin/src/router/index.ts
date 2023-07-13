@@ -24,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/AttendancePage.vue'),
       },
       {
-        path: 'attendance/:id',
+        path: 'attendance/:id/:name',
         component: () => import('../views/AttendanceDetailsPage.vue'),
       },
       {
@@ -68,6 +68,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/dev/notifications-import',
     component: () => import('../views/dev/NotificationsImport.vue'),
+  },
+  {
+    path: '/dev/generate-folders',
+    component: () => import('../views/dev/GenerateFolders.vue'),
   },
   {
     name: 'scan',

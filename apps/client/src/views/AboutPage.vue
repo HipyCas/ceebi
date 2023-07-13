@@ -212,6 +212,8 @@ import parseISO from 'date-fns/parseISO';
 import formatISO from 'date-fns/formatISO';
 import { CapacitorHttp } from '@capacitor/core';
 
+import { logCatchError } from '@code/capacitor-utils';
+
 // const modMecenas: Mecenas = {
 //   colaborador: [],
 //   bronce: [],
@@ -334,6 +336,13 @@ const parsed = ref([] as Mecena[]);
         'ceebi-mecenas-cache/__cap_cache_data.json',
         { error: e, lastFetchDate, cacheExists, dirExisted }
       );
+      logCatchError(
+        logger,
+        'about:mainAsync',
+        'error when loading cache data from ceebi-mecenas-cache/__cap_cache_data.json',
+        e,
+        false
+      );
       lastFetchDate = undefined;
       cacheExists = false;
     }
@@ -411,6 +420,13 @@ function saveToCache(
           error,
         }
       );
+      logCatchError(
+        logger,
+        'about:saveToCache',
+        'error fetching mecena img',
+        error,
+        false
+      );
       return;
     }
     let imageBlob: string;
@@ -425,6 +441,13 @@ function saveToCache(
         {
           error,
         }
+      );
+      logCatchError(
+        logger,
+        'about:saveToCache',
+        'error getting blob of image for',
+        error,
+        false
       );
       return;
     }
@@ -475,6 +498,13 @@ function saveToCache(
         {
           error,
         }
+      );
+      logCatchError(
+        logger,
+        'about:saveToCache',
+        'error when saving mecena',
+        error,
+        false
       );
     }
   });

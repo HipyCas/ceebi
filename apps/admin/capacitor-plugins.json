@@ -2,6 +2,7 @@
   "capacitor-native-biometric",
   "capacitor-native-settings",
   "@capacitor/app",
+  "@capacitor/browser",
   "@capacitor/toast",
   "@capacitor/haptics",
   "@capacitor/preferences",

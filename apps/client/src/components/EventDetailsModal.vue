@@ -37,8 +37,9 @@
       <ion-text v-html="event.contentHTML"></ion-text>
 
       <ion-accordion-group
-        class="ion-margin-top"
+        class="ion-margin-top !mx-0"
         v-if="event.speakers.length > 0"
+        expand="inset"
       >
         <ion-accordion value="colors">
           <ion-item slot="header">
@@ -46,7 +47,11 @@
             <ion-label>{{ $t('message.eventSpeakers') }}</ion-label>
           </ion-item>
           <ion-list slot="content">
-            <ion-item v-for="speaker in event.speakers" :key="speaker.id">
+            <ion-item
+              v-for="speaker in event.speakers"
+              :key="speaker.id"
+              lines="none"
+            >
               <ion-avatar slot="start">
                 <img :src="speaker.thumbnail" alt="" />
               </ion-avatar>

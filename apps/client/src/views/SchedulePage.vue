@@ -89,18 +89,17 @@ import { useI18n } from 'vue-i18n';
 import { Translation, Language } from '@capacitor-mlkit/translation';
 import * as locales from 'locale-codes';
 import { MEC } from '@code/mec-ts';
-import { debug } from '../util';
 import { getTranslateSchedule } from '../translateSchedule';
 
 import { Event } from '@code/mec-ts';
-// import { extractContent } from '../util';
 
 const { locale } = useI18n();
-let currentLanguage;
+let currentLanguage: string;
+
+const logger = useLogger();
 
 const translateSchedule = getTranslateSchedule();
 
-console.info('[SCHEDULE] have locale', locale.value, ', getting dates');
 const _today = new Date().getTime();
 const _first = new Date(2023, 6, 18).getTime();
 const _lastPlus = new Date(2023, 6, 22).getTime();
@@ -112,10 +111,13 @@ function today(): number {
     : day;
 }
 
-console.info('[SCHEDULE] configure swiper');
 const swiper = ref();
 const setSwiperInstance = (_swiper: any) => {
-  console.info('setting swipper instance', _swiper);
+  logger.info(
+    'schedule:setSwiperInstance',
+    'setting swipper instance',
+    _swiper
+  );
   swiper.value = _swiper;
   _swiper.slideTo(today() - 2, 300);
 };
@@ -127,7 +129,7 @@ function daySwiped() {
   day.value = swiper.value.activeIndex + 2;
 }
 
-console.info('[SCHEDULE] setup events');
+logger.trace('schedule:setup', 'setup events');
 // // Get thursday events
 const tuesdayEvents = ref([] as Event[]);
 const tuesdayLoading = ref(true);
@@ -144,18 +146,16 @@ const thursdayLoading = ref(true);
 const fridayEvents = ref([] as Event[]);
 const fridayLoading = ref(true);
 
-console.info('[EVENTS TRANSLATE] declaring event load func');
 const loadEvents = async () => {
-  console.info('[EVENTS TRANSLATE] load MEC');
+  logger.trace('schedule:loadEvents', 'load MEC');
   const mec = await MEC.init(
     'https://biociencias.es/wp-json/mecexternal/v1/calendar/5518'
   );
 
-  console.info(
-    '[EVENTS TRANSLATE] locale',
-    locale.toString(),
-    JSON.stringify(locale)
-  );
+  logger.trace('schedule:loadEvents', {
+    localeStr: locale.toString(),
+    // localeJSON: JSON.stringify(locale),
+  });
 
   const translate = async (text: string) => {
     return (
@@ -168,10 +168,6 @@ const loadEvents = async () => {
       })
     ).text;
   };
-  // if (locale.toString() !== 'es' && isPlatform('capacitor')) {
-  //   console.info('[EVENTS TRANSLATE] locale is not "es"');
-  //   await mec.translate()
-  // }
 
   const shouldTranslate =
     locale.toString() !== 'es' &&
@@ -239,8 +235,8 @@ Network.addListener('networkStatusChange', (status) => {
   }
 });
 
-console.info('Schedule:92 > Setting up schedule');
 if (isPlatform('capacitor')) {
+  console.trace('schedule:setup', 'creating localNotifications channel');
   LocalNotifications.createChannel({
     id: 'testchannel',
     name: 'Event reminders',
@@ -276,9 +272,10 @@ if (isPlatform('capacitor')) {
               value: 'true;true',
             });
           } else {
-            console.log(
-              'Schedule:128 > Notifications set, take a look: ',
-              JSON.stringify(LocalNotifications.getPending(), undefined, '  ')
+            logger.trace(
+              'schedule:setNotifications',
+              'Notifications set, take a look: ',
+              LocalNotifications.getPending()
             );
           }
         });
@@ -295,6 +292,7 @@ function segmentChanged(event: CustomEvent): void {
 const swiperModules = [IonicSlides];
 
 onIonViewWillEnter(() => {
+  // TODO Check also preference for translating schedule
   if (
     locale.toString() !== 'es' &&
     isPlatform('capacitor') &&

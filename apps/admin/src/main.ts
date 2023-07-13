@@ -35,7 +35,7 @@ const app = createApp(App).use(IonicVue).use(router);
 const logger = useLogger();
 app.config.errorHandler = async (error, instance, info) => {
   const stacktrace = await StackTrace.fromError(
-    new Error(`ERROR ${error} in instance ${instance}: ${info}`)
+    new Error(`ERROR ${error}: ${info}`)
   );
   logger.error('vueApp:errorHandler', 'error in vue app', {
     info,

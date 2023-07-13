@@ -48,18 +48,18 @@
         <IonLabel color="medium">{{ user?.wp.name }}</IonLabel>
       </ion-item>
       <router-link to="/p/settings" @click="popoverOpen = false">
-        <IonItem button>
+        <IonItem button lines="none">
           <ion-icon :icon="settingsOutline" slot="start"></ion-icon>
           <IonLabel>Ajustes</IonLabel>
         </IonItem>
       </router-link>
       <router-link to="/p/settings" @click="popoverOpen = false">
-        <IonItem button>
+        <IonItem button lines="none">
           <ion-icon :icon="informationCircleOutline" slot="start"></ion-icon>
           <IonLabel>Info y ayuda</IonLabel>
         </IonItem>
       </router-link>
-      <IonItem @click="logout" button>
+      <IonItem @click="logout" button lines="none">
         <ion-icon :icon="logOutOutline" slot="start"></ion-icon>
         <IonLabel>Cerrar sesión</IonLabel>
       </IonItem>
@@ -113,9 +113,9 @@ const openPopover = (ev: any) => {
 };
 
 const logout = () => {
+  popoverOpen.value = false;
   clearUser();
   clearWPToken();
-  popoverOpen.value = false;
   router.push('/auth');
 };
 </script>

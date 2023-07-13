@@ -13,7 +13,15 @@ a {
   color: var(--color-primary);
 }
 
+ul,
+ol {
+  list-style-position: inside;
+}
+
 ul {
   list-style-type: disc;
-  list-style-position: inside;
+}
+
+ol {
+  list-style-type: decimal;
 }

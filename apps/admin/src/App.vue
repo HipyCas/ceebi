@@ -7,6 +7,7 @@
 <script lang="ts" setup>
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
+import * as StackTrace from 'stacktrace-js';
 
 const logger = useLogger();
 

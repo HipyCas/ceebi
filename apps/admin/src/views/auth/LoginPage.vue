@@ -23,8 +23,8 @@
               type="password"
               label="Contraseña"
               label-placement="floating"
-              autocomplete="current-password"
-              aria-describedby="password-constraints"
+              _autocomplete="current-password"
+              _aria-describedby="password-constraints"
               required
             ></ion-input>
           </ion-item>
@@ -35,7 +35,6 @@
             type="submit"
             >Acceder</ion-button
           >
-          <!-- TODO Add button to login with biometrics -->
           <ion-button
             @click="verifyWithBiometrics"
             fill="clear"
@@ -326,14 +325,15 @@ async function login() {
         : route.query.next + '?back=/p/notifications'
     );
   } catch (error) {
-    loginTrace.stop();
     loginTrace.putAttribute('is_error', 'true');
     loginTrace.putAttribute(
       'error',
       (error as { toString: () => string }).toString()
     );
-    console.log(
-      'error stuff',
+    loginTrace.stop();
+    logger.error(
+      'login:login',
+      'error when logging in',
       (error as HTTPError).response.json(),
       JSON.stringify((error as HTTPError).response.json())
     );

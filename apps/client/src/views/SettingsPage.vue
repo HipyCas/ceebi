@@ -131,7 +131,13 @@
             Preguntas frecuentes y más info
             <IonIcon slot="end" :icon="openOutline"></IonIcon>
           </ion-item>
-          <ion-item @click="preshareLogs()" lines="inset" button class="item">
+          <ion-item
+            @click="preshareLogs()"
+            lines="inset"
+            :detail="false"
+            button
+            class="item"
+          >
             Compartir registro de errores
             <IonIcon slot="end" :icon="paperPlaneOutline"></IonIcon>
           </ion-item>
@@ -174,6 +180,8 @@ import { getUser, loadingUser } from '../user';
 import { clearWPToken } from '../wpauth';
 import { shareLogs, PlainLoading } from '@code/ceebi-ui';
 import { getTranslateSchedule } from '../translateSchedule';
+import { logCatchError } from '@code/capacitor-utils';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
 const router = useIonRouter();
 const i18n = useI18n();
@@ -188,16 +196,22 @@ const preshareLogs = async () => {
       'Comparte este archivo con los desarrolladores de la aplicación via correo a app@biociencias.es o por Telegram a @HipyCas para que se revisen y se intenten arreglar los problemas que hayan surgido',
     buttons: [
       {
-        text: 'cancelar',
+        text: 'Cancelar',
         role: 'cancel',
       },
       {
-        text: 'enviar',
-        handler: () =>
+        text: 'Enviar',
+        handler: () => {
           shareLogs(logger, 'ceebiclient', {
             dialogTitle: 'Comparte este archivo con la organización',
             title: 'Logs aplicación CEEBI',
-          }),
+          }).catch((e) =>
+            useToast({
+              message: 'error when sharing notifications:' + e,
+              color: 'danger',
+            })
+          );
+        },
       },
     ],
   });
@@ -223,6 +237,23 @@ const saveLocale = (ev: SelectCustomEvent) => {
       'settings:saveLocale',
       `error when updating locale to ${ev.detail.value} from ${i18n.locale.value}`,
       { error: e, event: ev, i18n }
+    );
+    FirebaseCrashlytics.setContext({
+      key: 'i18n.locale',
+      type: 'string',
+      value: i18n.locale.value,
+    });
+    FirebaseCrashlytics.setContext({
+      key: 'eventValue',
+      type: 'string',
+      value: ev.detail.value,
+    });
+    logCatchError(
+      logger,
+      'settings:saveLocale',
+      `error when updating locale to ${ev.detail.value} from ${i18n.locale.value}`,
+      e,
+      false
     );
   }
   logger.info('settings:saveLocale', `Updated locale to ${ev.detail.value}`, {

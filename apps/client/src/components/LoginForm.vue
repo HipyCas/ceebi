@@ -1,22 +1,22 @@
 <template>
-  <ion-item style="margin-top: 1.5rem" class="input-item">
-    <ion-input
-      fill="outline"
-      label="Correo electrónico"
-      label-placement="floating"
-      type="email"
-      v-model="username"
-    ></ion-input>
-  </ion-item>
-  <ion-item style="margin-top: 0.5rem" class="input-item">
-    <ion-input
-      fill="outline"
-      label="Contraseña"
-      label-placement="floating"
-      type="password"
-      v-model="password"
-    ></ion-input>
-  </ion-item>
+  <ion-input
+    class="input-item"
+    style="margin-top: 1.5rem"
+    fill="outline"
+    label="Correo electrónico"
+    label-placement="floating"
+    type="email"
+    v-model="username"
+  ></ion-input>
+  <ion-input
+    class="input-item"
+    style="margin-top: 0.5rem"
+    fill="outline"
+    label="Contraseña"
+    label-placement="floating"
+    type="password"
+    v-model="password"
+  ></ion-input>
 
   <ion-button color="primary" style="margin-top: 1.5rem" @click="login">
     {{ buttonText }} </ion-button
@@ -81,7 +81,7 @@ body.dark .notice {
 }
 
 .input-item {
-  --background: var(--ion-background-color);
+  /* --background: var(--ion-background-color); */
   width: 60%;
 }
 </style>

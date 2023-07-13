@@ -3,7 +3,10 @@ import type { ToastOptions } from '@ionic/vue';
 import { Haptics } from '@capacitor/haptics';
 import { ImpactStyle } from '@capacitor/haptics';
 
-export const useToast = async (options: ToastOptions) => {
+export const useToast = async (
+  options: ToastOptions,
+  impactStyle?: ImpactStyle
+) => {
   const toast = await toastController.create({
     duration: 2000,
     cssClass: 'ceebi-toast',
@@ -11,7 +14,7 @@ export const useToast = async (options: ToastOptions) => {
     ...options,
   });
   Haptics.impact({
-    style: ImpactStyle.Light,
+    style: impactStyle ?? ImpactStyle.Light,
   });
   toast.present();
   return toast;

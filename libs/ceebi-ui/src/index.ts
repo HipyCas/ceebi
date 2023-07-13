@@ -6,6 +6,8 @@ import type { Logger } from '@code/logger';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import type { ShareOptions } from '@capacitor/share';
+import type { Analytics } from 'firebase/analytics';
+import { stringify } from 'flatted';
 
 export default {
   install(vue: App) {
@@ -16,7 +18,26 @@ export default {
   },
 };
 
-export const showNotification = async (notification: any) => {
+export type NotificationContents = {
+  id: number;
+  title: string;
+  shortname?: string;
+  body: string;
+  schedule: Date;
+  ionIcon: string;
+  buttons: Array<{
+    icon: string;
+    text: string;
+    shortname?: string;
+    ionIcon: string;
+    link: string;
+  }>;
+};
+
+export const showNotification = async (
+  notification: NotificationContents,
+  analytics?: Analytics
+) => {
   // TODO Error handling
   // const { data } = await supabase
   //   .from('notifications')
@@ -29,6 +50,7 @@ export const showNotification = async (notification: any) => {
     initialBreakpoint: 0.45,
     componentProps: {
       notification,
+      analytics,
     },
   });
   modal.present();
@@ -44,7 +66,7 @@ export const shareLogs = async (
     logger.stream
       .map(
         (log) =>
-          `${log.time.toISOString()};${log.level};${log.scope};${JSON.stringify(
+          `${log.time.toISOString()};${log.level};${log.scope};${stringify(
             log.parts
           )}`
       )

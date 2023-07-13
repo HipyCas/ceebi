@@ -22,55 +22,31 @@ import {
   ActionPerformed,
 } from '@capacitor/push-notifications';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { Filesystem, Directory } from '@capacitor/filesystem';
-import { Preferences } from '@capacitor/preferences';
 import {
   AppUpdate,
   AppUpdateAvailability,
   FlexibleUpdateInstallStatus,
 } from '@capawesome/capacitor-app-update';
-// import { analytics } from './firebase';
-import {
-  FIREBASE_ANALYTICS,
-  IMAGES_DIRECTORY,
-  KEY_NOTIFICATIONS,
-  KEY_DARK_MODE,
-} from './vars';
+import { KEY_NOTIFICATIONS, KEY_DARK_MODE } from './vars';
 // import { logEvent } from 'firebase/analytics';
 import * as StackTrace from 'stacktrace-js';
 // import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
-import { toast, toggleDarkMode } from './ui';
+import { toggleDarkMode } from './ui';
 import { setDarkMode } from './darkMode';
 import { useI18n } from 'vue-i18n';
 import { Translation, Language } from '@capacitor-mlkit/translation';
 import * as locales from 'locale-codes';
-
-// setInterval(() => console.info('USER:', supabase.auth.user()), 1000);
-
-// const route = useRoute();
-// if (route.hash.includes('error=')) {
-//   const parsed = route.hash.split('&').map((s) => s.split('=', 2));
-//   onMounted(() =>
-//     toast(
-//       `Auth error: ${(parsed.find((q) => q[0] === 'error_description') ?? [
-//         null,
-//         'unknown',
-//       ])[1]?.replace(/\+/g, ' ')}`,
-//       closeCircleOutline,
-//       'danger',
-//       3000,
-//       [
-//         {
-//           text: 'Help',
-//           handler: () => false, // TODO Redirect to help page
-//         },
-//       ]
-//     )
-//   );
-// }
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
 const { locale } = useI18n();
 console.log(locale.value);
+
+console.log(
+  'hello',
+  typeof import.meta.env.VITE_ENCRYPTION_KEY,
+  import.meta.env.VITE_ENCRYPTION_KEY,
+  JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY)
+);
 
 //* PUSH NOTIFICATIONS
 if (false && isPlatform('capacitor')) {
@@ -138,11 +114,6 @@ if (false && isPlatform('capacitor')) {
     }
   );
 }
-
-//* FIREBASE ANALYTICS
-// const analytics = inject(FIREBASE_ANALYTICS) as Analytics;
-// console.info('Injected analytics: ', analytics);
-// logEvent(analytics, 'vue_app_setup');
 
 //* CHECK FOR UPDATE
 if (isPlatform('capacitor')) {
@@ -267,18 +238,19 @@ onMounted(async () => {
         'not available for translation'
       );
   })();
+
   // Override global error handling to send report to Firebase Crashlytics
-  // window.onerror = (ev, source, lineno, colno, error) => {
-  //   (async () => {
-  //     const stacktrace = await StackTrace.fromError(
-  //       error ||
-  //         new Error(`ERROR from ev ${ev} (${source} - L${lineno}:C${colno})`)
-  //     );
-  //     await FirebaseCrashlytics.recordException({
-  //       message: `Unhandled error ocurred: ${error} [event: ${ev}; source: ${source}] - L${lineno}:C${colno}`,
-  //       stacktrace,
-  //     });
-  //   })();
-  // };
+  window.onerror = (ev, source, lineno, colno, error) => {
+    (async () => {
+      const stacktrace = await StackTrace.fromError(
+        error ||
+          new Error(`ERROR from ev ${ev} (${source} - L${lineno}:C${colno})`)
+      );
+      await FirebaseCrashlytics.recordException({
+        message: `Unhandled error ocurred: ${error} [event: ${ev}; source: ${source}] - L${lineno}:C${colno}`,
+        stacktrace,
+      });
+    })();
+  };
 });
 </script>

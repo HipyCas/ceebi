@@ -28,6 +28,7 @@
 </template>
 
 <script setup lang="ts">
+// TODO Migrate this and TabsLayout.vue to PageWrapper or something like in admin
 import {
   IonHeader,
   IonToolbar,
@@ -43,14 +44,9 @@ import {
 } from 'ionicons/icons';
 import logoHorizontalNegro from '../../public/assets/logo_horizontal.png';
 import logoHorizontalBlanco from '../../public/assets/logo_horizontal_blanco.png';
-import { useRouter } from 'vue-router';
-// import { FIREBASE_ANALYTICS } from "@/vars";
-// import { inject } from "@vue/runtime-core";
-// import { logEvent } from 'firebase/analytics';
-import { computed, onMounted, ref, defineProps } from 'vue';
-// import { analytics } from '../firebase';
-import { toggleDarkMode } from '../ui';
-import { getDarkMode, isDarkMode } from '../darkMode';
+import { isDarkMode } from '../darkMode';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../firebase';
 
 defineProps<{
   condense?: boolean;
@@ -62,7 +58,7 @@ const router = useRouter();
 
 // analytics,
 const goto = (url: string, msg: string) => {
-  // logEvent(analytics, 'open_' + msg);
+  logEvent(analytics, 'open_' + msg);
   window.location.href = url;
 };
 
@@ -71,7 +67,7 @@ const logoHorizontal = computed(() =>
 );
 
 function link(url: string, name: string) {
-  // logEvent(analytics, 'navigate_' + name);
+  logEvent(analytics, 'navigate_' + name);
   router.push(url);
 }
 

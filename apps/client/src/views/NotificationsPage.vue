@@ -2,8 +2,8 @@
   <ion-page>
     <Header />
     <ion-content :fullscreen="true">
-      <SkeletonNotifications v-if="isLoading" />
-      <ion-list lines="full" v-else>
+      <SkeletonNotifications v-if="isLoading || loadingUser" />
+      <ion-list lines="full" v-else-if="user">
         <ion-item
           v-for="notification in showableNotifications"
           :key="notification.id"
@@ -24,6 +24,11 @@
           </div>
         </ion-item>
       </ion-list>
+      <div v-else class="center-content">
+        <LoginRequired
+          reason="poder ver todas las notificaciones"
+        ></LoginRequired>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -48,6 +53,12 @@ import { showNotification } from '@code/ceebi-ui';
 import { wpapi } from '../req';
 import type { WPNotification } from '@code/wp-types';
 import getUnixTime from 'date-fns/getUnixTime';
+import { analytics } from '../firebase';
+import { logEvent } from 'firebase/analytics';
+import { loadingUser, getUser } from '../user';
+import LoginRequired from '../components/LoginRequired.vue';
+
+const user = getUser();
 
 interface RenderableNotification {
   id: number;
@@ -136,14 +147,26 @@ let notificationOpen = false;
 const modal = (notification: RenderableNotification) => {
   if (!notificationOpen) {
     notificationOpen = true;
-    showNotification(notification).then((modal) =>
+    showNotification(notification, analytics).then((modal) =>
       modal.onWillDismiss().then(() => (notificationOpen = false))
     );
+    logEvent(analytics, `notification_${notification.shortname}`);
   }
 };
 </script>
 
 <style scoped>
+.center-content {
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
   height: 100%;
   width: 100%;

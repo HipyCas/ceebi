@@ -1,6 +1,59 @@
 # CEEBI Admin App Changelog
 
-## [2.0.0-rc.2]
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Changed
+
+- Removed unused dependencies and optimized other
+
+## [2.0.0-rc.4]
+
+### Added
+
+- All catch clauses now log to Firebase Crashlytics
+- Further error reporting to Crashlytics in more places, both manual and in catch clauses
+- In general, more error catching and reporting
+- Gradient to attendance progress
+- Include all JS Sourcemap to make error debugging in Crashlytics easier
+
+### Fixed
+
+- Added @capacitor/browser plugin to Capacitor included plugins, fixing links in notifications not opening
+- Cleaned up code and some warnings
+- Permissions in WordPress for volunteer accounts
+
+### Changed
+
+- Cleaned up some user list code
+
+## [2.0.0-rc.3] - 2023/07/09
+
+### Added
+
+- Option to modify whether a person presents a poster to the CEEBI (so they can download the certificate)
+- You can only modify users (including yourself) permissions if you have permission to modify them (`allow_admins` permission)
+- Notification editor now uploads notification to the web and publishes them to the app (not to push neither in Android nor in iOS)
+- Removed lines in popover account menu
+- Permission check when accessing user and attendance list
+- More checks for notification permission
+- Option to delete notifications
+- Attendance details for all users from attendance page, same as `assistance-check` for last year except for QR but adding the option to manually add or delete attendance
+- Check for permission when directly accessing a user or attendance detail page
+
+### Fixed
+
+- Removed detail arrow in button item to change user to admin
+
+### Changed
+
+- User virtual list for users and attendance list page are now the same component
+- Search in users and attendance list pages now support searching also email and they ignore case
+
+## [2.0.0-rc.2] - 2023/07/02
 
 ### Added
 

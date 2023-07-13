@@ -1,50 +1,28 @@
 <template>
   <page-wrapper>
-    <IonSearchbar
-      class="ion-padding-top z-20"
-      enterkeyhint="search"
-      placeholder="Buscar usuarios"
-      :search-icon="idCard"
-      showClearButton="always"
-      v-model="search"
-    ></IonSearchbar>
-
-    <IonList _class="id-list">
-      <RecycleScroller
-        :items="filteredUsers"
-        :item-size="51"
-        :key-field="'id'"
-        class="scroller"
-        v-slot="{ item: user }"
-      >
-        <router-link
-          :to="`/p/attendance/${user.id}`"
-          router-direction="forward"
-        >
-          <ion-item button detail class="id-item" lines="full">
-            <ion-text>{{ user.name }}</ion-text>
-          </ion-item>
-        </router-link>
-      </RecycleScroller>
-    </IonList>
+    <FullpageNoPermission
+      v-if="!me?.supabase.allow_attendance"
+      permission="visualizar o editar la asistencia"
+    ></FullpageNoPermission>
+    <UserVirtualList v-else :user-route="userRoute"></UserVirtualList>
   </page-wrapper>
 </template>
 
 <script lang="ts" setup>
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
-import { IonSearchbar, IonList, IonText } from '@ionic/vue';
-import { idCard } from 'ionicons/icons';
 import PageWrapper from '../components/PageWrapper.vue';
-import { getListableUsers } from '../listableUsers';
-import { RecycleScroller } from 'vue-virtual-scroller';
+import { getUser } from '../user';
+import FullpageNoPermission from '../components/FullpageNoPermission.vue';
+import UserVirtualList from '../components/UserVirtualList.vue';
 
-const search = ref('');
+const me = getUser();
 
-const users = getListableUsers();
-
-const filteredUsers = computed(() =>
-  users.value.filter((item) => item.name.toLowerCase().includes(search.value))
-);
+const userRoute = ({
+  name,
+  acf,
+}: {
+  name: string;
+  acf: { id_base_de_datos_app: string };
+}) => `/p/attendance/${acf.id_base_de_datos_app}/${name}`;
 </script>
 
 <style scoped>

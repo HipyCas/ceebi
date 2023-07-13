@@ -19,21 +19,22 @@
     <template v-else-if="items.length > 0">
       <canvas class="confetti-canvas"></canvas>
       <div class="circ-wrapper">
-        <div class="relative">
+        <div class="relative block">
           <circle-progress
-            class="h-[80%]"
+            class="!w-[30vw] !h-[30vw]"
             :percent="Math.round((Math.min(25, hoursDone) / 25) * 100)"
             :is-gradient="true"
             :gradient="{
-              angle: 90,
+              angle: 125,
               startColor: style.getPropertyValue('--ion-color-primary'),
-              stopColor: style.getPropertyValue('--ion-color-primary'),
+              stopColor: style.getPropertyValue('--ion-color-secondary'),
             }"
             circle-color="transparent"
-            :border-width="12"
+            :border-width="17"
+            empty-color="#00000000"
           >
           </circle-progress>
-          <span style="font-size: 24px" class="absolute top-[39%] left-[39%]">
+          <span style="font-size: 24px" class="absolute top-[33%] left-[32%]">
             {{ Math.round((Math.min(25, hoursDone) / 25) * 100) }}%
           </span>
         </div>
@@ -87,15 +88,14 @@ import {
   IonButtons,
   IonButton,
   IonContent,
-  IonSpinner,
   IonItem,
   IonList,
   IonListHeader,
   modalController,
   actionSheetController,
+  loadingController,
 } from '@ionic/vue';
 import type { ActionSheetButton } from '@ionic/vue';
-// import { VueEllipseProgress } from 'vue-ellipse-progress';
 import confetti from 'canvas-confetti';
 import NoConnection from './NoConnection.vue';
 //@ts-expect-error vue3-circle-progress has no support for TypeScript
@@ -103,25 +103,28 @@ import CircleProgress from 'vue3-circle-progress';
 import { getUser } from '../user';
 import attendanceSchema from '../../attendance.json';
 import parseISO from 'date-fns/parseISO';
-import { computedEager, until, useMounted } from '@vueuse/core';
-import type { WPUser } from '@code/wp-types';
+import { until, useMounted } from '@vueuse/core';
 import isBefore from 'date-fns/isBefore';
-import { imageOutline, stopwatchOutline, closeOutline } from 'ionicons/icons';
+import {
+  imageOutline,
+  stopwatchOutline,
+  closeOutline,
+  alertCircleOutline,
+  schoolOutline,
+} from 'ionicons/icons';
 import { PlainLoading } from '@code/ceebi-ui';
-
-// defineProps<{
-//   dni: string;
-// }>();
+import type { WPUser } from '@code/wp-types';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
+import { CapacitorHttp } from '@capacitor/core';
+import { logCatchError } from '@code/capacitor-utils';
 
 const supabase = useSupabase();
 const logger = useLogger();
 
-const user = getUser();
+const user: Ref<WPUser> = getUser();
 const isMounted = useMounted();
 
 const style = getComputedStyle(document.body);
-
-// const hoursDone = 13;
 
 const connected = ref(true);
 const loading = ref(true);
@@ -134,31 +137,24 @@ const items = ref(
   }[]
 );
 
+const microRegEx = /^Microcurso "([\w\sáóéíú:(),¿?.ñ¡!\-\/“”–]+)"$/m;
+const microcursosDone = computed(() =>
+  items.value
+    .flatMap((item) => item.events)
+    .filter((ev) => microRegEx.test(ev ?? ''))
+    .map((ev) => (microRegEx.exec(ev as string) as RegExpExecArray)[1] ?? ev)
+);
+
 const dismissModal = () => modalController.dismiss();
 
-// const items = ref([]);
-// const connected = ref(true);
 (async () => (connected.value = (await Network.getStatus()).connected))();
-// const loading = ref(true);
+
 const hoursDone = computed(
   () =>
     items.value
       .map((item) => item.hours)
-      .reduce((prev, curr) => prev + curr, 0) as number
+      .reduce((prev, curr) => (prev ?? 0) + (curr ?? 0), 0) as number
 );
-
-// const removeDuplicates = (duplicates: DocumentData[]) => {
-//   const flag: Record<any, any> = {};
-//   const unique: DocumentData[] = [];
-//   duplicates.forEach((elem) => {
-//     if (!flag[elem.session]) {
-//       flag[elem.session] = true;
-//       unique.push(elem);
-//     }
-//   });
-//   console.info('HEY HEY HEY -> Flags:', flag);
-//   return unique;
-// };
 
 const main = async () => {
   const { data, error } = await supabase
@@ -204,31 +200,115 @@ const main = async () => {
 };
 main();
 
-const certButtons = computedEager(() => {
+const certButtons = () => {
+  const shareCertificate = async (name: string) => {
+    try {
+      actionSheetController.dismiss();
+      loadingController
+        .create({
+          message: 'Generando certificado...',
+        })
+        .then((l) => l.present());
+      const { data } = supabase.storage
+        .from('certificates')
+        .getPublicUrl(
+          name + '/' + user.value.acf.id_base_de_datos_app + '.pdf'
+        );
+      const blobRes = await CapacitorHttp.get({
+        url: data.publicUrl,
+        responseType: 'blob',
+      });
+      const dataUri = 'data:application/pdf;base64,' + blobRes.data;
+      const pdf = await Filesystem.writeFile({
+        path: `__ceebi_${
+          name === 'attendance' || name === 'poster'
+            ? name
+            : name
+                .replace(/\//g, '__')
+                .replace(/[áóéíú:(),¿?.ñ¡!\-\/“”–]/g, '_')
+        }_cert.pdf`,
+        data: dataUri,
+        directory: Directory.Cache,
+      });
+      loadingController.dismiss();
+      Share.share({
+        files: [pdf.uri],
+      });
+    } catch (error) {
+      loadingController.dismiss();
+      logCatchError(
+        logger,
+        `attendanceModal:shareCertificate(${name})`,
+        `error when fetching and sharing ${name} certificatie`,
+        error
+      );
+      useToast({
+        message: 'Error al generar el certificado',
+        color: 'danger',
+        icon: alertCircleOutline,
+        cssClass: undefined,
+      });
+    }
+  };
+
   const buts: ActionSheetButton[] = [];
-  if (hoursDone.value >= 25 * 0.8) {
+  if (hoursDone.value >= 25 * 0.8)
     buts.push({
       text: 'Asistencia',
       icon: stopwatchOutline,
       handler: () => {
+        FirebaseCrashlytics.addLogMessage({
+          message: 'handling attendance certificate download',
+        });
         if (hoursDone.value >= 25 * 0.8) {
-          // TODO Share cert
+          shareCertificate('attendance');
         }
       },
     });
-  }
-  if ((user.value as WPUser).acf.has_poster)
+
+  if (user.value.acf.has_poster)
     buts.push({
       text: 'Póster',
       icon: imageOutline,
       handler: () => {
         if (isBefore(new Date(), new Date(2023, 6, 21, 23, 59, 59))) return; // TODO Show some alert or toast saying that it is only available after the congress itself
         if ((user.value as WPUser).acf.has_poster) {
-        } // Share here
+          shareCertificate('poster');
+        }
       },
     });
+
+  if (microcursosDone.value.length > 0) {
+    console.log(
+      microcursosDone.value.map((mic) =>
+        mic.replace(/\//g, '__').replace(/[áóéíú:(),¿?.ñ¡!\-\/“”–]/g, '_')
+      )
+    );
+    buts.push({
+      text: 'Microcursos',
+      icon: schoolOutline,
+      handler: () =>
+        actionSheetController
+          .create({
+            header: 'Selecciona el microcurso',
+            buttons: [
+              ...microcursosDone.value.map((ev) => ({
+                text: ev,
+                handler: () => shareCertificate(`microcursos/${ev}`),
+              })),
+              {
+                text: 'Cancelar',
+                icon: closeOutline,
+                cssClass: 'cancel-button',
+              },
+            ],
+          })
+          .then((act) => act.present()),
+    });
+  }
+
   return buts;
-});
+};
 
 const downloadCerts = () => {
   actionSheetController
@@ -236,7 +316,7 @@ const downloadCerts = () => {
       header: 'Seleccionar certificado',
       subHeader: 'Elige el certificado que deseas descargar',
       buttons: [
-        ...certButtons.value,
+        ...certButtons(),
         {
           text: 'Cancelar',
           icon: closeOutline,
@@ -246,48 +326,6 @@ const downloadCerts = () => {
     })
     .then((sheet) => sheet.present());
 };
-
-// // TODO Add loading
-// const main = async () => {
-//   if (!connected.value) return;
-//   const tmpItems: DocumentData[] = [];
-//   // const querySnapshot = await getDocs(collection(firestore, props.dni));
-//   const querySnapshot = [
-//     {
-//       id: 0,
-//       data: () => ({}),
-//     },
-//   ];
-//   querySnapshot.forEach((doc) => {
-//     console.log(`DOCSSSS: ${doc.id} => ${doc.data()}`);
-//     tmpItems.push(doc.data());
-//   });
-//   tmpItems.sort((a, b) => (Date.parse(a.time) < Date.parse(b.time) ? -1 : 1));
-//   items.value = removeDuplicates(tmpItems);
-//   loading.value = false;
-//   console.log(items.value);
-//   if (hoursDone.value >= 25 * 0.8) {
-//     const canvas = document.getElementsByClassName('canvas-confetti')[0];
-//     //@ts-expect-error I am sure canvas will not be null
-//     const con = confetti.create(canvas, { resize: true });
-
-//     con({
-//       particleCount: 250,
-//       spread: 45,
-//       origin: { y: 1 },
-//       gravity: 0.5,
-//       startVelocity: 60,
-//       colors: ['#24272A', '#34B6ED', '#70C1B3', '#FFE066', '#E8451E'],
-//     });
-//   }
-// };
-
-// Network.addListener('networkStatusChange', (status) => {
-//   connected.value = status.connected;
-//   main();
-// });
-
-// onMounted(main);
 </script>
 
 <style scoped>

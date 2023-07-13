@@ -43,7 +43,7 @@
       "outputs": ["dist/apps/admin/android"],
       "options": {
         "cwd": "/home/hipy/ceebi/code2/apps/admin",
-        "command": "npx cap sync"
+        "command": "npx cap sync --inline"
       }
     },
     "release": {

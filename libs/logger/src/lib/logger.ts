@@ -14,6 +14,7 @@ export class LoggerSingleton {
   }
 }
 
+// TODO Allow to pass trace
 export class Logger {
   private readonly _stream = reactive([] as Msg[]);
 
@@ -94,10 +95,13 @@ export enum LogLevel {
   Error,
 }
 
+// TODO Make this string | string[], more comfortable and allows more deep scopes
+export type LogScope = `${string}:${string}` | string;
+
 export type Msg = {
   time: Date;
   level: LogLevel;
-  scope: string;
+  scope: LogScope;
   parts: any[];
   toString: () => string;
 };

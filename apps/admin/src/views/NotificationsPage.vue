@@ -58,6 +58,13 @@
         @click="previewNotification(notification)"
         >Previsualizar</ion-button
       >
+      <IonButton
+        fill="clear"
+        color="danger"
+        @click="deleteNotification(notification)"
+      >
+        Eliminar
+      </IonButton>
     </ion-card>
   </page-wrapper>
 </template>
@@ -77,7 +84,7 @@ import {
 } from '@ionic/vue';
 import PageWrapper from '../components/PageWrapper.vue';
 import { createOutline } from 'ionicons/icons';
-import NotificationEditor from '../components/NotificationModal.vue';
+import NotificationEditor from '../components/NotificationEditorModal.vue';
 import intlFormat from 'date-fns/intlFormat';
 import isAfter from 'date-fns/isAfter';
 import { showNotification, PlainLoading } from '@code/ceebi-ui';
@@ -89,6 +96,10 @@ import * as ionicons from 'ionicons/icons';
 import { getUser } from '../user';
 import { trace } from 'firebase/performance';
 import { performance } from '../firebase';
+import { authHeaders } from '../wpauth';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
+import * as StackTrace from 'stacktrace-js';
+import { logCatchError } from '@code/capacitor-utils';
 
 interface FetchNotification {
   id: number;
@@ -96,6 +107,12 @@ interface FetchNotification {
   body: string | null;
   schedule: Date;
 }
+
+FirebaseCrashlytics.setContext({
+  key: 'page',
+  type: 'string',
+  value: 'notifications',
+});
 
 const logger = useLogger();
 const user = getUser();
@@ -127,30 +144,82 @@ const extractContent = (html: string) => {
 };
 
 const newNotification = () => {
-  modalController
-    .create({
-      component: NotificationEditor,
-      componentProps: {
-        action: 'create',
-      },
-    })
-    .then((modal) => modal.present());
+  if (!notificationsAllowed) noPermission();
+  else
+    modalController
+      .create({
+        component: NotificationEditor,
+        componentProps: {
+          action: 'create',
+        },
+      })
+      .then((modal) => modal.present());
 };
 
 const editNotification = ({ id }: FetchNotification) => {
-  modalController
-    .create({
-      component: NotificationEditor,
-      componentProps: {
-        action: 'edit',
-        notificationId: id,
-      },
-    })
-    .then((modal) => modal.present());
+  if (!notificationsAllowed) noPermission();
+  else
+    modalController
+      .create({
+        component: NotificationEditor,
+        componentProps: {
+          action: 'edit',
+          notificationId: id,
+        },
+      })
+      .then((modal) => modal.present());
 };
 
 const previewNotification = (notification: FetchNotification) =>
   showNotification(notification);
+
+const deleteNotification = (notification: FetchNotification) => {
+  if (!notificationsAllowed) {
+    noPermission();
+    return;
+  }
+  alertController
+    .create({
+      header: 'Eliminar notificación',
+      message: 'Esta acción es permanente, confirma antes de continuar.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirmar',
+          handler: async () => {
+            alertController.dismiss();
+            const res = await wpapi.delete(
+              `wp/v2/notificacion/${notification.id}`,
+              {
+                headers: authHeaders({}),
+              }
+            );
+            if (res.ok) {
+              useToast({
+                message: 'Notificación eliminada con éxito',
+                icon: ionicons.checkmarkCircleOutline,
+                color: 'success',
+              });
+              loadNotifications().then((not) => (notifications.value = not));
+            } else {
+              FirebaseCrashlytics.setContext({
+                key: 'serverResponse',
+                value: JSON.stringify(res),
+                type: 'string',
+              });
+              FirebaseCrashlytics.recordException({
+                message: 'Error when deleting notification',
+              });
+            }
+          },
+        },
+      ],
+    })
+    .then((a) => a.present());
+};
 
 const notificationPrettyStatus = computed(
   () =>
@@ -193,19 +262,15 @@ const loadNotifications = async () => {
           })),
       }))
       .sort((a, b) => getUnixTime(b.schedule) - getUnixTime(a.schedule));
-  } catch (error) {
-    loadTrace.stop();
+  } catch (error: any) {
     loadTrace.putAttribute('is_error', 'true');
-    loadTrace.putAttribute(
-      'error',
-      (error as { toString: () => string }).toString()
-    );
-    logger.error(
+    loadTrace.putAttribute('error', error.toString());
+    loadTrace.stop();
+    logCatchError(
+      logger,
       'notifications:loadNotifications',
       'error fetching notifications from server',
-      {
-        error,
-      }
+      error
     );
     return [];
   }

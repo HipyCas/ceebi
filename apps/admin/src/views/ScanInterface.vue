@@ -115,25 +115,40 @@ import {
   timeOutline,
   closeOutline,
   warningOutline,
+  closeCircleOutline,
+  alertCircleOutline,
 } from 'ionicons/icons';
 import scanTone from '../assets/scan.wav';
 import { version as uuidVersion, validate as uuidValidate } from 'uuid';
 import { getUser } from '../user';
 import type { PostgrestError } from '@supabase/supabase-js';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
+import { logCatchError } from '@code/capacitor-utils';
 
 interface Code {
   id: string;
+  supabaseId: number | null;
   time: Date;
   status: 'pending' | 'uploaded' | 'error';
   error?: PostgrestError;
 }
 
+FirebaseCrashlytics.setContext({
+  key: 'page',
+  type: 'string',
+  value: 'scan',
+});
+
 const router = useIonRouter();
 const route = useRoute();
 const supabase = useSupabase();
+const logger = useLogger();
 const user = getUser();
 
-const { session, event } = route.params;
+const { session, event } = route.params as typeof route.params & {
+  session: string;
+  event: string;
+};
 
 const scanAudio = new Audio(scanTone);
 
@@ -146,10 +161,54 @@ const timerInfo = () => {
   });
 };
 
-const deleteCode = (index: number) => {
-  Toast.show({
-    text: 'aha',
-  });
+const deleteCode = async (index: number) => {
+  const code = codes.value.at(index);
+  if (code?.supabaseId === null) {
+    Toast.show({
+      text: 'Registro aún no subido',
+    });
+    return;
+  }
+  const { error } = await supabase
+    .from('attendance')
+    .delete()
+    .eq('id', code?.supabaseId)
+    .eq('attendant_id', code?.id);
+  if (error) {
+    Toast.show({
+      text: 'Error al eliminar el registro',
+    });
+    FirebaseCrashlytics.setContext({
+      key: 'errorCode',
+      type: 'string',
+      value: error.code,
+    });
+    FirebaseCrashlytics.setContext({
+      key: 'errorHint',
+      type: 'string',
+      value: error.hint,
+    });
+    FirebaseCrashlytics.setContext({
+      key: 'errorDetails',
+      type: 'string',
+      value: error.details,
+    });
+    FirebaseCrashlytics.setContext({
+      key: 'errorMessage',
+      type: 'string',
+      value: error.message,
+    });
+    logCatchError(
+      logger,
+      'scan:deleteCode',
+      'error from supabase when deleting attendance in scan',
+      new Error(error.message)
+    );
+  } else {
+    Toast.show({
+      text: 'Registro eliminado con éxito',
+    });
+  }
 };
 
 //#region Scan
@@ -184,6 +243,7 @@ const startScan = async () => {
           if (uuidValidate(res.content) && uuidVersion(res.content) === 4) {
             codes.value.push({
               id: res.content,
+              supabaseId: null,
               time: new Date(),
               status: 'pending',
             });
@@ -195,12 +255,16 @@ const startScan = async () => {
               type: NotificationType.Success,
             });
             flashBorder(true);
-            const { error } = await supabase.from('attendance').insert({
-              attendant_id: res.content,
-              created_by: user.value?.supabase.id,
-              session,
-              event,
-            });
+            const { data, error } = await supabase
+              .from('attendance')
+              .insert({
+                attendant_id: res.content,
+                created_by: user.value?.supabase.id || '',
+                session,
+                event,
+              })
+              .select('id')
+              .single();
             if (error) {
               useToast({
                 message: error.message + ';' + error.hint,
@@ -216,6 +280,7 @@ const startScan = async () => {
                 (c) => c.id === res.content
               ) as Code;
               thisCode.status = 'uploaded';
+              thisCode.supabaseId = data?.id;
             }
           } else {
             Toast.show({ text: 'ID no válido', position: 'center' });
@@ -261,8 +326,18 @@ const exitScan = () => {
 };
 
 App.addListener('backButton', exitScan);
-App.addListener('pause', pauseScan);
-App.addListener('resume', startScan);
+App.addListener('pause', () => {
+  Toast.show({
+    text: 'Scanner pausado',
+  });
+  pauseScan();
+});
+App.addListener('resume', () => {
+  Toast.show({
+    text: 'Resumido el scanner',
+  });
+  startScan;
+});
 
 onIonViewDidLeave(() => {
   App.removeAllListeners();
@@ -320,12 +395,5 @@ onMounted(() => {
   bottom: 1rem;
   width: 90vw;
   left: 5vw;
-}
-</style>
-
-<style>
-ion-toast.success-toast {
-  transform: translateY(-4rem);
-  --width: 90vw;
 }
 </style>

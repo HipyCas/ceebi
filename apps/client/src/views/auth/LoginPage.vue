@@ -4,10 +4,10 @@
       <main
         class="overflow-hidden text-center flex flex-col justify-center items-center h-full w-full"
       >
-        <h2>Inicia sesión</h2>
+        <h2 class="text-2xl font-semibold">Inicia sesión</h2>
         <ion-text class="w-[75%]" color="medium">
-          Accede con tu cuenta del CEEBI (biociencias.es) a la app para
-          registrar tu asistencia y ver sólo para asistentes
+          Accede con tu cuenta de la web del CEEBI a la app para registrar y ver
+          tu asistencia y acceder a las notificaciones
         </ion-text>
 
         <LoginForm

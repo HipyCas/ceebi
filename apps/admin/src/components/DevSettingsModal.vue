@@ -31,6 +31,9 @@
     <router-link to="/dev/notifications-import" @click="cancel()">
       <IonButton expand="block">Importar notificaciones</IonButton>
     </router-link>
+    <router-link to="/dev/generate-folders" @click="cancel()">
+      <IonButton expand="block">Generar carpetas en bucket</IonButton>
+    </router-link>
     <IonButton
       expand="block"
       @click="crash({ message: 'Crash from dev settings' })"

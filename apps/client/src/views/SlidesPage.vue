@@ -11,7 +11,9 @@
           <div class="ceebi-img-wrapper">
             <ion-img :src="logo" class="slide-img ceebi-img"></ion-img>
           </div>
-          <h1 style="margin-top: 2rem">Bienvenido al II CEEBI</h1>
+          <h1 class="text-2xl font-semibold" style="margin-top: 2rem">
+            Bienvenido al II CEEBI
+          </h1>
           <ion-text class="slide-text" color="medium">
             Aquí tienes una breve presentación de qué puedes encontrar en esta
             nuestra app oficial
@@ -182,6 +184,7 @@ const login = async ({
       continueToApp();
     })
     .catch((e) => {
+      logger.error('slides:login', 'error logging in', e);
       loading.dismiss();
       useToast({
         message: 'Error logging in',
@@ -193,6 +196,10 @@ const login = async ({
 </script>
 
 <style scoped>
+h2 {
+  @apply text-2xl font-semibold;
+}
+
 .wrap {
   overflow-y: hidden;
 }

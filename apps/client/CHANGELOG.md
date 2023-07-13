@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Include all JS Sourcemap to make error debugging in Crashlytics easier
+- Gradient to attendance progress
+
+### Fixed
+
+- Error when accessing schedule, caused by a dependency and making schedule load indefinitely
+- Logs now get shared perfectly
+- Titles in slides and login page are now properly styled
+- (ios) Sharing logs item button now renders without the arrow
+- Updated used plugins to match changes and solve breaks
+
+### Changed
+
+- (android) Input designs for the login form's input are now more visible in Android
+- Added `expand="inset"` to the `IonAccordionGroup` in the event details to make it rounded and better looking, also removed the lines in the items inside for each speaker
+- Clean up lots of code
+- Removed unused dependencies and optimized other
+
 ## [2.0.0-rc.2] - 2023/07/01
 
 ### Added
@@ -47,12 +69,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Drastically improved schedule loading performance
 - Migrated to Supabase over Google Firebase for storage
 - QR now represents a random and untraceable uuid instead of the user's ID
-<!-- TODO Above -->
+- Moved all code to a new monorepo
 
 ### Fixed
 
 - Bug in weekday detection past event, as the condition was not evaluated
-<!-- - Fix refresing dissapearing before full refresh in news page -->
 
 ## [1.3.15] - 2022-07-18
 

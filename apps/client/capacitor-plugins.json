@@ -11,5 +11,6 @@
   "@capacitor/splash-screen",
   "@capawesome/capacitor-app-update",
   "@capacitor-mlkit/translation",
-  "@capacitor-community/screen-brightness"
+  "@capacitor-community/screen-brightness",
+  "@capacitor-community/firebase-crashlytics"
 ]

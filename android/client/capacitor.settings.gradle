@@ -37,3 +37,6 @@ project(':capacitor-mlkit-translation').projectDir = new File('../../node_module
 
 include ':capacitor-community-screen-brightness'
 project(':capacitor-community-screen-brightness').projectDir = new File('../../node_modules/.pnpm/@capacitor-community+screen-brightness@4.0.0_@capacitor+core@4.8.0/node_modules/@capacitor-community/screen-brightness/android')
+
+include ':capacitor-community-firebase-crashlytics'
+project(':capacitor-community-firebase-crashlytics').projectDir = new File('../../node_modules/.pnpm/@capacitor-community+firebase-crashlytics@2.0.0_@capacitor+core@4.8.0/node_modules/@capacitor-community/firebase-crashlytics/android')

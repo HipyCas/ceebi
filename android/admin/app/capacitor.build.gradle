@@ -12,6 +12,7 @@ dependencies {
     implementation project(':capacitor-native-biometric')
     implementation project(':capacitor-native-settings')
     implementation project(':capacitor-app')
+    implementation project(':capacitor-browser')
     implementation project(':capacitor-toast')
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-preferences')
