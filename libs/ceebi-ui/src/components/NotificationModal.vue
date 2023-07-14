@@ -68,8 +68,6 @@ const props = defineProps<{
   analytics?: Analytics;
 }>();
 
-const $t = (msg: string) => 'Cerrar';
-
 const dismissModal = () => {
   modalController.dismiss();
 };
