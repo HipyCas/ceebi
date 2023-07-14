@@ -37,6 +37,8 @@ import { loadingUser } from './user';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 import loadSettings from './loadSettings';
 
+const logger = useLogger();
+
 //* I18n
 const i18n = createI18n<[Translation], SupportedLanguages>({
   locale: 'en',
@@ -102,12 +104,13 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
 });
 //* =====
 
+logger.trace('main', 'loading settings');
 loadSettings();
+logger.trace('main', 'settings loaded');
 
 //* ===== Vue
 const app = createApp(App).use(IonicVue).use(i18n).use(VWave, {}).use(router);
 
-const logger = useLogger();
 app.config.errorHandler = async (error, instance, info) => {
   FirebaseCrashlytics.addLogMessage({
     message: 'fired Vue app errorHandler',
@@ -138,6 +141,8 @@ app.config.warnHandler = (msg, instance, trace) => {
 };
 
 router.isReady().then(() => {
+  logger.trace('main:router.isReady()', 'router ready, mounting app');
   app.mount('#app');
+  logger.trace('main:router.isReady()', 'app mounted');
 });
 //* =====
