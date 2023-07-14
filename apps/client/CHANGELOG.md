@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Certificate download from the attendance Modal
 - Re-added many analytics stuff
 - Overwritten Vue app error and warn handler to use logger and Crashlytics
+- Icon added for both iOS and Android
 
 ### Fixed
 
