@@ -88,7 +88,7 @@
           </IonItem>
         </IonCardContent>
       </ion-card>
-      <ion-card>
+      <ion-card v-if="user?.supabase">
         <ion-card-header>
           <IonCardTitle> Permisos de administrador </IonCardTitle>
           <IonBadge
@@ -177,6 +177,14 @@
           </IonItem>
         </IonCardContent>
       </ion-card>
+      <IonCard v-else>
+        <IonCardContent class="p-0">
+          <IonItem color="danger" class="w-full h-full">
+            <IonIcon :icon="closeCircleOutline" slot="start"></IonIcon>
+            Usuario no sincronizado
+          </IonItem>
+        </IonCardContent>
+      </IonCard>
       <ion-fab
         @click="openJSON"
         slot="fixed"
@@ -257,61 +265,66 @@ const { state: user, isLoading } = useAsyncState(async () => {
     apiResponse.value = res;
     const wpUser = await res.json<WPUser>();
 
-    const { data: supabaseUser, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', wpUser.acf.id_base_de_datos_app)
-      .single();
+    let supabaseUser = null;
+    if (wpUser.acf.id_base_de_datos_app) {
+      const { data: _supabaseUser, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', wpUser.acf.id_base_de_datos_app)
+        .single();
 
-    // console.log('> Got from supabase', user, error);
-    logger.trace('userDetails:useAsyncState', 'user from supabase', {
-      user,
-      error,
-    });
+      // console.log('> Got from supabase', user, error);
+      logger.trace('userDetails:useAsyncState', 'user from supabase', {
+        user,
+        error,
+      });
 
-    if (error) {
-      // TODO Make this full page error
-      useToast(
-        {
-          message: 'Error while getting user info',
-          color: 'danger',
-          icon: alertCircleOutline,
-        },
-        ImpactStyle.Heavy
-      );
-      FirebaseCrashlytics.setContext({
-        key: 'errorCode',
-        type: 'string',
-        value: error.code,
-      });
-      FirebaseCrashlytics.setContext({
-        key: 'errorHint',
-        type: 'string',
-        value: error.hint,
-      });
-      FirebaseCrashlytics.setContext({
-        key: 'errorMessage',
-        type: 'string',
-        value: error.message,
-      });
-      FirebaseCrashlytics.setContext({
-        key: 'errorDetails',
-        type: 'string',
-        value: error.details,
-      });
-      logCatchError(
-        logger,
-        'userDetails:useAsyncState',
-        'error from supabase when getting specific user',
-        new Error(error.message)
-      );
-      return null;
-    } else {
-      return {
-        wp: wpUser,
-        supabase: supabaseUser,
-      };
+      if (error) {
+        // TODO Make this full page error
+        useToast(
+          {
+            message: 'Error while getting user info',
+            color: 'danger',
+            icon: alertCircleOutline,
+          },
+          ImpactStyle.Heavy
+        );
+        FirebaseCrashlytics.setContext({
+          key: 'errorCode',
+          type: 'string',
+          value: error.code,
+        });
+        FirebaseCrashlytics.setContext({
+          key: 'errorHint',
+          type: 'string',
+          value: error.hint,
+        });
+        FirebaseCrashlytics.setContext({
+          key: 'errorMessage',
+          type: 'string',
+          value: error.message,
+        });
+        FirebaseCrashlytics.setContext({
+          key: 'errorDetails',
+          type: 'string',
+          value: error.details,
+        });
+        logCatchError(
+          logger,
+          'userDetails:useAsyncState',
+          'error from supabase when getting specific user',
+          new Error(error.message)
+        );
+        return null;
+      } else {
+        supabaseUser = _supabaseUser;
+      }
     }
+
+    return {
+      wp: wpUser,
+      supabase: supabaseUser,
+    };
   } catch (e) {
     logCatchError(
       logger,
@@ -325,7 +338,7 @@ const { state: user, isLoading } = useAsyncState(async () => {
 const isAdmin = computed(() =>
   user.value === null || user.value?.supabase === undefined
     ? false
-    : user.value.supabase.is_admin
+    : user.value.supabase?.is_admin
 );
 
 const canINOTModifyAdmins = computed(() =>
@@ -335,7 +348,7 @@ const canINOTModifyAdmins = computed(() =>
       me.value?.supabase.id === me.value?.supabase.id &&
       me.value.supabase.allow_admins
     ? false
-    : (!me.value.supabase.allow_admins || user.value?.supabase.allow_admins) ??
+    : (!me.value.supabase.allow_admins || user.value?.supabase?.allow_admins) ??
       true
 );
 
@@ -356,7 +369,7 @@ const updateProperty = (
     .update({
       [key]: status,
     })
-    .eq('id', user.value?.supabase.id)
+    .eq('id', user.value?.supabase?.id)
     .then(({ data, error }) => {
       if (error) {
         useToast(

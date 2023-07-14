@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- If a user is not synced with Supabase, instead of failing to load details it only shows WP data and shows a banner that user is not synced
+
 ### Changed
 
 - Removed unused dependencies and optimized other
