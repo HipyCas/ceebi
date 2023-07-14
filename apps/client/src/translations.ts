@@ -1,21 +1,37 @@
-export default {
+const messages = {
   en: {
     ui: {
       close: 'Close',
       save: 'Save',
       cancel: 'Cancel',
       loading: 'Loading',
+      send: 'Send',
     },
     auth: {
       loggingIn: 'Logging in',
       privacyPolicyAcceptance:
         'By using this app, you agree you accept the AEBI\'s <a href="https://biociencias.es/politica-privacidad/">Privacy Policy</a>',
+      logout: 'Log out',
     },
     tab: {
-      qrCode: 'QR Code',
+      attendance: 'Attendance',
       schedule: 'Schedule',
       news: 'News',
       notifications: 'Notifications',
+    },
+    settings: {
+      // Settings
+      localeSelection: 'Select language',
+      interfaceTitle: 'Interface',
+      darkMode: 'Dark mode',
+      workingOnDarkMode: 'Dark mode not available yet',
+      title: 'Settings',
+      identificationTitle: 'Identification',
+      identificationChange: 'Modify ID',
+      notificationsTitle: 'Notifications',
+      eventRemindersToggle: 'Enable event reminders',
+      eventRemindersChooseTime: 'Time before event for notification',
+      eventsRemindersTime0: 'At start time',
     },
     message: {
       minutes: 'minutes',
@@ -42,19 +58,6 @@ export default {
 
       // Schedule
       scheduleGoOnline: 'Go back online to get the updated schedule',
-
-      // Settings
-      localeSelection: 'Select language',
-      settingsInterfaceTitle: 'Interface',
-      darkMode: 'Dark mode',
-      workingOnDarkMode: 'Dark mode not available yet',
-      settingsTitle: 'Settings',
-      settingsIdentificationTitle: 'Identification',
-      settingsIdentificationChange: 'Modify ID',
-      settingsNotificationsTitle: 'Notifications',
-      settingsEventRemindersToggle: 'Enable event reminders',
-      settingsEventRemindersChooseTime: 'Time before event for notification',
-      settingsEventsRemindersTime0: 'At start time',
 
       // components/IdFormModal
       identificationTypeTitle: 'ID document type',
@@ -103,13 +106,21 @@ export default {
       save: 'Guardar',
       cancel: 'Cancelar',
       loading: 'Cargando',
+      send: 'Enviar',
     },
     tab: {
-      qrCode: 'Código QR',
+      attendance: 'Asistencia',
       schedule: 'Horario',
       news: 'Noticias',
       notifications: 'Notificaciones',
     },
+    auth: {
+      loggingIn: 'Iniciando sesión',
+      privacyPolicyAcceptance:
+        'Al usar la aplicación, aceptas la <a href="https://biociencias.es/politica-privacidad/">Política de Privacidad de AEBI</a>',
+      logout: 'Cerrar sesión',
+    },
+    settings: {},
     message: {
       minutes: 'minutos',
       close: 'Cerrar',
@@ -201,12 +212,33 @@ export default {
       save: 'Gardar',
       cancel: 'Cancelar',
       loading: 'Cargando',
+      send: 'Enviar',
+    },
+    auth: {
+      loggingIn: 'Iniciando sesión',
+      privacyPolicyAcceptance:
+        'Ao usar a aplicación, aceptas a <a href="https://biociencias.es/politica-privacidad/">Política de Privacidade de AEBI</a>',
+      logout: 'Pechar sesión',
     },
     tab: {
-      qrCode: 'Código QR',
+      attendance: 'Asistencia',
       schedule: 'Horario',
       news: 'Novas',
       notifications: 'Notificacións',
+    },
+    settings: {
+      // Settings
+      localeSelection: 'Seleccionar idioma',
+      interfaceTitle: 'Interface',
+      darkMode: 'Modo oscuro',
+      workingOnDarkMode: 'O modo oscuro aínda non está dispoñible',
+      title: 'Configuración',
+      identificationTitle: 'Identificación',
+      identificationChange: 'Modificar ID',
+      notificationsTitle: 'Notificacións',
+      eventRemindersToggle: 'Habilitar recordatorios de eventos',
+      eventRemindersChooseTime: 'Antelación ao evento',
+      eventsRemindersTime0: 'Ao comezar',
     },
     message: {
       minutes: 'minutos',
@@ -234,19 +266,6 @@ export default {
 
       // Schedule
       scheduleGoOnline: 'Recupera a conexión a internet para ver o horario',
-
-      // Settings
-      localeSelection: 'Seleccionar idioma',
-      settingsInterfaceTitle: 'Interface',
-      darkMode: 'Modo oscuro',
-      workingOnDarkMode: 'O modo oscuro aínda non está dispoñible',
-      settingsTitle: 'Configuración',
-      settingsIdentificationTitle: 'Identificación',
-      settingsIdentificationChange: 'Modificar ID',
-      settingsNotificationsTitle: 'Notificacións',
-      settingsEventRemindersToggle: 'Habilitar recordatorios de eventos',
-      settingsEventRemindersChooseTime: 'Antelación ao evento',
-      settingsEventsRemindersTime0: 'Ao comezar',
 
       // IdChange (modal wasn't working)
       identificationTypeTitle: 'Tipo de documento',
@@ -295,13 +314,21 @@ export default {
     },
   } as Translation,
   de: {
-    ui: {},
+    ui: {
+      close: '',
+      save: '',
+      cancel: '',
+      loading: '',
+      send: '',
+    },
+    auth: {},
     tab: {
-      qrCode: 'QR-Code',
+      attendance: 'QR-Code',
       schedule: 'Plan',
       news: 'Nachrichten',
       notifications: 'Mitteilung',
     },
+    settings: {},
     message: {
       minutes: 'Minuten',
 
@@ -357,13 +384,16 @@ export default {
       save: 'Gorde',
       cancel: 'Ezeztatu',
       loading: 'Kargatzen',
+      send: '',
     },
+    auth: {},
     tab: {
-      qrCode: 'QR kodea',
+      attendance: 'QR kodea',
       schedule: 'Ordutegia',
       news: 'Berriak',
       notifications: 'Jakinarazpenak',
     },
+    settings: {},
     message: {
       minutes: 'minutu',
       close: 'Itxi',
@@ -390,19 +420,6 @@ export default {
 
       // Schedule
       scheduleGoOnline: 'Ordutegia ikusteko berriro konekta zaitez',
-
-      // Settings
-      localeSelection: 'Hizkuntza hautatu',
-      settingsInterfaceTitle: 'Interfazea',
-      darkMode: 'Ilun modua',
-      workingOnDarkMode: 'Ilun modua oraindik ez dago erabilgarri',
-      settingsTitle: 'Ezarpenak',
-      settingsIdentificationTitle: 'Identifikazioa',
-      settingsIdentificationChange: 'IDa aldatu',
-      settingsNotificationsTitle: 'Jakinarazpenak',
-      settingsEventRemindersToggle: 'Ekitaldien oroigarriak aktibatu',
-      settingsEventRemindersChooseTime: 'Ekitaldirako aurrerapena',
-      settingsEventsRemindersTime0: 'Hasterakoan',
 
       // IdChange (modal wasn't working)
       identificationTypeTitle: 'Dokumento mota',
@@ -454,18 +471,39 @@ export default {
   [lang in SupportedLanguages]: Translation;
 };
 
+export default messages;
+
 export interface Translation {
   ui: {
     close?: string;
     save?: string;
     cancel?: string;
     loading?: string;
+    send?: string;
+  };
+  auth: {
+    loggingIn?: string;
+    privacyPolicyAcceptance?: string;
+    logout?: string;
   };
   tab: {
-    tabQRCode?: string;
-    tabSchedule?: string;
-    tabNews?: string;
-    tabNotifications?: string;
+    attendance?: string;
+    schedule?: string;
+    news?: string;
+    notifications?: string;
+  };
+  settings: {
+    localeSelection?: string;
+    settingsInterfaceTitle?: string;
+    darkMode?: string;
+    workingOnDarkMode?: string;
+    title?: string;
+    identificationTitle?: string;
+    identificationChange?: string;
+    notificationsTitle?: string;
+    eventRemindersToggle?: string;
+    eventRemindersChooseTime?: string;
+    eventsRemindersTime0?: string;
   };
   message: {
     minutes?: string;
@@ -492,19 +530,6 @@ export interface Translation {
 
     // Schedule
     scheduleGoOnline?: string;
-
-    // Settings
-    localeSelection?: string;
-    settingsInterfaceTitle?: string;
-    darkMode?: string;
-    workingOnDarkMode?: string;
-    settingsTitle?: string;
-    settingsIdentificationTitle?: string;
-    settingsIdentificationChange?: string;
-    settingsNotificationsTitle?: string;
-    settingsEventRemindersToggle?: string;
-    settingsEventRemindersChooseTime?: string;
-    settingsEventsRemindersTime0?: string;
 
     // components/IdFormModal
     identificationTypeTitle?: string;

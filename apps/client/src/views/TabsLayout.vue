@@ -5,7 +5,7 @@
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="qrcode" href="/code" @click="log('code')">
           <ion-icon :icon="qrCodeOutline" />
-          <ion-label>{{ $t('tab.qrCode') }}</ion-label>
+          <ion-label>{{ $t('tab.attendance') }}</ion-label>
         </ion-tab-button>
 
         <ion-tab-button

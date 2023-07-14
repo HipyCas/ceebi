@@ -3,11 +3,11 @@
     <Header />
     <ion-content class="h-max">
       <h1 class="ion-margin-top title font-bold text-4xl">
-        {{ $t('message.settingsTitle') }}
+        {{ $t('settings.title') }}
       </h1>
       <PlainLoading
         v-if="loadingUser"
-        text="Iniciando sesión..."
+        :text="`${$t('auth.loggingIn')}...`"
         class="my-10"
       />
       <div class="mx-5 my-3 flex flex-row items-center" v-else-if="user">
@@ -23,7 +23,7 @@
             fill="outline"
             color="secondary"
             @click="logout"
-            >Cerrar sesión</ion-button
+            >{{ $t('auth.logout') }}</ion-button
           >
         </div>
       </div>
@@ -44,7 +44,7 @@
       <ion-card class="first-card">
         <ion-card-header
           ><ion-card-title>
-            {{ $t('message.settingsInterfaceTitle') }}
+            {{ $t('settings.interfaceTitle') }}
           </ion-card-title></ion-card-header
         >
         <ion-card-content>
@@ -53,7 +53,7 @@
             <ion-select
               v-model="$i18n.locale"
               interface="popover"
-              :label="$t('message.localeSelection')"
+              :label="$t('settings.localeSelection')"
               @ion-change="saveLocale($event)"
             >
               <ion-select-option
@@ -80,7 +80,7 @@
           <!--* Dark Mode *-->
           <ion-item lines="inset" button :detail="false">
             <ion-toggle v-model="darkMode">{{
-              $t('message.darkMode')
+              $t('settings.darkMode')
             }}</ion-toggle>
           </ion-item>
         </ion-card-content>
@@ -89,14 +89,14 @@
       <ion-card>
         <ion-card-header
           ><ion-card-title>
-            {{ $t('message.settingsNotificationsTitle') }}
+            {{ $t('settings.notificationsTitle') }}
           </ion-card-title></ion-card-header
         >
         <ion-card-content>
           <!--* Toggle Local event notifications *-->
           <ion-item lines="inset" button :detail="false">
             <ion-toggle v-model="eventRemindersOn">{{
-              $t('message.settingsEventRemindersToggle')
+              $t('settings.eventRemindersToggle')
             }}</ion-toggle>
           </ion-item>
           <!--* Time before event selection *-->
@@ -105,16 +105,16 @@
               v-model="eventRemindersTime"
               interface="popover"
               :disabled="!eventRemindersOn"
-              :label="$t('message.settingsEventRemindersChooseTime')"
+              :label="$t('settings.eventRemindersChooseTime')"
             >
               <ion-select-option value="0">{{
-                $t('message.settingsEventsRemindersTime0')
+                $t('settings.eventsRemindersTime0')
               }}</ion-select-option>
               <ion-select-option
                 v-for="time in [1, 3, 5, 10, 15, 20, 30, 45, 60]"
                 :key="time"
                 :value="time"
-                >{{ time }} {{ $t('message.minutes') }}</ion-select-option
+                >{{ time }} {{ $t('settings.minutes') }}</ion-select-option
               >
             </ion-select>
           </ion-item>
@@ -209,7 +209,7 @@ import { logEvent, setUserProperties } from 'firebase/analytics';
 import { useEventReminders } from '../eventReminders';
 
 const router = useIonRouter();
-const { locale } = useI18n({ useScope: 'global' });
+const { locale, t } = useI18n({ useScope: 'global' });
 const logger = useLogger();
 
 const user: Ref<WPUser> = getUser();
@@ -221,11 +221,11 @@ const preshareLogs = async () => {
       'Comparte este archivo con los desarrolladores de la aplicación via correo a app@biociencias.es o por Telegram a @HipyCas para que se revisen y se intenten arreglar los problemas que hayan surgido',
     buttons: [
       {
-        text: 'Cancelar',
+        text: t('ui.cancel'),
         role: 'cancel',
       },
       {
-        text: 'Enviar',
+        text: t('ui.send'),
         handler: () => {
           shareLogs(logger, 'ceebiclient', {
             dialogTitle: 'Comparte este archivo con la organización',
