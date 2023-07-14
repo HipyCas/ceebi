@@ -39,6 +39,8 @@ import loadSettings from './loadSettings';
 
 const logger = useLogger();
 
+logger.trace('main', App);
+
 //* I18n
 const i18n = createI18n<[Translation], SupportedLanguages>({
   locale: 'en',
