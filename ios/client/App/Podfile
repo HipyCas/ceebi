@@ -37,7 +37,10 @@ end
 target 'App' do
   capacitor_pods
   firebase_pods
-  # Add your Pods here
+end
+
+target 'pushextension' do
+  firebase_pods
 end
 
 post_install do |installer|
