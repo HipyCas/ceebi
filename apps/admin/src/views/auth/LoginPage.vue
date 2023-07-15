@@ -287,19 +287,20 @@ async function login() {
   }
 
   try {
-    const res = await wpapi
-      .post('jwt-auth/v1/token', {
-        json: {
-          username: email.value,
-          password: password.value,
-        },
-        // throwHttpErrors: false,
-      })
-      .json<WPJWTResponse>();
+    const res = await wpapi.post('jwt-auth/v1/token', {
+      json: {
+        username: email.value,
+        password: password.value,
+      },
+      // throwHttpErrors: false,
+    });
 
-    logger.trace('auth:login', 'response from WordPress', res);
+    console.log('login res', res);
+    const resJson = await res.json<WPJWTResponse>();
 
-    setWPToken(res.token);
+    logger.trace('auth:login', 'response from WordPress', resJson);
+
+    setWPToken(resJson.token);
     setUser({
       wp: await wpapi
         .get(`wp/v2/users/me?context=edit`, {
