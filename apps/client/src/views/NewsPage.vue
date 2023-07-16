@@ -32,13 +32,13 @@
             <ion-text color="medium" class="clamp-3">{{
               _new.excerpt || ''
             }}</ion-text>
-            <ion-button fill="clear" @click="open(_new.link || '/news')"
+            <ion-button fill="clear" @click="open(_new)"
               >{{ $t('news.readMore') }}
               <ion-icon :icon="openOutline" slot="end"></ion-icon>
             </ion-button>
           </div>
           <div class="flex-center">
-            <ion-button @click="open('https://biociencias.es/noticias/')">
+            <ion-button @click="openMore()">
               {{ $t('news.moreOnWeb') }}
               <ion-icon
                 slot="end"
@@ -71,7 +71,7 @@
               animated
               :style="{ width: randWidth() }"
             ></ion-skeleton-text>
-            <ion-button fill="clear" @click="open('')"
+            <ion-button fill="clear"
               ><ion-skeleton-text
                 animated
                 style="width: 5em"
@@ -103,36 +103,28 @@ import {
 import Header from '../components/Header.vue';
 import NoConnection from '../components/NoConnection.vue';
 
-// import { default as Parser, Item } from 'rss-parser';
-import { ref, Ref } from 'vue';
-import { Browser } from '@capacitor/browser';
-import { Network } from '@capacitor/network';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Encoding } from '@capacitor/filesystem';
 import { useI18n } from 'vue-i18n';
-// import { trace } from 'firebase/performance';
-// import { performance } from '../firebase';
-import { toast } from '../ui';
 import { wpapi } from '../req';
 import { extractContent } from '../util';
 import type { Post, PostRawShortenedReq } from '../types';
+import { logEvent } from 'firebase/analytics';
+import { analytics, performance } from '../firebase';
+import { trace } from 'firebase/performance';
+import { logCatchError } from '@code/capacitor-utils';
 
 type Item = Post;
 
-// TODO Implement
-class Parser {
-  parseString() {
-    return { items: [] };
-  }
-}
-
-const i18n = useI18n();
-console.log('stuff');
+const { t } = useI18n();
+const logger = useLogger();
 
 /** Load news from cache file */
 async function loadNews(finished: Ref<boolean>, toStore: Ref<Item[]>) {
-  // const loadTrace = trace(performance, 'load_news');
-  // loadTrace.start();
-  console.info('loadNews > loading news from file');
+  const loadTrace = trace(performance, 'load_news');
+  loadTrace.putMetric('total', toStore.value.length);
+  loadTrace.putAttribute('total', toStore.value.length.toString());
+  loadTrace.start();
+
   finished.value = false;
   const { data } = await Filesystem.readFile({
     directory: Directory.Cache,
@@ -141,126 +133,135 @@ async function loadNews(finished: Ref<boolean>, toStore: Ref<Item[]>) {
   });
   toStore.value = JSON.parse(data);
   finished.value = true;
-  // loadTrace.stop();
+
+  loadTrace.stop();
 }
 
-async function getNews(
-  parser: Parser,
-  finished: Ref<boolean>,
-  toStore: Ref<Item[]>
-) {
-  // const fetchTrace = trace(performance, 'fetch_news');
-  // fetchTrace.start();
-  console.info('Getting news...');
+async function getNews(finished: Ref<boolean>, toStore: Ref<Item[]>) {
   finished.value = false;
+
   // Suggest to load news from cache if it takes too long
   const suggestCache = () => {
     if (!finished.value) {
-      toast(i18n.t('news.loadedOffline'), cloudDownloadOutline);
+      useToast({
+        message: t('news.loadedOffline'),
+        icon: cloudDownloadOutline,
+      });
       loadNews(finished, toStore);
     }
   };
   setTimeout(suggestCache, 5000); //* Increased after ceebi-15
-  // await new Promise((r) => setTimeout(r, 19000));
-  // const rss = await fetch('https://www.biociencias.es/feed');
-  // const feed = await parser.parseString();
-  const res = (await wpapi
-    .get('wp/v2/posts', {
-      searchParams: {
-        _fields: 'id,title,excerpt,link',
-      },
-    })
-    .json()) as PostRawShortenedReq[];
-  console.log(res);
-  toStore.value = res.map((it) => ({
-    ...it,
-    title: it.title.rendered.replace(/(&#8220;)|(&#8221)/g, '"'),
-    excerpt: extractContent(
-      it.excerpt.rendered.replace(
-        `<span class="screen-reader-text">${it.title.rendered}</span> Leer más »`,
-        ''
-      )
-    ),
-  })); //feed.items;
-  // await new Promise((r) => setTimeout(r, 200));
-  finished.value = true;
-  // fetchTrace.stop();
-  // if (event !== undefined)
-  //   if (event.target !== null) event.target.complete();
-  // const saveNews = trace(performance, 'save_news');
-  // saveNews.start();
-  Filesystem.writeFile({
-    directory: Directory.Cache,
-    path: 'news.json',
-    recursive: true,
-    data: JSON.stringify(toStore.value),
-    encoding: Encoding.UTF8,
-  }).catch((e) => {
-    console.log(e);
-    // saveNews.stop();
-  });
-  // .then(() => saveNews.stop());
+
+  const fetchTrace = trace(performance, 'fetch_news');
+  fetchTrace.start();
+
+  try {
+    const res = (await wpapi
+      .get('wp/v2/posts', {
+        searchParams: {
+          _fields: 'id,title,excerpt,link',
+        },
+        throwHttpErrors: true,
+      })
+      .json()) as PostRawShortenedReq[];
+
+    fetchTrace.putMetric('total', res.length);
+    fetchTrace.putAttribute('total', res.length.toString());
+    fetchTrace.stop();
+
+    logger.trace('news:getNews', `loaded ${res.length} news from server`, {
+      news: res,
+    });
+
+    toStore.value = res.map((it) => ({
+      ...it,
+      title: it.title.rendered.replace(/(&#8220;)|(&#8221)/g, '"'),
+      excerpt: extractContent(
+        it.excerpt.rendered.replace(
+          `<span class="screen-reader-text">${it.title.rendered}</span> Leer más »`,
+          ''
+        )
+      ),
+    }));
+
+    finished.value = true;
+
+    logger.trace('news:getNews', 'saving to cache news', toStore.value);
+    const saveNews = trace(performance, 'save_news');
+    saveNews.start();
+    Filesystem.writeFile({
+      directory: Directory.Cache,
+      path: 'news.json',
+      recursive: true,
+      data: JSON.stringify(toStore.value),
+      encoding: Encoding.UTF8,
+    }).catch(() => saveNews.stop());
+  } catch (e) {
+    logCatchError(
+      logger,
+      'news:getNews',
+      'error when getting and saving news from the server',
+      e
+    );
+  }
 }
 
 const news: Ref<Item[]> = ref([]);
 const loaded = ref(false);
-
-const parser = new Parser();
 
 const connected = ref(false);
 const haveCachedNews = ref(false);
 (async () => {
   const status = await Network.getStatus();
   connected.value = status.connected;
-  console.info('News.vue > Am i connected?', connected.value);
   if (connected.value) {
-    getNews(parser, loaded, news);
+    getNews(loaded, news);
     haveCachedNews.value = true;
   } else {
     try {
-      console.info(
-        await Filesystem.stat({
-          path: 'news.json',
-          directory: Directory.Cache,
-        })
-      );
+      await Filesystem.stat({
+        path: 'news.json',
+        directory: Directory.Cache,
+      });
       haveCachedNews.value = true;
       loadNews(loaded, news);
     } catch (e) {
-      console.info('No cache news', e);
       haveCachedNews.value = false;
     }
-    console.info('After all, do I have cached news? ', haveCachedNews.value);
   }
 })();
 Network.addListener('networkStatusChange', (status) => {
   connected.value = status.connected;
-  console.log(
-    'Connected? ',
-    status.connected,
-    '. Have cache news? ',
-    haveCachedNews.value
-  );
-  if (status.connected) getNews(parser, loaded, news); // TODO Something here raises an error: Uncaught (in promise) Error: File does not exist. -> Ok, I think I don't have to fix it and my problem was CORS
-  // else loadNews(loaded, )
+  if (status.connected) getNews(loaded, news); // TODO Something here raises an error: Uncaught (in promise) Error: File does not exist. -> Ok, I think I don't have to fix it and my problem was CORS
   //* I don't actually need to reload the news from cache if user goes offline, they should already be loaded
 });
 
-const refreshNews = (event) => {
-  console.log('refresing news');
+const refreshNews = (event: any) => {
   setTimeout(() => {
-    console.log('refresing news v2');
     event.target.complete();
   }, 5000);
   (async () => {
-    if (connected.value) await getNews(parser, loaded, news);
-    else toast(i18n.t('news.cannotRefreshOffline'), cloudOfflineOutline);
+    if (connected.value) await getNews(loaded, news);
+    else
+      useToast({
+        message: t('news.cannotRefreshOffline'),
+        icon: cloudOfflineOutline,
+      });
   })();
 };
 
-function open(url: string) {
+function open(_new: Post) {
+  logEvent(analytics, `open_noticias_${_new.title}`);
   Browser.open({
-    url,
+    url: _new.link,
+    presentationStyle: 'popover',
+  });
+}
+
+function openMore() {
+  logEvent(analytics, `open_noticias_mas`);
+  Browser.open({
+    url: 'https://biociencias.es/noticias/',
     presentationStyle: 'popover',
   });
 }
