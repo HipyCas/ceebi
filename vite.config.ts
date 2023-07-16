@@ -6,6 +6,8 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import Unfonts from 'unplugin-fonts/vite';
 import AutoImport from 'unplugin-auto-import/vite';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import path from 'path';
 
 loadEnv();
 
@@ -114,6 +116,10 @@ export const extendBaseConfig = (
         dirs: ['./src/components'],
         dts: './src/auto-imports.d.ts',
         ...extraConfig?.plugins?.extend?.AutoImport,
+      }),
+      VueI18nPlugin({
+        include: [path.resolve(__dirname, './locales/**.yaml')],
+        strictMessage: false, // TODO This disables check for HTML in messages, you should change the messages instead and revert this to true
       }),
       ...(extraConfig?.plugins?.include === undefined
         ? []

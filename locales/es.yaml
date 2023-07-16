@@ -1,0 +1,85 @@
+ui:
+  close: Cerrar
+  save: Guardar
+  cancel: Cancelar
+  loading: Cargando
+  send: Enviar
+  minutes: minutos
+tab:
+  attendance: Asistencia
+  schedule: Horario
+  news: Noticias
+  notifications: Notificaciones
+auth:
+  loggingIn: Iniciando sesión
+  privacyPolicyAcceptance:
+    Al usar la aplicación, aceptas la <a href="https://biociencias.es/politica-privacidad/">Política
+    de Privacidad de AEBI</a>
+  logout: Cerrar sesión
+  loggedOutSuccess: Sesión cerrada con éxito
+appUpdate:
+  alertHeader: Actualización disponible
+  alertMessage: |-
+    Te recomendamos que atualices la aplicación a la última versión.
+    Versión actual: {currentVersion} . Versión disponible: {availableVersion}
+  alertLater: Más tarde
+  alertUpdate: Actualizar
+  toastUpdated: App actualizada, reinicia para aplicar los cambios
+news:
+  loadedOffline: No se pueden obtener las noticias, cargando guardadas
+  cannotRefreshOffline: No es posible recargar las noticias sin conexión
+  readMore: Leer más
+  connectAtLeastOnce: Conéctese a internet polo menos unha vez para poder ver as
+    novas
+  moreOnWeb: Más en la web
+settings:
+  title: Configuración
+  interfaceTitle: Interfaz
+  localeSelection: Seleccionar idioma
+  localeSavingError: Error al guardar el idioma
+  darkMode: Modo oscuro
+  notificationsTitle: Notificaciones
+  eventRemindersToggle: Habilitar recordatorios de eventos
+  eventRemindersChooseTime: Antelación al evento
+  eventsRemindersTime0: Al empezar
+  helpTitle: Ayuda
+  helpFaqAndInfo: Preguntas frecuentes y más info
+  helpShareLogs: Compartir registro de errores
+  helpShareLogsAlertHeader: Compartir registro de errores
+  helpShareLogsAlertMessage: Comparte este archivo con los desarrolladores de la
+    aplicación via correo a {email} o por Telegram a {telegram} para que se revisen
+    y se intenten arreglar los problemas que hayan surgido
+  helpShareLogsDialogTitle: Comparte este archivo con la organización
+  viewSlides: Ver introducción de nuevo
+about:
+  developedBy: App desarrollada por
+  aboutMe: Sobre mí
+  sourceCode: Código fuente
+  patron: MECENAS
+  platinum: Platino
+  gold: Oro
+  silver: Plata
+  bronze: Bronce
+  collaborators: COLABORADORES
+  errorLoadingImages: Error al intentar descargar imágenes
+message:
+  close: Cerrar
+  save: Guardar
+  cancel: Cancelar
+  loading: Cargando
+  qrcodeIdNotSet: Configura tu ID para usar el acceso por QR
+  qrcodeSetId: Añadir ID
+  viewAttendance: Ver asistencia
+  attendance: Asistencia
+  youveAssistedTo: Has asistido a
+  outOfTotalOf: horas de un total de 25 horas
+  eventsYouveAssisted: Eventos a los que has asistido
+  noAssistance: Aún no tienes asistencia registrada
+  attendanceConnectToSee: Conéctate a internet para poder ver tu asistencia
+  noConnection: Sin conexión
+  scheduleGoOnline: Conéctate de nuevo para ver el horario
+  noNotificationsYet: Aún no hay notificaciones
+  notificationSentOn: Enviado el
+  eventNoLocation: Sin localización asignada
+  eventSpeakers: Ponentes
+  eventViewOnWeb: Ver en la web

@@ -1,0 +1,50 @@
+ui:
+  close: Itxi
+  save: Gorde
+  cancel: Ezeztatu
+  loading: Kargatzen
+  send: ''
+  minutes: minutu
+auth: {}
+tab:
+  attendance: QR kodea
+  schedule: Ordutegia
+  news: Berriak
+  notifications: Jakinarazpenak
+appUpdate: {}
+news:
+  loadedOffline: Ezin dira berriak lortu, gordetakoak kargatzen
+  cannotRefreshOffline: Ezin dira berriak berriro kargatu konexiorik gabe
+  readMore: Gehiago irakurri
+  connectAtLeastOnce: Berriak ikusteko Internetera konekta zaitez gutxienez aldi
+    bat
+  moreOnWeb: Web-orrian gehiago
+settings: {}
+about:
+  patron: MEZENAS
+  platinum: Platinoa
+  gold: Urreaa
+  silver: Zilarra
+  bronze: Brontzea
+  collaborators: KOLABORATZAILEAK
+  developedBy: '-(e)k garatutako App-a'
+  aboutMe: Niri buruz
+  sourceCode: Iturburu-kodea
+  errorLoadingImages: Irudiak deskargatzerakoan errore bat gertatu da
+message:
+  qrcodeIdNotSet: Zure IDa konfigura ezazu QR-en bidez sarrera erabiltzeko
+  qrcodeSetId: IDa gehitu
+  viewAttendance: Jendea ikusi
+  attendance: Jendea
+  youveAssistedTo: '-(e)ra azaldu zara'
+  outOfTotalOf: ordu guztizko 25 orduetatik
+  eventsYouveAssisted: Azaldu naizen ekitaldiak
+  noAssistance: Oraindik ez duzu zure etortzea erregistratu
+  attendanceConnectToSee: Internetera konektatu zure bertaratzea ikusteko
+  noConnection: Konexiorik gabe
+  scheduleGoOnline: Ordutegia ikusteko berriro konekta zaitez
+  noNotificationsYet: Oraindik ez dago jakinarazpenik
+  notificationSentOn: '-(e)an bidalita'
+  eventNoLocation: Oraindik ez dago kokapenik
+  eventSpeakers: Hizlariak
+  eventViewOnWeb: Web-orrian ikusi

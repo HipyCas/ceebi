@@ -1,0 +1,67 @@
+ui:
+  close: Pechar
+  save: Gardar
+  cancel: Cancelar
+  loading: Cargando
+  send: Enviar
+  minutes: minutos
+auth:
+  loggingIn: Iniciando sesión
+  privacyPolicyAcceptance:
+    Ao usar a aplicación, aceptas a <a href="https://biociencias.es/politica-privacidad/">Política
+    de Privacidade de AEBI</a>
+  logout: Pechar sesión
+tab:
+  attendance: Asistencia
+  schedule: Horario
+  news: Novas
+  notifications: Notificacións
+appUpdate: {}
+news:
+  takingLongMessage: A descarga está a tardar máis do esperado
+  takingLongerLoadCache: Ver offline
+  takingLongerWait: Agardar
+  cannotRefreshOffline: Non é posible recargar as noticias sen conexión
+  readMore: Ler máis
+  loadedOffline: Cargadas as noticias descargadas
+  connectAtLeastOnce:
+    Conéctate a internet por lo menos una vez para poder ver las
+    noticias
+  moreOnWeb: Máis na nosa web
+settings:
+  title: Configuración
+  localeSelection: Seleccionar idioma
+  interfaceTitle: Interface
+  darkMode: Modo oscuro
+  notificationsTitle: Notificacións
+  eventRemindersToggle: Habilitar recordatorios de eventos
+  eventRemindersChooseTime: Antelación ao evento
+  eventsRemindersTime0: Ao comezar
+about:
+  patron: MECENAS
+  platinum: Platino
+  gold: Ouro
+  silver: Plata
+  bronze: Bronce
+  collaborators: COLABORADORES
+  developedBy: Creado por
+  aboutMe: Sobre mín
+  sourceCode: Código fonte
+  errorLoadingImages: Erro ao tentar descargar imaxes
+message:
+  qrcodeIdNotSet: Configura o teu ID para usar o acceso por QR
+  qrcodeSetId: Engadir ID
+  viewAttendance: Ver asistencia
+  attendance: Asistencia
+  youveAssistedTo: Asistiches a
+  outOfTotalOf: horas dun total de 25 horas
+  eventsYouveAssisted: Eventos aos que asistiches
+  noAssistance: Aínda non tes asistencia rexistrada
+  attendanceConnectToSee: Conéctate ao internet para poder ver a túa asistencia
+  noConnection: Sen conexión
+  scheduleGoOnline: Recupera a conexión a internet para ver o horario
+  noNotificationsYet: Aínda non hay notificacións
+  notificationSentOn: Enviado o
+  eventNoLocation: Sen localización asignada
+  eventSpeakers: Poñentes
+  eventViewOnWeb: Ver na web

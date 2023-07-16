@@ -24,7 +24,7 @@ import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { createI18n } from 'vue-i18n';
 import * as locale from 'locale-codes';
-import { default as messages, SupportedLanguages } from './translations';
+import { default as _messages, SupportedLanguages } from './translations';
 import type { Translation } from './translations';
 import { KEY_LOCALE, KEY_WP_TOKEN } from './vars';
 import {
@@ -36,6 +36,8 @@ import {
 import { loadingUser } from './user';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 import loadSettings from './loadSettings';
+
+import messages from '@intlify/unplugin-vue-i18n/messages';
 
 const logger = useLogger();
 

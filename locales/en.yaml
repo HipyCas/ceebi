@@ -1,0 +1,73 @@
+ui:
+  close: Close
+  save: Save
+  cancel: Cancel
+  loading: Loading
+  send: Send
+  minutes: minutes
+auth:
+  loggingIn: Logging in
+  privacyPolicyAcceptance: By using this app, you agree you accept the AEBI's <a
+    href="https://biociencias.es/politica-privacidad/">Privacy Policy</a>
+  logout: Log out
+  loggedOutSuccess: Successfully logged out
+tab:
+  attendance: Attendance
+  schedule: Schedule
+  news: News
+  notifications: Notifications
+appUpdate:
+  alertHeader: App update available
+  alertMessage: |-
+    We recommend you to update the application.
+    Current version: {currentVersion} . New version: {availableVersion}
+  alertLater: Later
+  alertUpdate: Update
+  toastUpdated: App updated, restart to apply updates
+news:
+  loadedOffline: Couldn't fetch news, loaded locally saved news
+  cannotRefreshOffline: Cannot refresh news while offline
+  readMore: Read more
+  connectAtLeastOnce: You have to connect at least once to see news
+  moreOnWeb: More on the web
+settings:
+  title: Settings
+  interfaceTitle: Interface
+  localeSelection: Select language
+  darkMode: Dark mode
+  notificationsTitle: Notifications
+  eventRemindersToggle: Enable event reminders
+  eventRemindersChooseTime: Time before event for notification
+  eventsRemindersTime0: At start time
+  helpTitle: Help
+  helpFaqAndInfo: FAQ and more info
+  helpShareLogs: Share error logs
+  viewSlides: Watch presentation again
+about:
+  patron: PATRONS
+  platinum: Platinum
+  gold: Gold
+  silver: Silver
+  bronze: Bronze
+  collaborators: COLLABORATORS
+  developedBy: Developed by
+  aboutMe: About me
+  sourceCode: Source code
+  errorLoadingImages: Error when downloading images
+message:
+  qrcodeIdNotSet: Setup an ID to use QR code access
+  qrcodeSetId: Set ID
+  viewAttendance: View attendance
+  attendance: Attendance
+  youveAssistedTo: You have attended to
+  outOfTotalOf: hours out of a total of 25 hours
+  eventsYouveAssisted: Events you have attended
+  noAssistance: No attendance registered
+  attendanceConnectToSee: Go online to check your attendance
+  noConnection: No connection
+  scheduleGoOnline: Go back online to get the updated schedule
+  noNotificationsYet: No notifications yet
+  notificationSentOn: Sent on
+  eventNoLocation: No location assigned
+  eventSpeakers: Speakers
+  eventViewOnWeb: View on the web
