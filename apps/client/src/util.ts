@@ -10,5 +10,5 @@ export const extractContent = (html: string) => {
 export const debug = (scope: string, msg: string, color?: string) => {
   const _msg = `[${scope}] ${msg}`;
   console.log(_msg);
-  toast(_msg, bugOutline, color);
+  // useToast(_msg, bugOutline, color);
 };

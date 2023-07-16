@@ -147,17 +147,15 @@ if (isPlatform('capacitor')) {
                 'onFlexibleUpdateStateChange',
                 ({ installStatus }) => {
                   if (installStatus === FlexibleUpdateInstallStatus.INSTALLED)
-                    toastController
-                      .create({
-                        message: t('appUpdate.toastUpdated'),
-                        buttons: [
-                          {
-                            text: t('appUpdate.alertUpdate'),
-                            handler: () => AppUpdate.completeFlexibleUpdate(),
-                          },
-                        ],
-                      })
-                      .then((toast) => toast.present());
+                    useToast({
+                      message: t('appUpdate.toastUpdated'),
+                      buttons: [
+                        {
+                          text: t('appUpdate.alertUpdate'),
+                          handler: () => AppUpdate.completeFlexibleUpdate(),
+                        },
+                      ],
+                    });
                 }
               );
             } else if (immediateUpdateAllowed) {
