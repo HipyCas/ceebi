@@ -24,12 +24,10 @@
 </template>
 
 <script setup lang="ts">
-// TODO Change to script setup
 import { IonIcon, modalController } from '@ionic/vue';
 import * as ionicons from 'ionicons/icons';
 import type { Event } from '@wupp/mec-ts';
 import { EVENT_ICON_FIELD_LABEL } from '../vars';
-import { computed } from 'vue';
 import EventDetailsModalVue from './EventDetailsModal.vue';
 
 defineProps<{
@@ -51,12 +49,6 @@ const icon = computed(() => {
   };
 });
 
-// onMounted(() => {
-//   const buttons = document.querySelectorAll('[data-animation="ripple"]');
-
-//   buttons.forEach((b) => b.addEventListener('click', ripplet));
-// });
-
 async function eventModal(event: Event) {
   const modal = await modalController.create({
     component: EventDetailsModalVue,
@@ -66,100 +58,15 @@ async function eventModal(event: Event) {
   });
   modal.present();
 }
-
-// const old = {
-//   // props: {
-//   //   events: {
-//   //     type: Array as PropType<Array<Event>>,
-//   //     required: true,
-//   //   },
-//   // },
-//   // components: { IonIcon },
-//   setup() {
-//     return {
-//       // icon(type: EventType): string {
-//       //   switch (type) {
-//       //     case EventType.Conferencia:
-//       //       return megaphoneOutline;
-//       //     case EventType.Microcharla:
-//       //       return chatbubbleEllipsesOutline;
-//       //     case EventType.Taller:
-//       //       return buildOutline;
-//       //     case EventType.ForoEmpresas:
-//       //       return briefcaseOutline;
-//       //     case EventType.Break:
-//       //       return cafeOutline;
-//       //     case EventType.ComidaEventual:
-//       //       return restaurantOutline;
-//       //     case EventType.Social:
-//       //       return peopleOutline;
-//       //   }
-//       //   return helpOutline;
-//       // },
-//       // icon(event: Event): string {
-//       //   //@ts-expect-error Index types don't match
-//       //   return ionicons[
-//       //     `${
-//       //       (
-//       //         event.fields.find(
-//       //           (el) => el.label === EVENT_ICON_FIELD_LABEL
-//       //         ) || {
-//       //           value: '',
-//       //         }
-//       //       ).value
-//       //     }Outline`
-//       //   ];
-//       // },
-//       // displayMinutes(event: Event): string {
-//       //   const mins = event.startTime.getMinutes();
-//       //   if (mins < 10) return "0" + mins;
-//       //   return mins.toString();
-//       // },
-//       // presenters(event: Event): string {
-//       //   console.info(
-//       //     '??? presenters event',
-//       //     event.data.title,
-//       //     'data',
-//       //     event.data.speakers
-//       //   );
-//       //   return Object.values(event.data.speakers || {})
-//       //     .map((speaker) => speaker.name)
-//       //     .join(', ');
-//       // },
-//     };
-//   },
-//   mounted() {
-//     const buttons = document.querySelectorAll('[data-animation="ripple"]');
-
-//     buttons.forEach((b) => b.addEventListener('click', ripplet));
-//   },
-//   methods: {
-//     async eventModal(event: Event) {
-//       const modal = await modalController.create({
-//         component: EventDetailsModalVue,
-//         breakpoints: [0, 0.45, 0.75, 1],
-//         initialBreakpoint: 1,
-//         componentProps: { event },
-//       });
-//       modal.present();
-//     },
-//   },
-// };
 </script>
 
 <style scoped>
 #vertical-bar {
-  /* --header-height: 8.25em; */
-  /* top: calc(var(--header-height) + 2em + 40px); */
   left: 2em;
   top: 0;
-  /* position: absolute; */
   position: absolute;
-  /* z-index: -10; */
   width: 10px;
-  /* height: 100%; */
   height: 100%;
-  /* height: 100px; TODO Height should depend on items height  */
   background: var(--ion-color-secondary-shade);
 }
 
@@ -169,7 +76,6 @@ async function eventModal(event: Event) {
 
 .event {
   padding-left: 30px;
-  /* margin-top: -15px; */
   padding-top: 5px;
   position: relative;
 }

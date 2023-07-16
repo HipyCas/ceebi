@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <ion-icon :icon="wifiOutline" size="large"></ion-icon>
-    {{ $t("message.noConnection") }}
+    {{ $t('ui.noConnection') }}
     <ion-note><slot></slot></ion-note>
   </div>
 </template>
 
 <script setup lang="ts">
-import { IonIcon, IonNote } from "@ionic/vue";
-import { wifiOutline } from "ionicons/icons";
+import { IonIcon, IonNote } from '@ionic/vue';
+import { wifiOutline } from 'ionicons/icons';
 </script>
 
 <style>

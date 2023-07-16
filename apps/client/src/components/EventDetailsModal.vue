@@ -26,7 +26,7 @@
       <div class="info-item">
         <ion-icon :icon="locationOutline"></ion-icon>
         <span>{{
-          event.locations.at(0)?.name || $t('message.eventNoLocation')
+          event.locations.at(0)?.name || $t('schedule.eventNoLocation')
         }}</span>
       </div>
       <div class="info-item">
@@ -44,7 +44,7 @@
         <ion-accordion value="colors">
           <ion-item slot="header">
             <ion-icon slot="start" :icon="peopleOutline"></ion-icon>
-            <ion-label>{{ $t('message.eventSpeakers') }}</ion-label>
+            <ion-label>{{ $t('schedule.eventSpeakers') }}</ion-label>
           </ion-item>
           <ion-list slot="content">
             <ion-item
@@ -69,7 +69,7 @@
         target="_blank"
         :detail="false"
       >
-        <ion-label>{{ $t('message.eventViewOnWeb') }}</ion-label>
+        <ion-label>{{ $t('schedule.eventViewOnWeb') }}</ion-label>
         <ion-icon slot="end" :icon="openOutline"></ion-icon>
       </ion-item>
     </div>
@@ -95,7 +95,6 @@ import {
   IonAvatar,
   modalController,
 } from '@ionic/vue';
-import { computed, defineProps } from 'vue';
 import {
   locationOutline,
   timeOutline,
@@ -105,30 +104,12 @@ import {
   calendarOutline,
 } from 'ionicons/icons';
 
-const props = defineProps<{
+defineProps<{
   event: Event;
 }>();
 
 function dismissModal() {
   modalController.dismiss();
-}
-
-function firstProp(obj?: any): any {
-  console.log('getting first prop for', obj);
-  return obj !== undefined
-    ? obj[Object.keys(obj)[0]]
-    : {
-        name: '',
-      };
-}
-
-function dayFormat(timestamp: number) {
-  const date = new Date(timestamp * 1000);
-  console.log('date', date.toLocaleString());
-  return date.toLocaleDateString([], {
-    weekday: 'long',
-    day: 'numeric',
-  });
 }
 
 function dayFormat2(date: Date) {
@@ -137,12 +118,6 @@ function dayFormat2(date: Date) {
     day: 'numeric',
   });
 }
-
-function objToArr<T>(obj: Record<string, T>): Array<T> {
-  return Object.values(obj);
-}
-
-// const speakers = computed(() => objToArr(props.event.data.speakers || {}));
 </script>
 
 <style scoped>

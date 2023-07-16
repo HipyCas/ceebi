@@ -8,119 +8,68 @@
       >
         <b>{{ $t('about.patron') }}</b>
       </section>
+
       <template v-if="mecenasPlatino.length > 0">
         <section class="flex-row title" style="background: #e5e4e2">
           🏆 &nbsp;&nbsp; {{ $t('about.platinum') }} &nbsp;&nbsp; 🏆
         </section>
         <div class="flex-row ion-padding images-container">
-          <template v-for="platino in mecenasPlatino" :key="platino.name">
-            <a class="img-link" :href="platino.site">
-              <img :src="platino.src" :alt="platino.name" height="100" />
-            </a>
-          </template>
+          <img
+            v-for="platino in mecenasPlatino"
+            :key="platino.name"
+            class="img-link"
+            :src="platino.src"
+            :alt="platino.name"
+            height="100"
+            @click="openMecena(platino)"
+          />
         </div>
       </template>
-      <!--div class="flex-row ion-padding images-container">
-        <template v-for="platino in mecenas.platino">
-          <a
-            class="img-link"
-            v-if="imagesLoaded"
-            :key="platino.nombre"
-            :href="platino.web"
-          >
-            <img :src="platino.img" :alt="platino.nombre" height="100" />
-          </a>
-        </template>
-      </!--div-->
 
       <template v-if="mecenasOro.length > 0">
         <section class="flex-row title" style="background: #d6ac39">
           🥇 &nbsp;&nbsp; {{ $t('about.gold') }} &nbsp;&nbsp; 🥇
         </section>
-        <!--div-- class="flex-row ion-padding images-container">
-          <template v-for="oro in mecenasOro">
-            <a
-              class="img-link"
-              v-if="imagesLoaded"
-              :key="oro.nombre"
-              :href="oro.web"
-            >
-              <img :src="oro.img" :alt="oro.nombre" height="100" />
-            </a>
-          </template>
-        </!--div-->
         <div class="flex-row ion-padding images-container">
-          <a
+          <img
             v-for="oro in mecenasOro"
             :key="oro.name"
-            class="img-link silver-smaller-link"
-            :href="oro.site"
-          >
-            <img class="colaborador-bronce" :src="oro.src" :alt="oro.name" />
-          </a>
+            class="colaborador-bronce img-link silver-smaller-link"
+            :src="oro.src"
+            :alt="oro.name"
+            @click="openMecena(bronce)"
+          />
         </div>
       </template>
+
       <template v-if="mecenasPlata.length > 0">
         <section class="flex-row title" style="background: #bab7b2">
           🥈 &nbsp;&nbsp; {{ $t('about.silver') }} &nbsp;&nbsp; 🥈
         </section>
-        <!--div-- class="flex-row ion-padding images-container">
-          <template v-for="plata in mecenas.plata">
-            <a
-              class="img-link silver-smaller-link"
-              v-if="imagesLoaded"
-              :key="plata.nombre"
-              :href="plata.web"
-            >
-              <img
-                class="colaborador-plata"
-                :src="plata.img"
-                :alt="plata.nombre"
-              />
-            </a>
-          </template>
-        </!--div-->
         <div class="flex-row ion-padding images-container">
           <template v-for="plata in mecenasPlata" :key="plata.name">
-            <a class="img-link silver-smaller-link" :href="plata.site">
-              <img
-                class="colaborador-bronce"
-                :src="plata.src"
-                :alt="plata.name"
-              />
-            </a>
+            <img
+              class="colaborador-bronce img-link silver-smaller-link"
+              :src="plata.src"
+              :alt="plata.name"
+              @click="openMecena(plata)"
+            />
           </template>
         </div>
       </template>
+
       <template v-if="mecenasBronce.length > 0">
         <section class="flex-row title" style="background: #cd7f32">
           🥉 &nbsp;&nbsp; {{ $t('about.bronze') }} &nbsp;&nbsp; 🥉
         </section>
-        <!--div-- class="flex-row ion-padding images-container">
-          <template v-for="bronce in mecenas.bronce">
-            <a
-              class="img-link silver-smaller-link"
-              v-if="imagesLoaded"
-              :href="bronce.web"
-              :key="bronce.nombre"
-            >
-              <img
-                class="colaborador-bronce"
-                :src="bronce.img"
-                :alt="bronce.nombre"
-              />
-            </a>
-          </template>
-        </!--div-->
         <div class="flex-row ion-padding images-container">
           <template v-for="bronce in mecenasBronce" :key="bronce.name">
-            <a class="img-link silver-smaller-link" :href="bronce.site">
-              <img
-                class="colaborador-bronce"
-                :src="bronce.src"
-                :alt="bronce.name"
-              />
-            </a>
+            <img
+              class="colaborador-bronce img-link silver-smaller-link"
+              :src="bronce.src"
+              :alt="bronce.name"
+              @click="openMecena(bronce)"
+            />
           </template>
         </div>
       </template>
@@ -137,32 +86,15 @@
             v-for="colaborador in mecenasColaborador"
             :key="colaborador.name"
           >
-            <a class="img-link silver-smaller-link" :href="colaborador.site">
-              <img
-                class="colaborador-bronce"
-                :src="colaborador.src"
-                :alt="colaborador.name"
-              />
-            </a>
+            <img
+              class="colaborador-bronce img-link silver-smaller-link"
+              :src="colaborador.src"
+              :alt="colaborador.name"
+              @click="openMecena(colaborador)"
+            />
           </template>
         </div>
       </template>
-      <!--div-- class="flex-row ion-padding images-container">
-        <template v-for="colaborador in mecenas.colaborador">
-          <a
-            class="img-link silver-smaller-link"
-            v-if="imagesLoaded"
-            :href="colaborador.web"
-            :key="colaborador.nombre"
-          >
-            <img
-              class="colaborador-bronce"
-              :src="colaborador.img"
-              :alt="colaborador.nombre"
-            />
-          </a>
-        </template>
-      </!--div-->
 
       <div class="flex-row ion-margin-top">
         <p>
@@ -173,7 +105,7 @@
       <div class="flex-row ion-margin-bottom">
         <ion-button
           color="secondary"
-          @click="goto('https://github.com/HipyCas/', 'personal_profile')"
+          @click="open('https://github.com/HipyCas/', 'personal_profile')"
         >
           {{ $t('about.aboutMe') }}
           <ion-icon slot="start" :md="planet" :ios="planet"></ion-icon>
@@ -182,7 +114,7 @@
           fill="outline"
           color="secondary"
           @click="
-            goto('https://github.com/biocienciasgrx/ceebi/', 'source_code')
+            open('https://github.com/biocienciasgrx/ceebi/', 'source_code')
           "
         >
           {{ $t('about.sourceCode') }}
@@ -209,31 +141,11 @@ import formatISO from 'date-fns/formatISO';
 import { CapacitorHttp } from '@capacitor/core';
 
 import { logCatchError } from '@code/capacitor-utils';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../firebase';
 
 // TODO Show error toast in case images don't load (there is a translation for that)
 
-// const modMecenas: Mecenas = {
-//   colaborador: [],
-//   bronce: [],
-//   plata: [],
-//   oro: [],
-//   platino: [],
-// };
-// for (const prop of Object.keys(_mecenas)) {
-//   for (let i = 0; i < _mecenas[prop as MecenasLevel].length; i++)
-//     //@ts-expect-error
-//     _mecenas[prop as MecenasLevel][i]["finalImg"] === undefined
-//       ? (modMecenas[prop as MecenasLevel][i] = {
-//           ..._mecenas[prop as MecenasLevel][i],
-//           finalImg: "",
-//         } as Mecena)
-//       : (modMecenas[prop as MecenasLevel][i] = {
-//           ..._mecenas[prop as MecenasLevel][i],
-//           //@ts-ignore
-//           finalImg: _mecenas["finalmg"],
-//         });
-// }
-const i18n = useI18n();
 const logger = useLogger();
 
 interface Mecena {
@@ -258,12 +170,11 @@ interface MediaItem {
   source_url: string;
 }
 
-const dbg = (msg: string, content: any) => {
+const dbg: <T>(msg: string, content: T) => T = (msg: string, content) => {
   console.log(msg, content);
   return content;
 };
 
-console.log('MEDIA> start');
 const parsed = ref([] as Mecena[]);
 
 (async () => {
@@ -542,166 +453,18 @@ const mecenasColaborador = computed(() =>
   parsed.value.filter((p) => p.category === 'Colaborador')
 );
 
-const goto = (url: string, msg: string) => {
-  // logEvent(analytics, 'open_' + msg);
+const open = (url: string, msg: string) => {
+  logEvent(analytics, `open_${msg}`);
   window.location.href = url;
 };
 
-// const mecenas = ref({
-//   colaborador: [],
-//   bronce: [],
-//   plata: [],
-//   oro: [],
-//   platino: [],
-// } as Mecenas);e() {}
-
-// const imagesLoaded = ref(false);
-// const imageLoadings = ref({
-//   colaborador: false,
-//   bronce: false,
-//   plata: false,
-//   oro: true,
-//   platino: false,
-// });
-
-// const imageExists = async (path: string) => {
-//   const read = await Filesystem.readdir({
-//     path: IMAGES_DIRECTORY,
-//     directory: Directory.Cache,
-//   });
-//   console.info('dirread: ', read.files, '; look for ', path);
-//   return read.files.map((file) => file.name).includes(path);
-// };
-
-// // const imageTrace = trace(performance, 'sponsor_images_load');
-// const imageTrace = {
-//   start: () => false,
-//   stop: () => false,
-// };
-
-// (async () => {
-//   imageTrace.start();
-//   console.log('> Tracing started');
-//   try {
-//     const response = await fetch(
-//       'https://raw.githubusercontent.com/biocienciasgrx/ceebi/master/mecenas.json'
-//     );
-//     mecenas.value = await response.json();
-//     // Cache mecenas info
-//     Filesystem.writeFile({
-//       directory: Directory.Cache,
-//       path: MECENAS_JSON_PATH,
-//       encoding: Encoding.UTF8,
-//       data: JSON.stringify(mecenas.value),
-//     });
-//   } catch (e) {
-//     try {
-//       const { data } = await Filesystem.readFile({
-//         directory: Directory.Cache,
-//         path: MECENAS_JSON_PATH,
-//         encoding: Encoding.UTF8,
-//       });
-//       mecenas.value = JSON.parse(data);
-//     } catch (e) {
-//       return;
-//     }
-//   }
-//   console.info(' > Response JSON: ', mecenas.value);
-//   for (const type in mecenas.value) {
-//     console.info(`>> ===== ${type} =====`);
-//     for (let i = 0; i < mecenas.value[type as MecenasLevel].length; i++) {
-//       const element = mecenas.value[type as MecenasLevel][i];
-//       console.info(
-//         '>> Processing image for ',
-//         element.nombre,
-//         'with src',
-//         element.img
-//       );
-//       const imageCached = await imageExists(element.img.replace(/\//g, '-'));
-//       console.info('>> Checking for mecena ', element);
-//       if (imageCached) {
-//         console.info('>>> Image is cached, loading it');
-//         const { uri: imageUri } = await Filesystem.getUri({
-//           directory: Directory.Cache,
-//           path: `${IMAGES_DIRECTORY}/${element.img.replaceAll('/', '-')}`,
-//         });
-//         element.img = Capacitor.convertFileSrc(imageUri);
-//       } else {
-//         console.info('>>> Image not cached, downloading and saving');
-//         try {
-//           // const imageRes = await Http.get({
-//           //   url: element.img,
-//           //   responseType: 'blob',
-//           // });
-//           const imageRes = await (
-//             await (await fetch(element.img)).blob()
-//           ).text();
-//           console.info('>>> Response: ', imageRes);
-//           console.info(
-//             '>>> Is data base64?',
-//             /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(
-//               imageRes
-//             )
-//           );
-//           await Filesystem.writeFile({
-//             directory: Directory.Cache,
-//             path: `${IMAGES_DIRECTORY}/${element.img.replaceAll('/', '-')}`,
-//             data: imageRes,
-//           });
-//         } catch {
-//           toast(i18n.t('message.errorLoadingImages'), undefined, 'danger');
-//         }
-//       }
-//       console.info('>> Processed mecena ', element);
-//       console.info('>> So, this is', element.nombre, 'image:', element.img);
-//       if (
-//         mecenas.value[type as MecenasLevel].indexOf(element) ===
-//         mecenas.value[type as MecenasLevel].length - 1
-//       )
-//         imageLoadings.value[type as MecenasLevel] = true;
-//       console.info(
-//         `[${type}] >> ${element} has index ${mecenas.value[
-//           type as MecenasLevel
-//         ].indexOf(element)} / ${
-//           mecenas.value[type as MecenasLevel].length - 1
-//         }, so colaborador images loaded? ${
-//           mecenas.value[type as MecenasLevel].indexOf(element) ===
-//           mecenas.value[type as MecenasLevel].length - 1
-//         }`
-//       );
-//     }
-//   }
-// })();
-
-// watch(
-//   imageLoadings,
-//   (value) => {
-//     let areLoaded = true;
-//     for (const type of Object.keys(value))
-//       if (!value[type as MecenasLevel]) areLoaded = false;
-//     imagesLoaded.value = areLoaded;
-//     if (areLoaded) {
-//       imageTrace.stop();
-//       console.log('> Tracing stopped');
-//     }
-//     // for (const type in mecenas) {
-//     //   mecenas[type as MecenasLevel].forEach(async (element) => {
-//     //     console.info(
-//     //       "About:watch<imageLoadings> >>",
-//     //       JSON.stringify(value),
-//     //       "&",
-//     //       imagesLoaded.value,
-//     //       "Here we are: ",
-//     //       // JSON.stringify(element),
-//     //       "(come from ",
-//     //       JSON.stringify(oldValue),
-//     //       ")"
-//     //     );
-//     //   });
-//     // }
-//   },
-//   { deep: true }
-// );
+const openMecena = (mecena: Mecena) => {
+  logEvent(analytics, 'open_mecena_' + mecena.name.replace(/ \//g, '_'));
+  Browser.open({
+    url: mecena.site,
+    presentationStyle: 'popover',
+  });
+};
 </script>
 
 <style scoped>
@@ -721,8 +484,6 @@ const goto = (url: string, msg: string) => {
 }
 
 .img-link {
-  text-decoration: none;
-  /* color: inherit; */
   color: var(--ion-color-primary-shade);
 }
 

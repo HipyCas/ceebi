@@ -3,7 +3,10 @@
     <Header />
     <ion-content :fullscreen="true">
       <SkeletonNotifications v-if="isLoading || loadingUser" />
-      <ion-list lines="full" v-else-if="user">
+      <ion-list
+        lines="full"
+        v-else-if="user && showableNotifications.length > 0"
+      >
         <ion-item
           v-for="notification in showableNotifications"
           :key="notification.id"
@@ -25,8 +28,12 @@
         </ion-item>
       </ion-list>
       <div v-else class="center-content">
+        <p v-if="user">
+          {{ $t('notifications.noneYet') }}
+        </p>
         <LoginRequired
-          reason="poder ver todas las notificaciones"
+          v-else
+          :reason="$t('notifications.reasonLoginRequired')"
         ></LoginRequired>
       </div>
     </ion-content>
@@ -57,8 +64,7 @@ import { analytics } from '../firebase';
 import { logEvent } from 'firebase/analytics';
 import { loadingUser, getUser } from '../user';
 import LoginRequired from '../components/LoginRequired.vue';
-
-const user = getUser();
+import { logCatchError } from '@code/capacitor-utils';
 
 interface RenderableNotification {
   id: number;
@@ -75,7 +81,11 @@ interface RenderableNotification {
     link: string;
   }>;
 }
+
+const { t } = useI18n();
 const logger = useLogger();
+
+const user = getUser();
 
 //#region CONNECTION
 const connected = ref(true);
@@ -123,13 +133,17 @@ const loadNotifications = async () => {
       )
       .sort((a, b) => getUnixTime(b.schedule) - getUnixTime(a.schedule));
   } catch (error) {
-    logger.error(
+    logCatchError(
+      logger,
       'notifications:loadNotifications',
       'error fetching notifications from server',
-      {
-        error,
-      }
+      error
     );
+    useToast({
+      message: t('notifications.errorFetching'),
+      color: 'danger',
+      icon: ionicons.alertCircleOutline,
+    });
     return [];
   }
 };

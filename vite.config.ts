@@ -120,6 +120,7 @@ export const extendBaseConfig = (
       VueI18nPlugin({
         include: [path.resolve(__dirname, './locales/**.yaml')],
         strictMessage: false, // TODO This disables check for HTML in messages, you should change the messages instead and revert this to true
+        ...extraConfig?.plugins?.extend?.VueI18nPlugin,
       }),
       ...(extraConfig?.plugins?.include === undefined
         ? []
@@ -150,7 +151,12 @@ export const extendBaseConfig = (
 export interface ExtraConfig {
   plugins?: {
     extend?: Record<
-      'vue' | 'tsconfigPaths' | 'createHtmlPlugin' | 'AutoImport' | 'Unfonts',
+      | 'vue'
+      | 'tsconfigPaths'
+      | 'createHtmlPlugin'
+      | 'AutoImport'
+      | 'Unfonts'
+      | 'VueI18nPlugin',
       any
     >;
     include?: PluginOption[];

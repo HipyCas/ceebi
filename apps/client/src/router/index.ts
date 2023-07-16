@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'code',
-        component: () => import('../views/QRCodePage.vue'),
+        component: () => import('../views/AttendancePage.vue'),
       },
       {
         path: 'schedule',

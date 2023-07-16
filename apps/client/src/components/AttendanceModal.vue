@@ -1,7 +1,7 @@
 <template>
   <ion-header translucent>
     <ion-toolbar>
-      <ion-title>{{ $t('message.attendance') }}</ion-title>
+      <ion-title>{{ $t('attendance.attendance') }}</ion-title>
       <ion-buttons slot="end">
         <ion-button @click="dismissModal()">{{ $t('ui.close') }}</ion-button>
       </ion-buttons>
@@ -9,7 +9,7 @@
   </ion-header>
   <ion-content>
     <no-connection v-if="!connected">
-      {{ $t('message.attendanceConnectToSee') }}
+      {{ $t('attendance.attendanceConnectToSee') }}
     </no-connection>
 
     <div v-else-if="loading" class="wrapper">
@@ -39,8 +39,8 @@
           </span>
         </div>
         <span style="font-size: 20px; font-weight: 500">
-          {{ $t('message.youveAssistedTo') }} {{ hoursDone }}
-          {{ $t('message.outOfTotalOf') }}
+          {{ $t('attendance.youveAssistedTo') }} {{ hoursDone }}
+          {{ $t('attendance.outOfTotalOf') }}
         </span>
       </div>
       <div class="grid place-items-center py-2">
@@ -49,7 +49,7 @@
             :size="canDownloadCertificates ? 'large' : undefined"
             :disabled="!canDownloadCertificates"
             :color="canDownloadCertificates ? 'success' : 'medium'"
-            >Download Certificates</IonButton
+            >{{ $t('attendance.downloadCertificates') }}</IonButton
           >
         </div>
       </div>
@@ -76,7 +76,7 @@
     </template>
 
     <div v-else class="wrapper">
-      <span>{{ $t('message.noAssistance') }}</span>
+      <span>{{ $t('attendance.noAttendance') }}</span>
     </div>
   </ion-content>
 </template>
@@ -121,6 +121,7 @@ import { CapacitorHttp } from '@capacitor/core';
 import { logCatchError, logPostgrestError } from '@code/capacitor-utils';
 import isAfter from 'date-fns/isAfter';
 
+const { t } = useI18n();
 const supabase = useSupabase();
 const logger = useLogger();
 
@@ -219,7 +220,7 @@ const certButtons = () => {
       actionSheetController.dismiss();
       loadingController
         .create({
-          message: 'Generando certificado...',
+          message: `${t('attendance.generatingCertificate')}...`,
         })
         .then((l) => l.present());
       const { data } = supabase.storage
@@ -256,7 +257,7 @@ const certButtons = () => {
         error
       );
       useToast({
-        message: 'Error al generar el certificado',
+        message: t('attendance.errorGeneratingCertificate'),
         color: 'danger',
         icon: alertCircleOutline,
         cssClass: undefined,
@@ -267,7 +268,7 @@ const certButtons = () => {
   const buts: ActionSheetButton[] = [];
   if (hoursDone.value >= 25 * 0.8)
     buts.push({
-      text: 'Asistencia',
+      text: t('attendance.selectCertificateButtonAttendance'),
       icon: stopwatchOutline,
       handler: () => {
         FirebaseCrashlytics.addLogMessage({
@@ -281,9 +282,12 @@ const certButtons = () => {
 
   if (user.value.acf.has_poster)
     buts.push({
-      text: 'Póster',
+      text: t('attendance.selectCertificateButtonPoster'),
       icon: imageOutline,
       handler: () => {
+        FirebaseCrashlytics.addLogMessage({
+          message: 'handling poster certificate download',
+        });
         if (isBefore(new Date(), new Date(2023, 6, 21, 23, 59, 59))) return; // TODO Show some alert or toast saying that it is only available after the congress itself
         if ((user.value as WPUser).acf.has_poster) {
           shareCertificate('poster');
@@ -298,19 +302,19 @@ const certButtons = () => {
       )
     );
     buts.push({
-      text: 'Microcursos',
+      text: t('attendance.selectCertificateButtonMicrocourses'),
       icon: schoolOutline,
       handler: () =>
         actionSheetController
           .create({
-            header: 'Selecciona el microcurso',
+            header: t('attendance.selectCertificateSelectMicrocourse'),
             buttons: [
               ...microcursosDone.value.map((ev) => ({
                 text: ev,
                 handler: () => shareCertificate(`microcursos/${ev}`),
               })),
               {
-                text: 'Cancelar',
+                text: t('ui.cancel'),
                 icon: closeOutline,
                 cssClass: 'cancel-button',
               },
@@ -326,19 +330,19 @@ const certButtons = () => {
 const downloadCerts = () => {
   if (!canDownloadCertificates.value)
     useToast({
-      message: 'Disponible al terminar el evento',
+      message: t('attendance.availableWhenEventFinished'),
       icon: hourglassOutline,
       cssClass: undefined,
     });
   else
     actionSheetController
       .create({
-        header: 'Seleccionar certificado',
-        subHeader: 'Elige el certificado que deseas descargar',
+        header: t('attendance.selectCertificateHeader'),
+        subHeader: t('attendance.selectCertificateSubheader'),
         buttons: [
           ...certButtons(),
           {
-            text: 'Cancelar',
+            text: t('ui.cancel'),
             icon: closeOutline,
             cssClass: 'cancel-button',
           },

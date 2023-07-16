@@ -5,14 +5,14 @@
       <div class="center-content">
         <canvas id="qrcode" height="300" width="300" v-show="user"></canvas>
         <template v-if="loadingUser">
-          <PlainLoading text="Iniciando sesión..." />
+          <PlainLoading :text="`${$t('auth.loggingIn')}...`" />
         </template>
         <ion-button v-else-if="user" class="asistencia" @click="openJesus">{{
-          $t('message.viewAttendance')
+          $t('attendance.viewAttendance')
         }}</ion-button>
         <LoginRequired
           v-else
-          reason="registrar y ver tu asistencia"
+          :reason="$t('attendance.reasonLoginRequired')"
         ></LoginRequired>
         <!-- TODO Comprobar letra DNI con el algoritmo de comprobación: dni_del_numero / 23 -> tomas resto -->
       </div>
@@ -47,9 +47,6 @@ const showQR = ref(false);
 const openJesus = async () => {
   const modal = await modalController.create({
     component: AttendanceModal, // TODO Update too
-    // componentProps: {
-    //   id: user.value,
-    // },
   });
   modal.present();
 };
@@ -95,7 +92,7 @@ watchOnce(loadingUser, () => {
   genCode();
 });
 
-//* BRIGHTNESS
+// #region BRIGHTNESS
 const brightness = ref(0);
 (async () => {
   if (isPlatform('capacitor')) {
@@ -120,7 +117,7 @@ onIonViewDidEnter(() => {
       brightness: 1,
     });
 });
-//* ===========
+//#endregion
 </script>
 
 <style scoped>

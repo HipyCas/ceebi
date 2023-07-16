@@ -1,67 +1,122 @@
 ui:
-  close: Pechar
-  save: Gardar
   cancel: Cancelar
+  close: Pechar
   loading: Cargando
-  send: Enviar
   minutes: minutos
-auth:
-  loggingIn: Iniciando sesión
-  privacyPolicyAcceptance:
-    Ao usar a aplicación, aceptas a <a href="https://biociencias.es/politica-privacidad/">Política
-    de Privacidade de AEBI</a>
-  logout: Pechar sesión
+  save: Gardar
+  send: Enviar
+  noConnection: Sen conexión
 tab:
   attendance: Asistencia
-  schedule: Horario
   news: Novas
   notifications: Notificacións
-appUpdate: {}
+  schedule: Horario
+appUpdate:
+  alertHeader: Actualización dispoñible
+  alertLater: Máis tarde
+  alertMessage: >-
+    Recomendámosche que actualices a aplicación á última versión. Versión
+    actual: {currentVersion}. Versión dispoñible: {availableVersion}
+  alertUpdate: Actualizar
+  toastUpdated: 'App actualizada, reinicia para aplicar os cambios'
+auth:
+  loggedOutSuccess: Sesión pechada con éxito
+  loggingIn: Iniciando sesión
+  logout: Pechar sesión
+  privacyPolicyAcceptance: >-
+    Ao usar a aplicación, aceptas a <a
+    href="https://biociencias.es/politica-privacidad/">Política de Privacidade
+    de AEBI</a>
+  continueWithoutLogin: Continuar sen iniciar sesión
+  email: Correo electrónico
+  login: Inicia sesión
+  loginToReason: Inicia sesión para poder
+  password: Contrasinal
+  errorLoggingIn: Erro ao iniciar sesión
+attendance:
+  attendance: Asistencia
+  attendanceConnectToSee: Conéctate ao internet para poder ver a túa asistencia
+  noAttendance: Aínda non tes asistencia rexistrada
+  viewAttendance: Ver asistencia
+  youveAssistedTo: Asistiches a
+  outOfTotalOf: horas dun total de 25 horas
+  availableWhenEventFinished: Dispoñible ao terminar o congreso
+  errorGeneratingCertificate: Erro ao xerar o certificado
+  generatingCertificate: Xerando certificado
+  reasonLoginRequired: rexistrar e ver a tua asistencia´
+  selectCertificateButtonAttendance: Asistencia
+  selectCertificateButtonMicrocourses: Microcursos
+  selectCertificateButtonPoster: Póster
+  selectCertificateHeader: Seleccionar certificado
+  selectCertificateSelectMicrocourse: Selecciona o microcurso
+  selectCertificateSubheader: Escolle o certificado que desexas descargar
+schedule:
+  scheduleGoOnline: Recupera a conexión a internet para ver o horario
+  eventNoLocation: Sen localización asignada
+  eventSpeakers: Poñentes
+  eventsYouveAssisted: Eventos aos que asistiches
+  eventViewOnWeb: Ver na web
 news:
-  takingLongMessage: A descarga está a tardar máis do esperado
-  takingLongerLoadCache: Ver offline
-  takingLongerWait: Agardar
   cannotRefreshOffline: Non é posible recargar as noticias sen conexión
-  readMore: Ler máis
+  connectAtLeastOnce: Conéctate a internet por lo menos una vez para poder ver las noticias
   loadedOffline: Cargadas as noticias descargadas
-  connectAtLeastOnce:
-    Conéctate a internet por lo menos una vez para poder ver las
-    noticias
   moreOnWeb: Máis na nosa web
+  readMore: Ler máis
+notifications:
+  noneYet: Aínda non hay notificacións
+  sentOn: Enviado o
+  errorFetching: Error ao obtener as notificacións
+  reasonLoginRequired: poder ver todas as notificación
 settings:
-  title: Configuración
-  localeSelection: Seleccionar idioma
-  interfaceTitle: Interface
   darkMode: Modo oscuro
-  notificationsTitle: Notificacións
-  eventRemindersToggle: Habilitar recordatorios de eventos
   eventRemindersChooseTime: Antelación ao evento
+  eventRemindersToggle: Habilitar recordatorios de eventos
   eventsRemindersTime0: Ao comezar
+  helpFaqAndInfo: Preguntas frecuentes e más info
+  helpShareLogs: Compartir rexistro de erros
+  helpShareLogsAlertHeader: Compartir rexistro de erros
+  helpShareLogsAlertMessage: >-
+    Comparte este arquivo cos creadores da aplicación a través dun corre
+    electrónico a {email} ou por Telegram a {telegram} para que sexan revisados
+    e procúrense arranxar os problemas que aparecesen
+  helpShareLogsDialogTitle: Comparte este arquivo coa organización
+  helpTitle: Axuda
+  interfaceTitle: Interface
+  localeSavingError: Error ao gardar o idioma
+  localeSelection: Seleccionar idioma
+  notificationsTitle: Notificacións
+  title: Configuración
+  viewSlides: Ver a presentación de novo
+  scheduleTranslate: Traducir horario
+  whyShouldLogin: >-
+    Inicia sesión para poder rexistrar a tua asistencia e ver notificacións
+    exclusivas para asistentes
 about:
-  patron: MECENAS
-  platinum: Platino
-  gold: Ouro
-  silver: Plata
+  aboutMe: Sobre mín
   bronze: Bronce
   collaborators: COLABORADORES
   developedBy: Creado por
-  aboutMe: Sobre mín
-  sourceCode: Código fonte
   errorLoadingImages: Erro ao tentar descargar imaxes
-message:
-  qrcodeIdNotSet: Configura o teu ID para usar o acceso por QR
-  qrcodeSetId: Engadir ID
-  viewAttendance: Ver asistencia
-  attendance: Asistencia
-  youveAssistedTo: Asistiches a
-  outOfTotalOf: horas dun total de 25 horas
-  eventsYouveAssisted: Eventos aos que asistiches
-  noAssistance: Aínda non tes asistencia rexistrada
-  attendanceConnectToSee: Conéctate ao internet para poder ver a túa asistencia
-  noConnection: Sen conexión
-  scheduleGoOnline: Recupera a conexión a internet para ver o horario
-  noNotificationsYet: Aínda non hay notificacións
-  notificationSentOn: Enviado o
-  eventNoLocation: Sen localización asignada
-  eventSpeakers: Poñentes
-  eventViewOnWeb: Ver na web
+  gold: Ouro
+  patron: MECENAS
+  platinum: Platino
+  silver: Plata
+  sourceCode: Código fonte
+slides:
+  welcomeText: >-
+    Aquí tes unha breve presentación de que podes atopar en esta a nosa
+    aplicación oficial
+  welcomeTitle: Benvido ao II CEEBI
+  attendanceTitle: Controla a túa asistencia
+  helpTitle: ¿Precisas algo máis?
+  loginButton: Comeza xa!
+  loginText: Inicia sesión coa tua conta da web do CEEBI para poder acceder a toda a app
+  loginTitle: Comeza coa app
+  newsTitle: Mantente ao día
+  notificationsAllow: Permitir notificacións
+  notificationsPermissionDenied:
+    header: Permiso denegado
+    message: >-
+      Para poder recibir notificación do CEEBI, deberás permitir á aplicación
+      envialas
+  notificationsTitle: Non te perdas nada

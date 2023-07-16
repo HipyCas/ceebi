@@ -1,45 +1,27 @@
 ui:
-  close: ''
-  save: ''
-  cancel: ''
-  loading: ''
-  send: ''
   minutes: Minuten
-
-auth: {}
-
+  noConnection: Keine Verbindung
 tab:
   attendance: QR-Code
-  schedule: Plan
   news: Nachrichten
   notifications: Mitteilung
-
-appUpdate: {}
-
-news:
-  takingLongMessage: Das wird länger als wir gedacht haben
-  takingLongerLoadCache: Laden aus dem Cachespeicher
-  takingLongerWait: Abwarten Sie, bitte
-  cannotRefreshOffline: Nachrichten sind nicht offline zu laden
-  readMore: Lessen mehr
-  moreOnWeb: Mehr im Web
-
-settings:
-  interfaceTitle: Interface
-  localeSelection: Wählen Sie die Sprache
-  darkMode: Dunkelmodus
-
-  notificationsTitle: Mitteilungen
-  eventRemindersToggle: Aktivieren Eventserinnerungen
-  eventRemindersChooseTime: Zeit zu EventsMitteilung
-  eventsRemindersTime0: Im Startzeit
-about: {}
-message:
-  qrcodeIdNotSet: Stellen Sie eine ID auf, um QR-Code zu benutzen
-  qrcodeSetId: Set ID
-  viewAttendance: Anwesenheit nachweisen
+  schedule: Plan
+attendance:
   attendance: Anwesenheit
+  viewAttendance: Anwesenheit nachweisen
   youveAssistedTo: Sie haben zu
   outOfTotalOf: von den ingesamt y Stunden  teilgenomen
-  noConnection: Keine Verbindung
+schedule:
   eventSpeakers: Rednen
+news:
+  cannotRefreshOffline: Nachrichten sind nicht offline zu laden
+  moreOnWeb: Mehr im Web
+  readMore: Lessen mehr
+settings:
+  darkMode: Dunkelmodus
+  eventRemindersChooseTime: Zeit zu EventsMitteilung
+  eventRemindersToggle: Aktivieren Eventserinnerungen
+  eventsRemindersTime0: Im Startzeit
+  interfaceTitle: Interface
+  localeSelection: Wählen Sie die Sprache
+  notificationsTitle: Mitteilungen

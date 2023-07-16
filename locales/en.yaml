@@ -1,73 +1,122 @@
 ui:
-  close: Close
-  save: Save
   cancel: Cancel
+  close: Close
   loading: Loading
-  send: Send
   minutes: minutes
-auth:
-  loggingIn: Logging in
-  privacyPolicyAcceptance: By using this app, you agree you accept the AEBI's <a
-    href="https://biociencias.es/politica-privacidad/">Privacy Policy</a>
-  logout: Log out
-  loggedOutSuccess: Successfully logged out
+  save: Save
+  send: Send
+  noConnection: No connection
 tab:
   attendance: Attendance
-  schedule: Schedule
   news: News
   notifications: Notifications
+  schedule: Schedule
 appUpdate:
   alertHeader: App update available
+  alertLater: Later
   alertMessage: |-
     We recommend you to update the application.
     Current version: {currentVersion} . New version: {availableVersion}
-  alertLater: Later
   alertUpdate: Update
-  toastUpdated: App updated, restart to apply updates
+  toastUpdated: 'App updated, restart to apply updates'
+auth:
+  loggedOutSuccess: Successfully logged out
+  loggingIn: Logging in
+  logout: Log out
+  privacyPolicyAcceptance: >-
+    By using this app, you agree you accept the AEBI's <a
+    href="https://biociencias.es/politica-privacidad/">Privacy Policy</a>
+  continueWithoutLogin: Continue without logging in
+  email: Email
+  login: Log in
+  loginToReason: Log in to be able to
+  password: Password
+  errorLoggingIn: Error logging in
+attendance:
+  attendance: Attendance
+  attendanceConnectToSee: Go online to check your attendance
+  noAttendance: No attendance registered
+  viewAttendance: View attendance
+  youveAssistedTo: You have attended to
+  outOfTotalOf: hours out of a total of 25 hours
+  availableWhenEventFinished: Available at the end of the congress
+  downloadCertificates: Download Certificates
+  errorGeneratingCertificate: Error generating the certificate
+  generatingCertificate: Generating certificate
+  reasonLoginRequired: register and view your attendance
+  selectCertificateButtonAttendance: Attendance
+  selectCertificateButtonMicrocourses: Microcourses
+  selectCertificateButtonPoster: Poster
+  selectCertificateHeader: Select certificate
+  selectCertificateSelectMicrocourse: Select the microcourse
+  selectCertificateSubheader: Select the certificate you want to download
+schedule:
+  scheduleGoOnline: Go back online to get the updated schedule
+  eventNoLocation: No location assigned
+  eventSpeakers: Speakers
+  eventsYouveAssisted: Events you have attended
+  eventViewOnWeb: View on the web
 news:
-  loadedOffline: Couldn't fetch news, loaded locally saved news
   cannotRefreshOffline: Cannot refresh news while offline
-  readMore: Read more
   connectAtLeastOnce: You have to connect at least once to see news
+  loadedOffline: 'Couldn''t fetch news, loaded locally saved news'
   moreOnWeb: More on the web
+  readMore: Read more
+notifications:
+  noneYet: No notifications yet
+  sentOn: Sent on
+  errorFetching: Error getting notifications
+  reasonLoginRequired: see all notifications
 settings:
-  title: Settings
-  interfaceTitle: Interface
-  localeSelection: Select language
   darkMode: Dark mode
-  notificationsTitle: Notifications
-  eventRemindersToggle: Enable event reminders
   eventRemindersChooseTime: Time before event for notification
+  eventRemindersToggle: Enable event reminders
   eventsRemindersTime0: At start time
-  helpTitle: Help
   helpFaqAndInfo: FAQ and more info
   helpShareLogs: Share error logs
+  helpShareLogsAlertHeader: Share error logs
+  helpShareLogsAlertMessage: >-
+    Share this file with the developers of the app via an email to {email} or
+    through Telegram to {telegram} so they can be checked for problems an so
+    those can be solved
+  helpShareLogsDialogTitle: Share this file with the organization
+  helpTitle: Help
+  interfaceTitle: Interface
+  localeSavingError: Error while saving language
+  localeSelection: Select language
+  notificationsTitle: Notifications
+  title: Settings
   viewSlides: Watch presentation again
+  scheduleTranslate: Translate schedule
+  whyShouldLogin: >-
+    Log in to check your attendance and see exclusive notifications for
+    attendants
 about:
-  patron: PATRONS
-  platinum: Platinum
-  gold: Gold
-  silver: Silver
+  aboutMe: About me
   bronze: Bronze
   collaborators: COLLABORATORS
   developedBy: Developed by
-  aboutMe: About me
-  sourceCode: Source code
   errorLoadingImages: Error when downloading images
-message:
-  qrcodeIdNotSet: Setup an ID to use QR code access
-  qrcodeSetId: Set ID
-  viewAttendance: View attendance
-  attendance: Attendance
-  youveAssistedTo: You have attended to
-  outOfTotalOf: hours out of a total of 25 hours
-  eventsYouveAssisted: Events you have attended
-  noAssistance: No attendance registered
-  attendanceConnectToSee: Go online to check your attendance
-  noConnection: No connection
-  scheduleGoOnline: Go back online to get the updated schedule
-  noNotificationsYet: No notifications yet
-  notificationSentOn: Sent on
-  eventNoLocation: No location assigned
-  eventSpeakers: Speakers
-  eventViewOnWeb: View on the web
+  gold: Gold
+  patron: PATRONS
+  platinum: Platinum
+  silver: Silver
+  sourceCode: Source code
+slides:
+  welcomeText: We have a little walk though of the app showcasing what you can find in it
+  welcomeTitle: Welcome to the II CEEBI
+  attendanceTitle: Check your attendance
+  helpTitle: ¿Anything else?
+  loginButton: Start now!
+  loginText: >-
+    Login with you account from our website to access all the features from the
+    app
+  loginTitle: Start using the app
+  newsTitle: Stay on tune
+  notificationsAllow: Allow notifications
+  notificationsPermissionDenied:
+    header: Permission denied
+    message: >-
+      In order to receive notifications from the CEEBI, you must allow the app
+      to send them
+  notificationsTitle: Don't miss anything

@@ -1,85 +1,138 @@
 ui:
-  close: Cerrar
-  save: Guardar
   cancel: Cancelar
+  close: Cerrar
   loading: Cargando
-  send: Enviar
   minutes: minutos
+  save: Guardar
+  send: Enviar
+  noConnection: Sin conexión
 tab:
   attendance: Asistencia
-  schedule: Horario
   news: Noticias
   notifications: Notificaciones
-auth:
-  loggingIn: Iniciando sesión
-  privacyPolicyAcceptance:
-    Al usar la aplicación, aceptas la <a href="https://biociencias.es/politica-privacidad/">Política
-    de Privacidad de AEBI</a>
-  logout: Cerrar sesión
-  loggedOutSuccess: Sesión cerrada con éxito
+  schedule: Horario
 appUpdate:
   alertHeader: Actualización disponible
+  alertLater: Más tarde
   alertMessage: |-
     Te recomendamos que atualices la aplicación a la última versión.
     Versión actual: {currentVersion} . Versión disponible: {availableVersion}
-  alertLater: Más tarde
   alertUpdate: Actualizar
-  toastUpdated: App actualizada, reinicia para aplicar los cambios
+  toastUpdated: 'App actualizada, reinicia para aplicar los cambios'
+auth:
+  loggedOutSuccess: Sesión cerrada con éxito
+  loggingIn: Iniciando sesión
+  logout: Cerrar sesión
+  privacyPolicyAcceptance: >-
+    Al usar la aplicación, aceptas la <a
+    href="https://biociencias.es/politica-privacidad/">Política de Privacidad de
+    AEBI</a>
+  continueWithoutLogin: Continuar sin iniciar sesión
+  email: Correo electrónico
+  login: Inicia sesión
+  loginToReason: Inicia sesión para poder
+  password: Contraseña
+  errorLoggingIn: Error al iniciar sesión
+attendance:
+  attendance: Asistencia
+  attendanceConnectToSee: Conéctate a internet para poder ver tu asistencia
+  noAttendance: Aún no tienes asistencia registrada
+  viewAttendance: Ver asistencia
+  youveAssistedTo: Has asistido a
+  outOfTotalOf: horas de un total de 25 horas
+  availableWhenEventFinished: Disponible al terminar el congreso
+  downloadCertificates: Descargar certificados
+  errorGeneratingCertificate: Error al generar el certificado
+  generatingCertificate: Generando certificado
+  reasonLoginRequired: registrar y ver tu asistencia
+  selectCertificateButtonAttendance: Asistencia
+  selectCertificateButtonMicrocourses: Microcursos
+  selectCertificateButtonPoster: Póster
+  selectCertificateHeader: Seleccionar certificado
+  selectCertificateSelectMicrocourse: Selecciona el microcurso
+  selectCertificateSubheader: Elige el certificado que deseas descargar
+schedule:
+  scheduleGoOnline: Conéctate de nuevo para ver el horario
+  eventNoLocation: Sin localización asignada
+  eventSpeakers: Ponentes
+  eventsYouveAssisted: Eventos a los que has asistido
+  eventViewOnWeb: Ver en la web
 news:
-  loadedOffline: No se pueden obtener las noticias, cargando guardadas
   cannotRefreshOffline: No es posible recargar las noticias sin conexión
-  readMore: Leer más
-  connectAtLeastOnce: Conéctese a internet polo menos unha vez para poder ver as
-    novas
+  connectAtLeastOnce: Conéctese a internet polo menos unha vez para poder ver as novas
+  loadedOffline: 'No se pueden obtener las noticias, cargando guardadas'
   moreOnWeb: Más en la web
+  readMore: Leer más
+notifications:
+  noneYet: Aún no hay notificaciones
+  sentOn: Enviado el
+  errorFetching: Error al obtener las notificaciones
+  reasonLoginRequired: poder ver todas las notificaciones
 settings:
-  title: Configuración
-  interfaceTitle: Interfaz
-  localeSelection: Seleccionar idioma
-  localeSavingError: Error al guardar el idioma
   darkMode: Modo oscuro
-  notificationsTitle: Notificaciones
-  eventRemindersToggle: Habilitar recordatorios de eventos
   eventRemindersChooseTime: Antelación al evento
+  eventRemindersToggle: Habilitar recordatorios de eventos
   eventsRemindersTime0: Al empezar
-  helpTitle: Ayuda
   helpFaqAndInfo: Preguntas frecuentes y más info
   helpShareLogs: Compartir registro de errores
   helpShareLogsAlertHeader: Compartir registro de errores
-  helpShareLogsAlertMessage: Comparte este archivo con los desarrolladores de la
-    aplicación via correo a {email} o por Telegram a {telegram} para que se revisen
-    y se intenten arreglar los problemas que hayan surgido
+  helpShareLogsAlertMessage: >-
+    Comparte este archivo con los desarrolladores de la aplicación via correo a
+    {email} o por Telegram a {telegram} para que se revisen y se intenten
+    arreglar los problemas que hayan surgido
   helpShareLogsDialogTitle: Comparte este archivo con la organización
+  helpTitle: Ayuda
+  interfaceTitle: Interfaz
+  localeSavingError: Error al guardar el idioma
+  localeSelection: Seleccionar idioma
+  notificationsTitle: Notificaciones
+  title: Configuración
   viewSlides: Ver introducción de nuevo
+  scheduleTranslate: Traducir horario
+  whyShouldLogin: >-
+    Inicia sesión para poder registrar tu asistencia y ver notificaciones
+    exclusivas para asistentes
 about:
-  developedBy: App desarrollada por
   aboutMe: Sobre mí
-  sourceCode: Código fuente
-  patron: MECENAS
-  platinum: Platino
-  gold: Oro
-  silver: Plata
   bronze: Bronce
   collaborators: COLABORADORES
+  developedBy: App desarrollada por
   errorLoadingImages: Error al intentar descargar imágenes
-message:
-  close: Cerrar
-  save: Guardar
-  cancel: Cancelar
-  loading: Cargando
-  qrcodeIdNotSet: Configura tu ID para usar el acceso por QR
-  qrcodeSetId: Añadir ID
-  viewAttendance: Ver asistencia
-  attendance: Asistencia
-  youveAssistedTo: Has asistido a
-  outOfTotalOf: horas de un total de 25 horas
-  eventsYouveAssisted: Eventos a los que has asistido
-  noAssistance: Aún no tienes asistencia registrada
-  attendanceConnectToSee: Conéctate a internet para poder ver tu asistencia
-  noConnection: Sin conexión
-  scheduleGoOnline: Conéctate de nuevo para ver el horario
-  noNotificationsYet: Aún no hay notificaciones
-  notificationSentOn: Enviado el
-  eventNoLocation: Sin localización asignada
-  eventSpeakers: Ponentes
-  eventViewOnWeb: Ver en la web
+  gold: Oro
+  patron: MECENAS
+  platinum: Platino
+  silver: Plata
+  sourceCode: Código fuente
+slides:
+  welcomeText: >-
+    Aquí tienes una breve presentación de qué puedes encontrar en esta nuestra
+    app oficial
+  welcomeTitle: Bienvenido al II CEEBI
+  attendanceText: >-
+    Acredítate en las actividades, comprueba tú asistencia a todas ellas y obtén
+    tú certificado en formato digital diréctamente en tu teléfono.
+  attendanceTitle: Controla tú asistencia
+  helpTitle: ¿Necesitas algo más?
+  loginButton: ¡Empieza ya!
+  loginText: >-
+    Inicia sesión con tu cuenta de la web del CEEBI para poder acceder a toda la
+    app
+  loginTitle: Empieza con la app
+  newsText: >-
+    Accede a todas nuestras noticias desde la propia app, aprendiendo sobre
+    biociencias y los últimos sucesos relacionados con el CEEBI.
+  newsTitle: Mantente al día
+  notificationsAllow: Permitir notificaciones
+  notificationsPermissionDenied:
+    header: Permiso denegado
+    message: >-
+      Para poder recibir notificaciones del CEEBI, deberás permitir a la
+      aplicación enviarlas
+  notificationsText: >-
+    Recibe notificaciones de la organización con la última información y
+    actualizaciones y activa los recordatorios de eventos.
+  notificationsTitle: Entérate de todo
+  scheduleText: >-
+    Visualiza el horario del CEEBI y obtén más información de todos los eventos
+    sin necesidad de acceder a la página web.
+  scheduleTitle: Sigue el horario

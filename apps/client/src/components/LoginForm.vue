@@ -3,7 +3,7 @@
     class="input-item"
     style="margin-top: 1.5rem"
     fill="outline"
-    label="Correo electrónico"
+    :label="$t('auth.email')"
     label-placement="floating"
     type="email"
     v-model="username"
@@ -12,7 +12,7 @@
     class="input-item"
     style="margin-top: 0.5rem"
     fill="outline"
-    label="Contraseña"
+    :label="$t('auth.password')"
     label-placement="floating"
     type="password"
     v-model="password"
@@ -26,7 +26,7 @@
     style="margin-top: 0.5rem"
     @click="emit('continue')"
   >
-    Continuar sin iniciar sesión
+    {{ $t('auth.continueWithoutLogin') }}
   </ion-button>
 
   <ion-text class="notice slide-text">
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { IonItem, IonInput, IonButton, IonText } from '@ionic/vue';
+import { IonInput, IonButton, IonText } from '@ionic/vue';
 import { logEvent } from 'firebase/analytics';
 import { analytics } from '../firebase';
 

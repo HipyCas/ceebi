@@ -5,8 +5,8 @@ export default extendConfig(__dirname, 'client', capPlugins, {
   appId: 'es.biociencias.ceebi',
   appName: 'CEEBI',
   plugins: {
-    CapacitorHttp: {
-      enabled: true,
-    },
+    // CapacitorHttp: {
+    //   enabled: true,
+    // },
   },
 });

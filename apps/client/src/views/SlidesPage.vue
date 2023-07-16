@@ -12,48 +12,42 @@
             <ion-img :src="logo" class="slide-img ceebi-img"></ion-img>
           </div>
           <h1 class="text-2xl font-semibold" style="margin-top: 2rem">
-            Bienvenido al II CEEBI
+            {{ $t('slides.welcomeTitle') }}
           </h1>
           <ion-text class="slide-text" color="medium">
-            Aquí tienes una breve presentación de qué puedes encontrar en esta
-            nuestra app oficial
+            {{ $t('slides.welcomeText') }}
           </ion-text>
         </swiper-slide>
 
         <swiper-slide>
           <ion-img :src="attendanceSVG" class="slide-img"></ion-img>
-          <h2 class="slide-header">Controla tú asistencia</h2>
+          <h2 class="slide-header">{{ $t('slides.attendanceTitle') }}</h2>
           <ion-text class="slide-text" color="medium">
-            Acredítate en las actividades, comprueba tú asistencia a todas ellas
-            y obtén tú certificado en formato digital diréctamente en tu
-            teléfono.
+            {{ $t('slides.attendanceText') }}
           </ion-text>
         </swiper-slide>
 
         <swiper-slide>
           <ion-img :src="scheduleSVG" class="slide-img"></ion-img>
-          <h2 class="slide-header">Sigue el horario</h2>
+          <h2 class="slide-header">{{ $t('slides.scheduleTitle') }}</h2>
           <ion-text class="slide-text" color="medium">
-            Visualiza el horario del CEEBI y obtén más información de todos los
-            eventos sin necesidad de acceder a la página web.
+            {{ $t('slides.scheduleText') }}
           </ion-text>
         </swiper-slide>
 
         <swiper-slide>
           <ion-img :src="newsSVG" class="slide-img"></ion-img>
-          <h2 class="slide-header">Mantente al día</h2>
+          <h2 class="slide-header">{{ $t('slides.newsTitle') }}</h2>
           <ion-text class="slide-text" color="medium">
-            Accede a todas nuestras noticias desde la propia app, aprendiendo
-            sobre biociencias y los últimos sucesos relacionados con el CEEBI.
+            {{ $t('slides.newsText') }}
           </ion-text>
         </swiper-slide>
 
         <swiper-slide>
           <ion-img :src="notificationsSVG" class="slide-img"></ion-img>
-          <h2 class="slide-header">Entérate de todo</h2>
+          <h2 class="slide-header">{{ $t('slides.notificationsTitle') }}</h2>
           <ion-text class="slide-text" color="medium">
-            Recibe notificaciones de la organización con la última información y
-            actualizaciones y activa los recordatorios de eventos.
+            {{ $t('slides.notificationsText') }}
           </ion-text>
           <IonButton
             class="mt-2"
@@ -65,13 +59,13 @@
               slot="end"
               :icon="checkmarkOutline"
             ></IonIcon>
-            Permitir Enviar</IonButton
+            {{ $t('slides.notificationsAllow') }}</IonButton
           >
         </swiper-slide>
 
         <swiper-slide>
           <ion-img :src="helpSVG" class="slide-img"></ion-img>
-          <h2 class="slide-header">¿Necesitas algo más?</h2>
+          <h2 class="slide-header">{{ $t('slides.helpTitle') }}</h2>
           <ion-text class="slide-text" color="medium">
             Si necesitas cualquier información o ayuda sobre el CEEBI escribe a
             <a href="mailto:info@biociencias.es">info@biociencias.es</a>, o si
@@ -81,14 +75,13 @@
         </swiper-slide>
 
         <swiper-slide>
-          <h2>Empieza con la app</h2>
+          <h2>{{ $t('slides.loginTitle') }}</h2>
           <ion-text class="slide-text" color="medium">
-            Inicia sesión con tu cuenta del CEEBI (biociencias.es) para poder
-            acceder a toda la app
+            {{ $t('slides.loginText') }}
           </ion-text>
 
           <LoginForm
-            button-text="¡Empieza ya!"
+            :button-text="$t('slides.loginButton')"
             @login="login"
             @continue="continueToApp"
           ></LoginForm>
@@ -129,6 +122,7 @@ import LoginForm from '../components/LoginForm.vue';
 import { checkmarkOutline, closeCircleOutline } from 'ionicons/icons';
 import { wpLogin } from '../wpauth';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { logCatchError } from '@code/capacitor-utils';
 
 const modules = [Thumbs, Pagination, IonicSlides];
 
@@ -150,9 +144,8 @@ const askNotificationsPermission = async () => {
   else {
     alertController
       .create({
-        header: 'Permiso denegado',
-        message:
-          'Para poder recibir notificaciones del CEEBI, deberás permitir a la aplicación enviarlas',
+        header: t('slides.notificationsPermissionDenied.header'),
+        message: t('slides.notificationsPermissionDenied.message'),
       })
       .then((a) => a.present());
   }
@@ -184,10 +177,10 @@ const login = async ({
       continueToApp();
     })
     .catch((e) => {
-      logger.error('slides:login', 'error logging in', e);
+      logCatchError(logger, 'slides:login', 'error logging in', e);
       loading.dismiss();
       useToast({
-        message: 'Error logging in',
+        message: t('auth.errorLoggingIn'),
         icon: closeCircleOutline,
         color: 'danger',
       });

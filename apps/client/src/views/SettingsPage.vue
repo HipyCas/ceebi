@@ -28,16 +28,15 @@
         </div>
       </div>
       <div v-else class="px-5 my-3">
-        <IonText class="font-[500] text-lg text-center"
-          >Inicia sesión para poder registrar tu asistencia y ver notificaciones
-          exclusivas para asistentes</IonText
-        >
+        <IonText class="font-[500] text-lg text-center">{{
+          $t('settings.whyShouldLogin')
+        }}</IonText>
         <ion-button
           router-link="/auth/login"
           @click="logNavigation('login')"
           expand="block"
           class="mt-2"
-          >¡Inicia sesión!</ion-button
+          >{{ $t('auth.login') }}</ion-button
         >
       </div>
       <!--* INTERFACE *-->
@@ -73,9 +72,9 @@
             :detail="false"
             :disabled="$i18n.locale === 'es'"
           >
-            <ion-toggle v-model="translateSchedule"
-              >Traducir horario</ion-toggle
-            >
+            <ion-toggle v-model="translateSchedule">{{
+              $t('settings.scheduleTranslate')
+            }}</ion-toggle>
           </ion-item>
           <!--* Dark Mode *-->
           <ion-item lines="inset" button :detail="false">
@@ -205,7 +204,6 @@ import { shareLogs, PlainLoading } from '@code/ceebi-ui';
 import { getTranslateSchedule } from '../translateSchedule';
 import { logCatchError } from '@code/capacitor-utils';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
-import { useI18n } from 'vue-i18n';
 import { analytics } from '../firebase';
 import { logEvent, setUserProperties } from 'firebase/analytics';
 import { useEventReminders } from '../eventReminders';

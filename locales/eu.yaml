@@ -1,50 +1,45 @@
 ui:
-  close: Itxi
-  save: Gorde
   cancel: Ezeztatu
+  close: Itxi
   loading: Kargatzen
-  send: ''
   minutes: minutu
-auth: {}
+  save: Gorde
+  noConnection: Konexiorik gabe
 tab:
   attendance: QR kodea
-  schedule: Ordutegia
   news: Berriak
   notifications: Jakinarazpenak
-appUpdate: {}
+  schedule: Ordutegia
+attendance:
+  attendance: Jendea
+  attendanceConnectToSee: Internetera konektatu zure bertaratzea ikusteko
+  noAttendance: Oraindik ez duzu zure etortzea erregistratu
+  viewAttendance: Jendea ikusi
+  youveAssistedTo: '-(e)ra azaldu zara'
+  outOfTotalOf: ordu guztizko 25 orduetatik
+schedule:
+  scheduleGoOnline: Ordutegia ikusteko berriro konekta zaitez
+  eventNoLocation: Oraindik ez dago kokapenik
+  eventSpeakers: Hizlariak
+  eventsYouveAssisted: Azaldu naizen ekitaldiak
+  eventViewOnWeb: Web-orrian ikusi
 news:
-  loadedOffline: Ezin dira berriak lortu, gordetakoak kargatzen
   cannotRefreshOffline: Ezin dira berriak berriro kargatu konexiorik gabe
-  readMore: Gehiago irakurri
-  connectAtLeastOnce: Berriak ikusteko Internetera konekta zaitez gutxienez aldi
-    bat
+  connectAtLeastOnce: Berriak ikusteko Internetera konekta zaitez gutxienez aldi bat
+  loadedOffline: 'Ezin dira berriak lortu, gordetakoak kargatzen'
   moreOnWeb: Web-orrian gehiago
-settings: {}
+  readMore: Gehiago irakurri
+notifications:
+  noneYet: Oraindik ez dago jakinarazpenik
+  sentOn: '-(e)an bidalita'
 about:
-  patron: MEZENAS
-  platinum: Platinoa
-  gold: Urreaa
-  silver: Zilarra
+  aboutMe: Niri buruz
   bronze: Brontzea
   collaborators: KOLABORATZAILEAK
   developedBy: '-(e)k garatutako App-a'
-  aboutMe: Niri buruz
-  sourceCode: Iturburu-kodea
   errorLoadingImages: Irudiak deskargatzerakoan errore bat gertatu da
-message:
-  qrcodeIdNotSet: Zure IDa konfigura ezazu QR-en bidez sarrera erabiltzeko
-  qrcodeSetId: IDa gehitu
-  viewAttendance: Jendea ikusi
-  attendance: Jendea
-  youveAssistedTo: '-(e)ra azaldu zara'
-  outOfTotalOf: ordu guztizko 25 orduetatik
-  eventsYouveAssisted: Azaldu naizen ekitaldiak
-  noAssistance: Oraindik ez duzu zure etortzea erregistratu
-  attendanceConnectToSee: Internetera konektatu zure bertaratzea ikusteko
-  noConnection: Konexiorik gabe
-  scheduleGoOnline: Ordutegia ikusteko berriro konekta zaitez
-  noNotificationsYet: Oraindik ez dago jakinarazpenik
-  notificationSentOn: '-(e)an bidalita'
-  eventNoLocation: Oraindik ez dago kokapenik
-  eventSpeakers: Hizlariak
-  eventViewOnWeb: Web-orrian ikusi
+  gold: Urreaa
+  patron: MEZENAS
+  platinum: Platinoa
+  silver: Zilarra
+  sourceCode: Iturburu-kodea

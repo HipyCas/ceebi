@@ -27,7 +27,6 @@ export const wpLogin = async (username: string, password: string) => {
       stack: (e as HTTPError).stack,
     });
     throw new Error('error when fetching token from wp');
-    return;
   }
   logger.trace('wpauth:wpLogin', 'logged in', res, res.token);
 

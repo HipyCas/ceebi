@@ -1,64 +1,63 @@
 ui:
-  close: Tancar
-  save: Guardar
   cancel: Cancel·lar
+  close: Tancar
   loading: Carregant
-  send: Enviar
   minutes: minuts
-auth:
-  loggingIn: Iniciant sessió
-  privacyPolicyAcceptance:
-    En usar l'aplicació, acceptes la <a href="https://biociencias.es/politica-privacidad/">Política
-    de Privacitat d'AEBI</a>
-  logout: Tancar sessió
+  save: Guardar
+  send: Enviar
+  noConnection: Sense connexió
 tab:
   attendance: Assistència
-  schedule: Horari
   news: Notícies
   notifications: Notificacions
+  schedule: Horari
 appUpdate:
-  alertUpdate: Actualitzar
   alertLater: Més tard
-  toastUpdated: App actualitzada, reinicia per aplicar els canvis
+  alertUpdate: Actualitzar
+  toastUpdated: 'App actualitzada, reinicia per aplicar els canvis'
+auth:
+  loggingIn: Iniciant sessió
+  logout: Tancar sessió
+  privacyPolicyAcceptance: >-
+    En usar l'aplicació, acceptes la <a
+    href="https://biociencias.es/politica-privacidad/">Política de Privacitat
+    d'AEBI</a>
+attendance:
+  attendance: Assistència
+  attendanceConnectToSee: Connecta't a internet per veure la teva assistència
+  noAttendance: Encara no tens assistència enregistrada
+  viewAttendance: Veure assistència
+  youveAssistedTo: Has assistit a
+  outOfTotalOf: hores d'un total de 25 hores
+schedule:
+  eventNoLocation: Sense localització assignada
+  eventSpeakers: Ponents
+  eventsYouveAssisted: Esdeveniments als quals has assistit
+  eventViewOnWeb: Veure al web
 news:
-  readMore: Llegir més
-  connectAtLeastOnce:
-    Connecta't a internet com a mínim un cop per poder veure les
-    notícies
+  connectAtLeastOnce: Connecta't a internet com a mínim un cop per poder veure les notícies
   moreOnWeb: Més al web
+  readMore: Llegir més
+notifications:
+  noneYet: Encara no hi ha notificacions
+  sentOn: Enviat el
 settings:
-  title: Configuració
+  darkMode: Mode fosc
+  eventRemindersChooseTime: Antelació a l'esdeveniment
+  eventRemindersToggle: Habilitar recordatoris d'esdeveniments
+  eventsRemindersTime0: En començar
   interfaceTitle: Interfície
   localeSelection: Seleccionar idioma
-  darkMode: Mode fosc
   notificationsTitle: Notificacions
-  eventRemindersToggle: Habilitar recordatoris d'esdeveniments
-  eventRemindersChooseTime: Antelació a l'esdeveniment
-  eventsRemindersTime0: En començar
+  title: Configuració
 about:
-  patron: MECENES
-  platinum: Platí
-  gold: Or
-  silver: Plata
+  aboutMe: Sobre mi
   bronze: Bronze
   collaborators: COL·LABORADORS
   developedBy: App desenvolupada per
-  aboutMe: Sobre mi
-  sourceCode: Codi font
   errorLoadingImages: Error en intentar descarregar imatges
-message:
-  qrcodeIdNotSet: Configura la teva ID per utilitzar l'accés per QR
-  qrcodeSetId: Afegir ID
-  viewAttendance: Veure assistència
-  attendance: Assistència
-  youveAssistedTo: Has assistit a
-  outOfTotalOf: hores d'un total de 25 hores
-  eventsYouveAssisted: Esdeveniments als quals has assistit
-  noAssistance: Encara no tens assistència enregistrada
-  attendanceConnectToSee: Connecta't a internet per veure la teva assistència
-  noConnection: Sense connexió
-  noNotificationsYet: Encara no hi ha notificacions
-  notificationSentOn: Enviat el
-  eventNoLocation: Sense localització assignada
-  eventSpeakers: Ponents
-  eventViewOnWeb: Veure al web
+  gold: Or
+  patron: MECENES
+  platinum: Platí
+  silver: Plata
+  sourceCode: Codi font

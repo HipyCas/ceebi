@@ -24,8 +24,6 @@ import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { createI18n } from 'vue-i18n';
 import * as locale from 'locale-codes';
-import { default as _messages, SupportedLanguages } from './translations';
-import type { Translation } from './translations';
 import { KEY_LOCALE, KEY_WP_TOKEN } from './vars';
 import {
   clearWPToken,
@@ -44,7 +42,7 @@ const logger = useLogger();
 logger.trace('main', App);
 
 //* I18n
-const i18n = createI18n<[Translation], SupportedLanguages>({
+const i18n = createI18n({
   locale: 'en',
   fallbackLocale: 'es',
   messages,
@@ -54,7 +52,7 @@ const i18n = createI18n<[Translation], SupportedLanguages>({
 Preferences.keys().then(({ keys }: { keys: string[] }) => {
   if (!keys.includes(KEY_LOCALE))
     Device.getLanguageCode().then(({ value }: { value: string }) => {
-      // @ts-expect-error After a couple tries this is what works, even though the types are messed up
+      // ts-expect-error After a couple tries this is what works, even though the types are messed up
       i18n.global.locale.value =
         (locale.getByTag(value.toLowerCase()) ?? { 'iso639-1': 'en' })[
           'iso639-1'
@@ -64,7 +62,7 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
     console.info('LOAD > locale is saved so loading from preferences');
     Preferences.get({ key: KEY_LOCALE }).then(
       ({ value }: { value: string | null }) => {
-        // @ts-expect-error After a couple tries this is what works, even though the types are messed up
+        // ts-expect-error After a couple tries this is what works, even though the types are messed up
         i18n.global.locale.value = value ?? 'en'; // The saved value will always be a valid locale code
       }
     );

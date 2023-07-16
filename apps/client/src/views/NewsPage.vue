@@ -7,7 +7,7 @@
           style="display: flex; flex-direction: column; align-items: center"
         >
           {{ $t('news.connectAtLeastOnce') }}
-          <ion-button @click="open('https://biociencias.es/noticias/')">
+          <ion-button @click="openMore('offline')">
             <!-- TODO Translate -->
             {{ $t('news.moreOnWeb') }}
             <ion-icon
@@ -38,7 +38,7 @@
             </ion-button>
           </div>
           <div class="flex-center">
-            <ion-button @click="openMore()">
+            <ion-button @click="openMore('end')">
               {{ $t('news.moreOnWeb') }}
               <ion-icon
                 slot="end"
@@ -258,8 +258,8 @@ function open(_new: Post) {
   });
 }
 
-function openMore() {
-  logEvent(analytics, `open_noticias_mas`);
+function openMore(where: string) {
+  logEvent(analytics, `open_noticias_mas_${where}`);
   Browser.open({
     url: 'https://biociencias.es/noticias/',
     presentationStyle: 'popover',
