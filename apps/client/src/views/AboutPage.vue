@@ -6,11 +6,11 @@
         class="flex-row title"
         style="background: var(--ion-color-primary-tint)"
       >
-        <b>{{ $t('message.patron') }}</b>
+        <b>{{ $t('about.patron') }}</b>
       </section>
       <template v-if="mecenasPlatino.length > 0">
         <section class="flex-row title" style="background: #e5e4e2">
-          🏆 &nbsp;&nbsp; {{ $t('message.platinum') }} &nbsp;&nbsp; 🏆
+          🏆 &nbsp;&nbsp; {{ $t('about.platinum') }} &nbsp;&nbsp; 🏆
         </section>
         <div class="flex-row ion-padding images-container">
           <template v-for="platino in mecenasPlatino" :key="platino.name">
@@ -35,7 +35,7 @@
 
       <template v-if="mecenasOro.length > 0">
         <section class="flex-row title" style="background: #d6ac39">
-          🥇 &nbsp;&nbsp; {{ $t('message.gold') }} &nbsp;&nbsp; 🥇
+          🥇 &nbsp;&nbsp; {{ $t('about.gold') }} &nbsp;&nbsp; 🥇
         </section>
         <!--div-- class="flex-row ion-padding images-container">
           <template v-for="oro in mecenasOro">
@@ -62,7 +62,7 @@
       </template>
       <template v-if="mecenasPlata.length > 0">
         <section class="flex-row title" style="background: #bab7b2">
-          🥈 &nbsp;&nbsp; {{ $t('message.silver') }} &nbsp;&nbsp; 🥈
+          🥈 &nbsp;&nbsp; {{ $t('about.silver') }} &nbsp;&nbsp; 🥈
         </section>
         <!--div-- class="flex-row ion-padding images-container">
           <template v-for="plata in mecenas.plata">
@@ -94,7 +94,7 @@
       </template>
       <template v-if="mecenasBronce.length > 0">
         <section class="flex-row title" style="background: #cd7f32">
-          🥉 &nbsp;&nbsp; {{ $t('message.bronze') }} &nbsp;&nbsp; 🥉
+          🥉 &nbsp;&nbsp; {{ $t('about.bronze') }} &nbsp;&nbsp; 🥉
         </section>
         <!--div-- class="flex-row ion-padding images-container">
           <template v-for="bronce in mecenas.bronce">
@@ -130,7 +130,7 @@
           class="flex-row title"
           style="background: var(--ion-color-secondary-tint)"
         >
-          <b>{{ $t('message.collaborators') }}</b>
+          <b>{{ $t('about.collaborators') }}</b>
         </section>
         <div class="flex-row ion-padding images-container">
           <template
@@ -166,7 +166,7 @@
 
       <div class="flex-row ion-margin-top">
         <p>
-          {{ $t('message.developedBy') }}
+          {{ $t('about.developedBy') }}
           <strong>Lucas de Uña Ocampo</strong>
         </p>
       </div>
@@ -175,7 +175,7 @@
           color="secondary"
           @click="goto('https://github.com/HipyCas/', 'personal_profile')"
         >
-          {{ $t('message.aboutMe') }}
+          {{ $t('about.aboutMe') }}
           <ion-icon slot="start" :md="planet" :ios="planet"></ion-icon>
         </ion-button>
         <ion-button
@@ -185,7 +185,7 @@
             goto('https://github.com/biocienciasgrx/ceebi/', 'source_code')
           "
         >
-          {{ $t('message.sourceCode') }}
+          {{ $t('about.sourceCode') }}
           <ion-icon slot="start" :md="logoGithub" :ios="logoGithub"></ion-icon>
         </ion-button>
       </div>
@@ -201,10 +201,6 @@ import Header from '../components/Header.vue';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 
-import { Mecenas, MecenasLevel } from '../types';
-import { IMAGES_DIRECTORY, MECENAS_JSON_PATH } from '../vars';
-// import { analytics, performance } from '../firebase';
-
 import { logoGithub, planet } from 'ionicons/icons';
 import { wpapi } from '../wpapi';
 import { extractContent } from '../util';
@@ -213,6 +209,8 @@ import formatISO from 'date-fns/formatISO';
 import { CapacitorHttp } from '@capacitor/core';
 
 import { logCatchError } from '@code/capacitor-utils';
+
+// TODO Show error toast in case images don't load (there is a translation for that)
 
 // const modMecenas: Mecenas = {
 //   colaborador: [],

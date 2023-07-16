@@ -6,12 +6,14 @@ const messages = {
       cancel: 'Cancel',
       loading: 'Loading',
       send: 'Send',
+      minutes: 'minutes',
     },
     auth: {
       loggingIn: 'Logging in',
       privacyPolicyAcceptance:
         'By using this app, you agree you accept the AEBI\'s <a href="https://biociencias.es/politica-privacidad/">Privacy Policy</a>',
       logout: 'Log out',
+      loggedOutSuccess: 'Successfully logged out',
     },
     tab: {
       attendance: 'Attendance',
@@ -19,27 +21,50 @@ const messages = {
       news: 'News',
       notifications: 'Notifications',
     },
+    appUpdate: {
+      alertHeader: 'App update available',
+      alertMessage:
+        'We recommend you to update the application.\nCurrent version: {currentVersion} . New version: {availableVersion}',
+      alertLater: 'Later',
+      alertUpdate: 'Update',
+      toastUpdated: 'App updated, restart to apply updates',
+    },
+    news: {
+      loadedOffline: "Couldn't fetch news, loaded locally saved news",
+      cannotRefreshOffline: 'Cannot refresh news while offline',
+      readMore: 'Read more',
+      connectAtLeastOnce: 'You have to connect at least once to see news',
+      moreOnWeb: 'More on the web',
+    },
     settings: {
-      // Settings
-      localeSelection: 'Select language',
-      interfaceTitle: 'Interface',
-      darkMode: 'Dark mode',
-      workingOnDarkMode: 'Dark mode not available yet',
       title: 'Settings',
-      identificationTitle: 'Identification',
-      identificationChange: 'Modify ID',
+      interfaceTitle: 'Interface',
+      localeSelection: 'Select language',
+      darkMode: 'Dark mode',
       notificationsTitle: 'Notifications',
       eventRemindersToggle: 'Enable event reminders',
       eventRemindersChooseTime: 'Time before event for notification',
       eventsRemindersTime0: 'At start time',
+      helpTitle: 'Help',
+      helpFaqAndInfo: 'FAQ and more info',
+      helpShareLogs: 'Share error logs',
+      viewSlides: 'Watch presentation again',
+    },
+    about: {
+      patron: 'PATRONS',
+      platinum: 'Platinum',
+      gold: 'Gold',
+      silver: 'Silver',
+      bronze: 'Bronze',
+      collaborators: 'COLLABORATORS',
+
+      developedBy: 'Developed by',
+      aboutMe: 'About me',
+      sourceCode: 'Source code',
+
+      errorLoadingImages: 'Error when downloading images',
     },
     message: {
-      minutes: 'minutes',
-      close: 'Close',
-      save: 'Save',
-      cancel: 'Cancel',
-      loading: 'Loading',
-
       // QRCode
       qrcodeIdNotSet: 'Setup an ID to use QR code access',
       qrcodeSetId: 'Set ID',
@@ -59,37 +84,6 @@ const messages = {
       // Schedule
       scheduleGoOnline: 'Go back online to get the updated schedule',
 
-      // components/IdFormModal
-      identificationTypeTitle: 'ID document type',
-      identificationDNI: 'Spanish DNI',
-      identificationNIE: 'Spanish NIE',
-      identificationPassportOrOther: 'Passport or other (any country)',
-      identificationDocumentIdentifier: 'Document identifier',
-      identificationHelpTextLengthDNI: 'DNI must be 9 characters long',
-      identificationHelpTextInvalidDNI: 'Not a valid DNI',
-      identificationHelpTextWrongFormatDNI: 'Not valid DNI format',
-      identificationSuccessfullyUpdated: 'Successfully updated ID',
-      identificationErrorSaving: 'Error when saving ID',
-
-      // News
-      newsLoadedOffline: "Couldn't fetch news, loaded locally saved news",
-      newsCannotRefreshOffline: 'Cannot refresh news while offline',
-      newsReadMore: 'Read more',
-      newsConnectAtLeastOnce: 'You have to connect at least once to see news',
-      newsMoreOnWeb: 'More on the web',
-
-      // About
-      developedBy: 'Developed by',
-      aboutMe: 'About me',
-      sourceCode: 'Source code',
-      patron: 'PATRONS',
-      platinum: 'Platinum',
-      gold: 'Gold',
-      silver: 'Silver',
-      bronze: 'Bronze',
-      collaborators: 'COLLABORATORS',
-      errorLoadingImages: 'Error when downloading images',
-
       // Notifications
       noNotificationsYet: 'No notifications yet',
       notificationSentOn: 'Sent on',
@@ -107,6 +101,7 @@ const messages = {
       cancel: 'Cancelar',
       loading: 'Cargando',
       send: 'Enviar',
+      minutes: 'minutos',
     },
     tab: {
       attendance: 'Asistencia',
@@ -119,10 +114,60 @@ const messages = {
       privacyPolicyAcceptance:
         'Al usar la aplicación, aceptas la <a href="https://biociencias.es/politica-privacidad/">Política de Privacidad de AEBI</a>',
       logout: 'Cerrar sesión',
+      loggedOutSuccess: 'Sesión cerrada con éxito',
     },
-    settings: {},
+    appUpdate: {
+      alertHeader: 'Actualización disponible',
+      alertMessage:
+        'Te recomendamos que atualices la aplicación a la última versión.\nVersión actual: {currentVersion} . Versión disponible: {availableVersion}',
+      alertLater: 'Más tarde',
+      alertUpdate: 'Actualizar',
+      toastUpdated: 'App actualizada, reinicia para aplicar los cambios',
+    },
+    news: {
+      loadedOffline: 'No se pueden obtener las noticias, cargando guardadas',
+      cannotRefreshOffline: 'No es posible recargar las noticias sin conexión',
+      readMore: 'Leer más',
+      connectAtLeastOnce:
+        'Conéctese a internet polo menos unha vez para poder ver as novas',
+      moreOnWeb: 'Más en la web',
+    },
+    settings: {
+      title: 'Configuración',
+
+      interfaceTitle: 'Interfaz',
+      localeSelection: 'Seleccionar idioma',
+      localeSavingError: 'Error al guardar el idioma',
+      darkMode: 'Modo oscuro',
+
+      notificationsTitle: 'Notificaciones', // TODO Repeated, can't be
+      eventRemindersToggle: 'Habilitar recordatorios de eventos',
+      eventRemindersChooseTime: 'Antelación al evento',
+      eventsRemindersTime0: 'Al empezar',
+
+      helpTitle: 'Ayuda',
+      helpFaqAndInfo: 'Preguntas frecuentes y más info',
+      helpShareLogs: 'Compartir registro de errores',
+      helpShareLogsAlertHeader: 'Compartir registro de errores',
+      helpShareLogsAlertMessage:
+        'Comparte este archivo con los desarrolladores de la aplicación via correo a {email} o por Telegram a {telegram} para que se revisen y se intenten arreglar los problemas que hayan surgido',
+      helpShareLogsDialogTitle: 'Comparte este archivo con la organización',
+
+      viewSlides: 'Ver introducción de nuevo',
+    },
+    about: {
+      developedBy: 'App desarrollada por',
+      aboutMe: 'Sobre mí',
+      sourceCode: 'Código fuente',
+      patron: 'MECENAS',
+      platinum: 'Platino',
+      gold: 'Oro',
+      silver: 'Plata',
+      bronze: 'Bronce',
+      collaborators: 'COLABORADORES',
+      errorLoadingImages: 'Error al intentar descargar imágenes',
+    },
     message: {
-      minutes: 'minutos',
       close: 'Cerrar',
       save: 'Guardar',
       cancel: 'Cancelar',
@@ -148,54 +193,6 @@ const messages = {
       // Schedule
       scheduleGoOnline: 'Conéctate de nuevo para ver el horario',
 
-      // Settings
-      localeSelection: 'Seleccionar idioma',
-      settingsInterfaceTitle: 'Interfaz',
-      darkMode: 'Modo oscuro',
-      workingOnDarkMode: 'El modo oscuro aún no está disponible',
-      settingsTitle: 'Configuración',
-      settingsIdentificationTitle: 'Identificación',
-      settingsIdentificationChange: 'Modificar ID',
-      settingsNotificationsTitle: 'Notificaciones', // TODO Repeated, can't be
-      settingsEventRemindersToggle: 'Habilitar recordatorios de eventos',
-      settingsEventRemindersChooseTime: 'Antelación al evento',
-      settingsEventsRemindersTime0: 'Al empezar',
-
-      // IdChange (modal wasn't working)
-      identificationTypeTitle: 'Tipo de documento',
-      identificationDNI: 'DNI Español',
-      identificationNIE: 'NIE Español',
-      identificationPassportOrOther: 'Pasaporte u otro (cualquier país)',
-      identificationDocumentIdentifier: 'Identificador del documento',
-      identificationHelpTextLengthDNI:
-        'El DNI debe de ser de 9 carácteres de longitud',
-      identificationHelpTextInvalidDNI: 'DNI no válido',
-      identificationHelpTextWrongFormatDNI: 'Formato de DNI inválido',
-      identificationSuccessfullyUpdated: 'Identificación guardada con éxito',
-      identificationErrorSaving: 'Error al guardar Identificación',
-
-      // News
-      newsLoadedOffline:
-        'No se pueden obtener las noticias, cargando guardadas',
-      newsCannotRefreshOffline:
-        'No es posible recargar las noticias sin conexión',
-      newsReadMore: 'Leer más',
-      newsConnectAtLeastOnce:
-        'Conéctese a internet polo menos unha vez para poder ver as novas',
-      newsMoreOnWeb: 'Más en la web',
-
-      // About
-      developedBy: 'App desarrollada por',
-      aboutMe: 'Sobre mí',
-      sourceCode: 'Código fuente',
-      patron: 'MECENAS',
-      platinum: 'Platino',
-      gold: 'Oro',
-      silver: 'Plata',
-      bronze: 'Bronce',
-      collaborators: 'COLABORADORES',
-      errorLoadingImages: 'Error al intentar descargar imágenes',
-
       // Notifications
       noNotificationsYet: 'Aún no hay notificaciones',
       notificationSentOn: 'Enviado el',
@@ -213,6 +210,7 @@ const messages = {
       cancel: 'Cancelar',
       loading: 'Cargando',
       send: 'Enviar',
+      minutes: 'minutos',
     },
     auth: {
       loggingIn: 'Iniciando sesión',
@@ -226,27 +224,43 @@ const messages = {
       news: 'Novas',
       notifications: 'Notificacións',
     },
+    appUpdate: {},
+    news: {
+      takingLongMessage: 'A descarga está a tardar máis do esperado',
+      takingLongerLoadCache: 'Ver offline',
+      takingLongerWait: 'Agardar',
+      cannotRefreshOffline: 'Non é posible recargar as noticias sen conexión',
+      readMore: 'Ler máis',
+      loadedOffline: 'Cargadas as noticias descargadas',
+      connectAtLeastOnce:
+        'Conéctate a internet por lo menos una vez para poder ver las noticias',
+      moreOnWeb: 'Máis na nosa web',
+    },
     settings: {
-      // Settings
+      title: 'Configuración',
       localeSelection: 'Seleccionar idioma',
       interfaceTitle: 'Interface',
       darkMode: 'Modo oscuro',
-      workingOnDarkMode: 'O modo oscuro aínda non está dispoñible',
-      title: 'Configuración',
-      identificationTitle: 'Identificación',
-      identificationChange: 'Modificar ID',
       notificationsTitle: 'Notificacións',
       eventRemindersToggle: 'Habilitar recordatorios de eventos',
       eventRemindersChooseTime: 'Antelación ao evento',
       eventsRemindersTime0: 'Ao comezar',
     },
-    message: {
-      minutes: 'minutos',
-      close: 'Pechar',
-      save: 'Gardar',
-      cancel: 'Cancelar',
-      loading: 'Cargando',
+    about: {
+      patron: 'MECENAS',
+      platinum: 'Platino',
+      gold: 'Ouro',
+      silver: 'Plata',
+      bronze: 'Bronce',
+      collaborators: 'COLABORADORES',
 
+      developedBy: 'Creado por',
+      aboutMe: 'Sobre mín',
+      sourceCode: 'Código fonte',
+
+      errorLoadingImages: 'Erro ao tentar descargar imaxes',
+    },
+    message: {
       // QRCode
       qrcodeIdNotSet: 'Configura o teu ID para usar o acceso por QR',
       qrcodeSetId: 'Engadir ID',
@@ -267,42 +281,6 @@ const messages = {
       // Schedule
       scheduleGoOnline: 'Recupera a conexión a internet para ver o horario',
 
-      // IdChange (modal wasn't working)
-      identificationTypeTitle: 'Tipo de documento',
-      identificationDNI: 'DNI Español',
-      identificationNIE: 'NIE Español',
-      identificationPassportOrOther: 'Pasaporte ou outro (calquera país)',
-      identificationDocumentIdentifier: 'Identificador do documento',
-      identificationHelpTextLengthDNI: 'O DNI debe ter 9 carácteres',
-      identificationHelpTextInvalidDNI: 'DNI non válido',
-      identificationHelpTextWrongFormatDNI: 'Formato de DNI inválido',
-      identificationSuccessfullyUpdated: 'Identificación gardada con éxito',
-      identificationErrorSaving: 'Erro ao gardar identificación',
-
-      // News
-      newsTakingLongMessage: 'A descarga está a tardar máis do esperado',
-      newsTakingLongerLoadCache: 'Ver offline',
-      newsTakingLongerWait: 'Agardar',
-      newsCannotRefreshOffline:
-        'Non é posible recargar as noticias sen conexión',
-      newsReadMore: 'Ler máis',
-      newsLoadedOffline: 'Cargadas as noticias descargadas',
-      newsConnectAtLeastOnce:
-        'Conéctate a internet por lo menos una vez para poder ver las noticias',
-      newsMoreOnWeb: 'Máis na nosa web',
-
-      // About
-      developedBy: 'Creado por',
-      aboutMe: 'Sobre mín',
-      sourceCode: 'Código fonte',
-      patron: 'MECENAS',
-      platinum: 'Platino',
-      gold: 'Ouro',
-      silver: 'Plata',
-      bronze: 'Bronce',
-      collaborators: 'COLABORADORES',
-      errorLoadingImages: 'Erro ao tentar descargar imaxes',
-
       // Notifications
       noNotificationsYet: 'Aínda non hay notificacións',
       notificationSentOn: 'Enviado o',
@@ -320,6 +298,7 @@ const messages = {
       cancel: '',
       loading: '',
       send: '',
+      minutes: 'Minuten',
     },
     auth: {},
     tab: {
@@ -328,10 +307,26 @@ const messages = {
       news: 'Nachrichten',
       notifications: 'Mitteilung',
     },
-    settings: {},
+    appUpdate: {},
+    news: {
+      takingLongMessage: 'Das wird länger als wir gedacht haben',
+      takingLongerLoadCache: 'Laden aus dem Cachespeicher',
+      takingLongerWait: 'Abwarten Sie, bitte',
+      cannotRefreshOffline: 'Nachrichten sind nicht offline zu laden',
+      readMore: 'Lessen mehr',
+      moreOnWeb: 'Mehr im Web',
+    },
+    settings: {
+      localeSelection: 'Wählen Sie die Sprache',
+      interfaceTitle: 'Interface',
+      darkMode: 'Dunkelmodus',
+      notificationsTitle: 'Mitteilungen',
+      eventRemindersToggle: 'Aktivieren Eventserinnerungen',
+      eventRemindersChooseTime: 'Zeit zu EventsMitteilung',
+      eventsRemindersTime0: 'Im Startzeit',
+    },
+    about: {},
     message: {
-      minutes: 'Minuten',
-
       // QRCode
       qrcodeIdNotSet: 'Stellen Sie eine ID auf, um QR-Code zu benutzen',
       qrcodeSetId: 'Set ID',
@@ -344,40 +339,10 @@ const messages = {
       // components/NoConnection.vue
       noConnection: 'Keine Verbindung',
 
-      // Settings
-      localeSelection: 'Wählen Sie die Sprache',
-      settingsInterfaceTitle: 'Interface',
-      darkMode: 'Dunkelmodus',
-      workingOnDarkMode: 'Dunkelmodus ist noch nicht erhältich',
-      settingsIdentificationTitle: 'Ausweis',
-      settingsIdentificationChange: 'Ändern ID',
-      settingsNotificationsTitle: 'Mitteilungen',
-      settingsEventRemindersToggle: 'Aktivieren Eventserinnerungen',
-      settingsEventRemindersChooseTime: 'Zeit zu EventsMitteilung',
-      settingsEventsRemindersTime0: 'Im Startzeit',
-
-      // components/IdFormModal
-      identificationTypeTitle: 'ID Dokumentenart',
-      identificationDNI: 'Spanische DNI',
-      identificationNIE: 'Spanische NIE',
-      identificationPassportOrOther: 'Reisepass order andere (jedes Land)',
-      identificationDocumentIdentifier: 'Dokumentskennzeichen',
-      identificationHelpTextLengthDNI: 'DNI müss 9 Buchstaben lang sein',
-      identificationHelpTextInvalidDNI: 'DNI ist nicht berechtigt',
-      identificationHelpTextWrongFormatDNI: 'DNI-Format ist nicht berechtigt',
-
-      // News
-      newsTakingLongMessage: 'Das wird länger als wir gedacht haben',
-      newsTakingLongerLoadCache: 'Laden aus dem Cachespeicher',
-      newsTakingLongerWait: 'Abwarten Sie, bitte',
-      newsCannotRefreshOffline: 'Nachrichten sind nicht offline zu laden',
-      newsReadMore: 'Lessen mehr',
-      newsMoreOnWeb: 'Mehr im Web',
-
       // ---
       eventSpeakers: 'Rednen',
     },
-  },
+  } as Translation,
   eu: {
     ui: {
       close: 'Itxi',
@@ -385,6 +350,7 @@ const messages = {
       cancel: 'Ezeztatu',
       loading: 'Kargatzen',
       send: '',
+      minutes: 'minutu',
     },
     auth: {},
     tab: {
@@ -393,14 +359,31 @@ const messages = {
       news: 'Berriak',
       notifications: 'Jakinarazpenak',
     },
+    appUpdate: {},
+    news: {
+      loadedOffline: 'Ezin dira berriak lortu, gordetakoak kargatzen',
+      cannotRefreshOffline: 'Ezin dira berriak berriro kargatu konexiorik gabe',
+      readMore: 'Gehiago irakurri',
+      connectAtLeastOnce:
+        'Berriak ikusteko Internetera konekta zaitez gutxienez aldi bat',
+      moreOnWeb: 'Web-orrian gehiago',
+    },
     settings: {},
-    message: {
-      minutes: 'minutu',
-      close: 'Itxi',
-      save: 'Gorde',
-      cancel: 'Ezeztatu',
-      loading: 'Kargatzen',
+    about: {
+      patron: 'MEZENAS',
+      platinum: 'Platinoa',
+      gold: 'Urreaa',
+      silver: 'Zilarra',
+      bronze: 'Brontzea',
+      collaborators: 'KOLABORATZAILEAK',
 
+      developedBy: '-(e)k garatutako App-a',
+      aboutMe: 'Niri buruz',
+      sourceCode: 'Iturburu-kodea',
+
+      errorLoadingImages: 'Irudiak deskargatzerakoan errore bat gertatu da',
+    },
+    message: {
       // QRCode
       qrcodeIdNotSet:
         'Zure IDa konfigura ezazu QR-en bidez sarrera erabiltzeko',
@@ -421,42 +404,6 @@ const messages = {
       // Schedule
       scheduleGoOnline: 'Ordutegia ikusteko berriro konekta zaitez',
 
-      // IdChange (modal wasn't working)
-      identificationTypeTitle: 'Dokumento mota',
-      identificationDNI: 'DNI Espainiarra',
-      identificationNIE: 'NIE Espainiarra',
-      identificationPassportOrOther:
-        'Pasaportea edo beste bat (edozein herrialde)',
-      identificationDocumentIdentifier: 'Dokumentuaren identifikazioa',
-      identificationHelpTextLengthDNI: 'DNIak 9 karaktere izan behar ditu',
-      identificationHelpTextInvalidDNI: 'DNIa ez da baliozkoa',
-      identificationHelpTextWrongFormatDNI: 'DNIaren formatua ez da baliozkoa',
-      identificationSuccessfullyUpdated:
-        'Identifikazioa behar bezala gorde egin da',
-      identificationErrorSaving:
-        'Identifikazioa gordetzean errore bat gertatu da',
-
-      // News
-      newsLoadedOffline: 'Ezin dira berriak lortu, gordetakoak kargatzen',
-      newsCannotRefreshOffline:
-        'Ezin dira berriak berriro kargatu konexiorik gabe',
-      newsReadMore: 'Gehiago irakurri',
-      newsConnectAtLeastOnce:
-        'Berriak ikusteko Internetera konekta zaitez gutxienez aldi bat',
-      newsMoreOnWeb: 'Web-orrian gehiago',
-
-      // About
-      developedBy: '-(e)k garatutako App-a',
-      aboutMe: 'Niri buruz',
-      sourceCode: 'Iturburu-kodea',
-      patron: 'MEZENAS',
-      platinum: 'Platinoa',
-      gold: 'Urreaa',
-      silver: 'Zilarra',
-      bronze: 'Brontzea',
-      collaborators: 'KOLABORATZAILEAK',
-      errorLoadingImages: 'Irudiak deskargatzerakoan errore bat gertatu da',
-
       // Notifications
       noNotificationsYet: 'Oraindik ez dago jakinarazpenik',
       notificationSentOn: '-(e)an bidalita',
@@ -466,25 +413,111 @@ const messages = {
       eventSpeakers: 'Hizlariak',
       eventViewOnWeb: 'Web-orrian ikusi',
     },
-  },
-} as {
-  [lang in SupportedLanguages]: Translation;
+  } as Translation,
+  ca: {
+    ui: {
+      close: 'Tancar',
+      save: 'Guardar',
+      cancel: 'Cancel·lar',
+      loading: 'Carregant',
+      send: 'Enviar',
+      minutes: 'minuts',
+    },
+    auth: {
+      loggingIn: 'Iniciant sessió',
+      privacyPolicyAcceptance:
+        'En usar l\'aplicació, acceptes la <a href="https://biociencias.es/politica-privacidad/">Política de Privacitat d\'AEBI</a>',
+      logout: 'Tancar sessió',
+    },
+    tab: {
+      attendance: 'Assistència',
+      schedule: 'Horari',
+      news: 'Notícies',
+      notifications: 'Notificacions',
+    },
+    appUpdate: {
+      alertUpdate: 'Actualitzar',
+      alertLater: 'Més tard',
+      toastUpdated: 'App actualitzada, reinicia per aplicar els canvis',
+    },
+    news: {
+      loadedOffline: 'No es poden obtenir les notícies, carregant desades',
+      cannotRefreshOffline:
+        'No és possible recarregar les notícies sense connexió',
+      readMore: 'Llegir més',
+      connectAtLeastOnce:
+        "Connecta't a internet com a mínim un cop per poder veure les notícies",
+      moreOnWeb: 'Més al web',
+    },
+    settings: {
+      title: 'Configuració',
+
+      interfaceTitle: 'Interfície',
+      localeSelection: 'Seleccionar idioma',
+      darkMode: 'Mode fosc',
+
+      notificationsTitle: 'Notificacions', // This is the same name as tabs
+      eventRemindersToggle: "Habilitar recordatoris d'esdeveniments",
+      eventRemindersChooseTime: "Antelació a l'esdeveniment",
+      eventsRemindersTime0: 'En començar',
+    },
+    about: {
+      patron: 'MECENES',
+      platinum: 'Platí',
+      gold: 'Or',
+      silver: 'Plata',
+      bronze: 'Bronze',
+      collaborators: 'COL·LABORADORS',
+
+      developedBy: 'App desenvolupada per',
+      aboutMe: 'Sobre mi',
+      sourceCode: 'Codi font',
+
+      errorLoadingImages: 'Error en intentar descarregar imatges',
+    },
+    message: {
+      qrcodeIdNotSet: "Configura la teva ID per utilitzar l'accés per QR",
+      qrcodeSetId: 'Afegir ID',
+      viewAttendance: 'Veure assistència',
+
+      attendance: 'Assistència',
+      youveAssistedTo: 'Has assistit a',
+      outOfTotalOf: "hores d'un total de 25 hores",
+      eventsYouveAssisted: 'Esdeveniments als quals has assistit', // FIXME Attendance not assistance
+      noAssistance: 'Encara no tens assistència enregistrada',
+      attendanceConnectToSee:
+        "Connecta't a internet per veure la teva assistència",
+
+      noConnection: 'Sense connexió',
+
+      noNotificationsYet: 'Encara no hi ha notificacions',
+      notificationSentOn: 'Enviat el',
+
+      eventNoLocation: 'Sense localització assignada',
+      eventSpeakers: 'Ponents',
+      eventViewOnWeb: 'Veure al web',
+    },
+  } as Translation,
 };
+
+console.log(JSON.stringify(messages, null, 2));
 
 export default messages;
 
-export interface Translation {
+export type Translation = {
   ui: {
     close?: string;
     save?: string;
     cancel?: string;
     loading?: string;
     send?: string;
+    minutes?: string;
   };
   auth: {
     loggingIn?: string;
     privacyPolicyAcceptance?: string;
     logout?: string;
+    loggedOutSuccess?: string;
   };
   tab: {
     attendance?: string;
@@ -492,26 +525,57 @@ export interface Translation {
     news?: string;
     notifications?: string;
   };
+  appUpdate: {
+    alertHeader?: string;
+    alertMessage?: string;
+    alertLater?: string;
+    alertUpdate?: string;
+    toastUpdated?: string;
+  };
+  news: {
+    newsLoadedOffline?: string;
+    newsCannotRefreshOffline?: string;
+    newsReadMore?: string;
+    newsConnectAtLeastOnce?: string;
+    newsMoreOnWeb?: string;
+  };
   settings: {
-    localeSelection?: string;
-    settingsInterfaceTitle?: string;
-    darkMode?: string;
-    workingOnDarkMode?: string;
     title?: string;
-    identificationTitle?: string;
-    identificationChange?: string;
+
+    interfaceTitle?: string;
+    localeSelection?: string;
+    localeSavingError?: string;
+    darkMode?: string;
+
     notificationsTitle?: string;
     eventRemindersToggle?: string;
     eventRemindersChooseTime?: string;
     eventsRemindersTime0?: string;
+
+    helpTitle?: string;
+    helpFaqAndInfo?: string;
+    helpShareLogs?: string;
+    helpShareLogsAlertHeader?: string;
+    helpShareLogsAlertMessage?: string;
+    helpShareLogsDialogTitle?: string;
+
+    viewSlides?: string;
+  };
+  about: {
+    patron?: string;
+    platinum?: string;
+    gold?: string;
+    silver?: string;
+    bronze?: string;
+    collaborators?: string;
+
+    developedBy?: string;
+    aboutMe?: string;
+    sourceCode?: string;
+
+    errorLoadingImages?: string;
   };
   message: {
-    minutes?: string;
-    close?: string;
-    save?: string;
-    cancel?: string;
-    loading?: string;
-
     // QRCode
     qrcodeIdNotSet?: string;
     qrcodeSetId?: string;
@@ -531,37 +595,6 @@ export interface Translation {
     // Schedule
     scheduleGoOnline?: string;
 
-    // components/IdFormModal
-    identificationTypeTitle?: string;
-    identificationDNI?: string;
-    identificationNIE?: string;
-    identificationPassportOrOther?: string;
-    identificationDocumentIdentifier?: string;
-    identificationHelpTextLengthDNI?: string;
-    identificationHelpTextInvalidDNI?: string;
-    identificationHelpTextWrongFormatDNI?: string;
-    identificationSuccessfullyUpdated?: string;
-    identificationErrorSaving?: string;
-
-    // News
-    newsLoadedOffline?: string;
-    newsCannotRefreshOffline?: string;
-    newsReadMore?: string;
-    newsConnectAtLeastOnce?: string;
-    newsMoreOnWeb?: string;
-
-    // About
-    developedBy?: string;
-    aboutMe?: string;
-    sourceCode?: string;
-    patron?: string;
-    platinum?: string;
-    gold?: string;
-    silver?: string;
-    bronze?: string;
-    collaborators?: string;
-    errorLoadingImages?: string;
-
     // Notifications
     noNotificationsYet?: string;
     notificationSentOn?: string;
@@ -571,6 +604,6 @@ export interface Translation {
     eventSpeakers?: string;
     eventViewOnWeb?: string;
   };
-}
+};
 
-export type SupportedLanguages = 'en' | 'es' | 'gl' | 'de' | 'eu';
+export type SupportedLanguages = keyof typeof messages;

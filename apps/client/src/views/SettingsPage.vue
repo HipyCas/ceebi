@@ -114,7 +114,7 @@
                 v-for="time in [1, 3, 5, 10, 15, 20, 30, 45, 60]"
                 :key="time"
                 :value="time"
-                >{{ time }} {{ $t('settings.minutes') }}</ion-select-option
+                >{{ time }} {{ $t('ui.minutes') }}</ion-select-option
               >
             </ion-select>
           </ion-item>
@@ -123,7 +123,9 @@
       <!--* HELP *-->
       <ion-card>
         <ion-card-header
-          ><ion-card-title> Ayuda </ion-card-title></ion-card-header
+          ><ion-card-title>
+            {{ $t('settings.helpTitle') }}
+          </ion-card-title></ion-card-header
         >
         <ion-card-content>
           <!--* Link to web *-->
@@ -133,7 +135,7 @@
             :detail="false"
             @click="logEvent(analytics, 'open_appPage')"
           >
-            Preguntas frecuentes y más info
+            {{ $t('settings.helpFaqAndInfo') }}
             <IonIcon slot="end" :icon="openOutline"></IonIcon>
           </ion-item>
           <!--* Share logs *-->
@@ -144,7 +146,7 @@
             button
             class="item"
           >
-            Compartir registro de errores
+            {{ $t('settings.helpShareLogs') }}
             <IonIcon slot="end" :icon="paperPlaneOutline"></IonIcon>
           </ion-item>
         </ion-card-content>
@@ -155,7 +157,7 @@
         fill="clear"
         expand="full"
       >
-        Ver introducción de nuevo
+        {{ $t('settings.viewSlides') }}
       </ion-button>
     </ion-content>
   </ion-page>
@@ -216,9 +218,11 @@ const user: Ref<WPUser> = getUser();
 
 const preshareLogs = async () => {
   const alert = alertController.create({
-    header: 'Compartir registro de errores',
-    message:
-      'Comparte este archivo con los desarrolladores de la aplicación via correo a app@biociencias.es o por Telegram a @HipyCas para que se revisen y se intenten arreglar los problemas que hayan surgido',
+    header: t('settings.helpShareLogsAlertHeader'),
+    message: t('settings.helpShareLogsAlertMessage', {
+      email: 'app@biociencias.es',
+      telegram: '@HipyCas',
+    }),
     buttons: [
       {
         text: t('ui.cancel'),
@@ -228,7 +232,7 @@ const preshareLogs = async () => {
         text: t('ui.send'),
         handler: () => {
           shareLogs(logger, 'ceebiclient', {
-            dialogTitle: 'Comparte este archivo con la organización',
+            dialogTitle: t('settings.helpShareLogsDialogTitle'),
             title: 'Logs aplicación CEEBI',
           }).catch((e) =>
             useToast({
@@ -246,7 +250,7 @@ const preshareLogs = async () => {
 const logout = () => {
   clearWPToken();
   useToast({
-    message: 'Sesión cerrada con éxito',
+    message: t('auth.loggedOutSuccess'),
     color: 'success',
   });
   logEvent(analytics, 'logout');
@@ -271,7 +275,7 @@ const saveLocale = async (ev: SelectCustomEvent) => {
     });
   } catch (e) {
     useToast({
-      message: 'Error al guardar el idioma',
+      message: t('settings.localeSavingError'),
       color: 'danger',
       icon: alertCircleOutline,
     });

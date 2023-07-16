@@ -6,10 +6,10 @@
         <template
           style="display: flex; flex-direction: column; align-items: center"
         >
-          {{ $t('message.newsConnectAtLeastOnce') }}
+          {{ $t('news.connectAtLeastOnce') }}
           <ion-button @click="open('https://biociencias.es/noticias/')">
             <!-- TODO Translate -->
-            More on the web
+            {{ $t('news.moreOnWeb') }}
             <ion-icon
               slot="end"
               :md="openOutline"
@@ -33,13 +33,13 @@
               _new.excerpt || ''
             }}</ion-text>
             <ion-button fill="clear" @click="open(_new.link || '/news')"
-              >{{ $t('message.newsReadMore') }}
+              >{{ $t('news.readMore') }}
               <ion-icon :icon="openOutline" slot="end"></ion-icon>
             </ion-button>
           </div>
           <div class="flex-center">
             <ion-button @click="open('https://biociencias.es/noticias/')">
-              {{ $t('message.newsMoreOnWeb') }}
+              {{ $t('news.moreOnWeb') }}
               <ion-icon
                 slot="end"
                 :md="openOutline"
@@ -156,7 +156,7 @@ async function getNews(
   // Suggest to load news from cache if it takes too long
   const suggestCache = () => {
     if (!finished.value) {
-      toast(i18n.t('message.newsLoadedOffline'), cloudDownloadOutline);
+      toast(i18n.t('news.loadedOffline'), cloudDownloadOutline);
       loadNews(finished, toStore);
     }
   };
@@ -254,7 +254,7 @@ const refreshNews = (event) => {
   }, 5000);
   (async () => {
     if (connected.value) await getNews(parser, loaded, news);
-    else toast(i18n.t('message.newsCannotRefreshOffline'), cloudOfflineOutline);
+    else toast(i18n.t('news.cannotRefreshOffline'), cloudOfflineOutline);
   })();
 };
 

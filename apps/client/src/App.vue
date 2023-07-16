@@ -28,9 +28,7 @@ import {
   FlexibleUpdateInstallStatus,
 } from '@capawesome/capacitor-app-update';
 import { KEY_PUSH_ENABLED, KEY_DARK_MODE } from './vars';
-// import { logEvent } from 'firebase/analytics';
 import * as StackTrace from 'stacktrace-js';
-// import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 import { toggleDarkMode } from './ui';
 import { setDarkMode } from './darkMode';
 import { useI18n } from 'vue-i18n';
@@ -38,7 +36,7 @@ import { Translation, Language } from '@capacitor-mlkit/translation';
 import * as locales from 'locale-codes';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 console.log(locale.value);
 
 console.log(
@@ -129,19 +127,19 @@ if (isPlatform('capacitor')) {
       return;
     }
     const alert = await alertController.create({
-      header: 'App update available',
-      message:
-        'We recommend you to update the application.\nCurrent version: ' +
-        currentVersion +
-        '. New version: ' +
+      header: t('appUpdate.alertHeader'),
+      message: t('appUpdate.alertMessage', {
+        currentVersion,
         availableVersion,
+      }),
+
       buttons: [
         {
-          text: 'Later',
+          text: t('appUpdate.alertLater'),
           role: 'cancel',
         },
         {
-          text: 'Update',
+          text: t('appUpdate.alertUpdate'),
           handler: () => {
             if (flexibleUpdateAllowed) {
               AppUpdate.startFlexibleUpdate();
@@ -151,10 +149,10 @@ if (isPlatform('capacitor')) {
                   if (installStatus === FlexibleUpdateInstallStatus.INSTALLED)
                     toastController
                       .create({
-                        message: 'App updated, restart to apply updates',
+                        message: t('appUpdate.toastUpdated'),
                         buttons: [
                           {
-                            text: 'Update',
+                            text: t('appUpdate.alertUpdate'),
                             handler: () => AppUpdate.completeFlexibleUpdate(),
                           },
                         ],
