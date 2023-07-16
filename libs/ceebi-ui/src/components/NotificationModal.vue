@@ -11,7 +11,7 @@
     <div class="ion-padding">
       <ion-text class="block" v-html="notification.body"></ion-text>
       <ion-text color="medium" class="block smaller ion-margin-top"
-        >{{ $t('message.notificationSentOn') }}
+        >{{ $t('notifications.sentOn') }}
         {{
           notification.schedule.toLocaleDateString(undefined, {
             weekday: 'long',
