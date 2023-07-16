@@ -37,7 +37,7 @@
             class="colaborador-bronce img-link silver-smaller-link"
             :src="oro.src"
             :alt="oro.name"
-            @click="openMecena(bronce)"
+            @click="openMecena(oro)"
           />
         </div>
       </template>
