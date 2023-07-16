@@ -1,3 +1,26 @@
 {
-  "eslint.validate": ["json"]
+  "eslint.validate": ["json"],
+  "i18n-ally.enabledParsers": ["yaml"],
+  "i18n-ally.localesPaths": ["locales"],
+  "i18n-ally.enabledFrameworks": ["vue"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.tabStyle": "space",
+  "i18n-ally.usage.scanningIgnore": [
+    "dist/**/*",
+    "target/**/*",
+    "ios/**/*",
+    "android/**/*"
+  ],
+  "cSpell.words": ["'s", "AEBI", "ceebi", "pricetag", "wpapi"],
+  "cSpell.ignorePaths": [
+    "package-lock.json",
+    "node_modules",
+    "vscode-extension",
+    ".git/objects",
+    ".vscode",
+    ".vscode-insiders",
+    "apps/client/src/translations.ts"
+  ],
+  "i18n-ally.sourceLanguage": "es",
+  "i18n-ally.extract.ignored": ["*"]
 }
