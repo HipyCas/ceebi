@@ -65,6 +65,7 @@ import { logEvent } from 'firebase/analytics';
 import { loadingUser, getUser } from '../user';
 import LoginRequired from '../components/LoginRequired.vue';
 import { logCatchError } from '@code/capacitor-utils';
+import differenceInMonths from 'date-fns/differenceInMonths';
 
 interface RenderableNotification {
   id: number;
@@ -131,6 +132,7 @@ const loadNotifications = async () => {
               })),
           } as RenderableNotification)
       )
+      .filter((not) => differenceInMonths(today, not.schedule) <= 10)
       .sort((a, b) => getUnixTime(b.schedule) - getUnixTime(a.schedule));
   } catch (error) {
     logCatchError(
