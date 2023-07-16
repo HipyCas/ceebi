@@ -130,6 +130,7 @@ export const extendBaseConfig = (
     build: {
       outDir: `../../dist/apps/${projectName}/web`,
       emptyOutDir: true,
+      sourcemap: 'inline',
     },
     server: {
       fs: {
