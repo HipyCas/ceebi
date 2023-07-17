@@ -14,8 +14,7 @@
         <ion-segment-button value="3">
           <ion-label>{{ $t('schedule.tabs.wednesday') }} 19</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="4"
-          >git
+        <ion-segment-button value="4">
           <ion-label>{{ $t('schedule.tabs.thursday') }} 20</ion-label>
         </ion-segment-button>
         <ion-segment-button value="5">
