@@ -264,9 +264,9 @@ async function login() {
   }
 
   if (!supabase_user?.is_admin) {
-    loginTrace.stop();
     loginTrace.putAttribute('is_error', 'true');
     loginTrace.putAttribute('error', 'not admin');
+    loginTrace.stop();
     useToast({
       message: 'App restringida a administradores',
       color: 'danger',
@@ -310,8 +310,8 @@ async function login() {
       supabase: supabase_user,
     });
 
-    loginTrace.stop();
     loginTrace.putAttribute('is_error', 'false');
+    loginTrace.stop();
 
     logger.trace(
       'auth:login',
