@@ -9,22 +9,23 @@
         @ionChange="segmentChanged($event)"
       >
         <ion-segment-button value="2">
-          <ion-label>M 18</ion-label>
+          <ion-label>{{ $t('schedule.tabs.tuesday') }} 18</ion-label>
         </ion-segment-button>
         <ion-segment-button value="3">
-          <ion-label>X 19</ion-label>
+          <ion-label>{{ $t('schedule.tabs.wednesday') }} 19</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="4">
-          <ion-label>J 20</ion-label>
+        <ion-segment-button value="4"
+          >git
+          <ion-label>{{ $t('schedule.tabs.thursday') }} 20</ion-label>
         </ion-segment-button>
         <ion-segment-button value="5">
-          <ion-label>V 21</ion-label>
+          <ion-label>{{ $t('schedule.tabs.friday') }} 21</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
     <ion-content :fullscreen="true">
       <NoConnection v-if="!connected">
-        {{ $t('message.scheduleGoOnline') }}
+        {{ $t('schedule.goOnline') }}
       </NoConnection>
       <div class="swiper" v-else>
         <Swiper
@@ -37,25 +38,20 @@
         >
           <swiper-slide class="slide"
             ><SkeletonTimeline v-if="tuesdayLoading"></SkeletonTimeline>
-            <Timeline v-else :events="tuesdayEvents"
-              >Martes</Timeline
-            > </swiper-slide
+            <Timeline v-else :events="tuesdayEvents"></Timeline> </swiper-slide
           ><swiper-slide class="slide">
             <SkeletonTimeline v-if="wednesdayLoading"></SkeletonTimeline>
-            <Timeline v-else :events="wednesdayEvents"
-              >Miercoles</Timeline
-            ></swiper-slide
+            <Timeline v-else :events="wednesdayEvents"></Timeline></swiper-slide
           ><swiper-slide class="slide">
             <SkeletonTimeline v-if="thursdayLoading"></SkeletonTimeline
-            ><Timeline v-else :events="thursdayEvents"
-              >Jueves</Timeline
-            > </swiper-slide
+            ><Timeline
+              v-else
+              :events="thursdayEvents"
+            ></Timeline> </swiper-slide
           ><swiper-slide class="slide">
             <SkeletonTimeline v-if="fridayLoading"></SkeletonTimeline
-            ><Timeline v-else :events="fridayEvents"
-              >Viernes</Timeline
-            ></swiper-slide
-          >
+            ><Timeline v-else :events="fridayEvents"></Timeline
+          ></swiper-slide>
         </Swiper>
       </div>
     </ion-content>
@@ -81,17 +77,19 @@ import Timeline from '../components/Timeline.vue';
 import SkeletonTimeline from '../components/SkeletonTimeline.vue';
 import NoConnection from '../components/NoConnection.vue';
 
-import { ref } from 'vue';
-import { Preferences } from '@capacitor/preferences';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { Network } from '@capacitor/network';
-import { useI18n } from 'vue-i18n';
 import { Translation, Language } from '@capacitor-mlkit/translation';
 import * as locales from 'locale-codes';
 import { MEC } from '@code/mec-ts';
 import { getTranslateSchedule } from '../translateSchedule';
+import { logCatchError } from '@code/capacitor-utils';
+import subMinutes from 'date-fns/subMinutes';
 
 import { Event } from '@code/mec-ts';
+import {
+  KEY_EVENTS_NOTIFICATIONS,
+  KEY_EVENTS_NOTIFICATIONS_TIME,
+} from '../vars';
 
 const { locale } = useI18n();
 let currentLanguage: string;
@@ -131,19 +129,16 @@ function daySwiped() {
 watch(day, (val) => console.info('day changed', val));
 
 logger.trace('schedule:setup', 'setup events');
-// // Get thursday events
+
 const tuesdayEvents = ref([] as Event[]);
 const tuesdayLoading = ref(true);
 
-// // Get wednesday events
 const wednesdayEvents = ref([] as Event[]);
 const wednesdayLoading = ref(true);
 
-// // Get thursday events
 const thursdayEvents = ref([] as Event[]);
 const thursdayLoading = ref(true);
 
-// // Get friday events
 const fridayEvents = ref([] as Event[]);
 const fridayLoading = ref(true);
 
@@ -159,6 +154,7 @@ const translate = async (text: string) => {
   ).text;
 };
 
+// #region Load Events
 const loadEvents = async () => {
   logger.trace('schedule:loadEvents', 'load MEC');
   const mec = await MEC.init(
@@ -223,7 +219,9 @@ const loadEvents = async () => {
   currentLanguage = locale.toString();
 };
 loadEvents();
+// #endregion
 
+// #region CONNECTION
 const connected = ref(true);
 (async () => {
   const status = await Network.getStatus();
@@ -235,36 +233,48 @@ Network.addListener('networkStatusChange', (status) => {
     loadEvents();
   }
 });
+// #endregion
 
+// #region Local Notifications
 if (isPlatform('capacitor')) {
-  console.trace('schedule:setup', 'creating localNotifications channel');
+  logger.trace('schedule:setup', 'creating localNotifications channel');
   LocalNotifications.createChannel({
-    id: 'testchannel',
+    id: 'eventReminders',
     name: 'Event reminders',
     importance: 3,
     vibration: true,
   })
     .then(() => {
-      Preferences.get({ key: 'localNotifications' }) // It is of the form wants;registered
-        .then(({ value }) => {
+      Preferences.get({ key: KEY_EVENTS_NOTIFICATIONS }) // It is of the form wants;registered
+        .then(async ({ value }) => {
           const split = (value == undefined ? 'false;false' : value).split(';');
           const wants = split[0] == 'true';
           const registered = split[1] == 'true';
           if (wants && !registered) {
-            tuesdayEvents.value.forEach((event: any) => {
+            const { value: timeBeforeRaw } = await Preferences.get({
+              key: KEY_EVENTS_NOTIFICATIONS_TIME,
+            });
+            const timeBefore = Number.parseInt(timeBeforeRaw ?? '0');
+            tuesdayEvents.value.forEach((event) => {
               LocalNotifications.checkPermissions().then((check) => {
                 if (check.display === 'granted') {
                   LocalNotifications.schedule({
                     notifications: [
                       {
-                        title: `${event.name} empizeza en 10 minutos!`,
-                        body: `El evento ${event.name} va a empezar en 10 minutos en ${event.location}`,
-                        id: Number(event.startTime.toUTCString()),
+                        title: `${event.title} empizeza en 10 minutos!`,
+                        body: `El evento ${event.startTime} va a empezar en 10 minutos en ${event.locations[0]}`,
+                        id: event.id,
+                        schedule: {
+                          at: subMinutes(event.startDate, timeBefore),
+                        },
                       },
                     ],
                   });
                 } else {
-                  console.warn('Schedule:121 > Permissions not granted');
+                  logger.warn(
+                    'schedule:setNotifications',
+                    'Permissions not granted'
+                  );
                 }
               });
             });
@@ -272,6 +282,11 @@ if (isPlatform('capacitor')) {
               key: 'localNotifications',
               value: 'true;true',
             });
+          } else if (!wants && registered) {
+            LocalNotifications.deleteChannel({
+              id: 'eventReminders',
+            });
+            logger.trace('schedule:setNotifications', 'channel deleted');
           } else {
             logger.trace(
               'schedule:setNotifications',
@@ -281,8 +296,16 @@ if (isPlatform('capacitor')) {
           }
         });
     })
-    .catch((e) => console.warn('Schedule:134 > error creating channel', e));
+    .catch((e) => {
+      logCatchError(
+        logger,
+        'schedule:LocalNotifications.createChannel',
+        'error creating notification channel',
+        e
+      );
+    });
 }
+// #endregion
 
 function segmentChanged(event: CustomEvent): void {
   console.log('Segment changed: ', event);
@@ -297,7 +320,7 @@ onIonViewWillEnter(() => {
   if (
     locale.toString() !== 'es' &&
     isPlatform('capacitor') &&
-    locale !== currentLanguage &&
+    locale.value !== currentLanguage &&
     translateSchedule.value
   ) {
     loadEvents();

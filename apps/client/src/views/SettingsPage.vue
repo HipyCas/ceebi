@@ -336,13 +336,17 @@ watch(isDarkMode, (val) => (darkMode.value = val));
 
 const [eventRemindersOn, eventRemindersTime] = useEventReminders();
 
-watch(eventRemindersOn, (value) => {
+watch(eventRemindersOn, async (value) => {
   setUserProperties(analytics, {
     eventRemindersOn: value,
   });
+  const { value: storageValue } = await Preferences.get({
+    key: KEY_EVENTS_NOTIFICATIONS,
+  });
+  const split = (storageValue ?? ' ; ').split(';');
   Preferences.set({
     key: KEY_EVENTS_NOTIFICATIONS,
-    value: value ? 'true' : 'false',
+    value: `${value ? 'true' : 'false'}:${split[1]}`,
   });
 });
 

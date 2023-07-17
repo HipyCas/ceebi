@@ -17,8 +17,9 @@ export default async () => {
   const { value: eventRemindersOn } = await Preferences.get({
     key: KEY_EVENTS_NOTIFICATIONS,
   });
-  if (eventRemindersOn && eventRemindersOn === 'true') {
-    setEventReminders({ on: true });
+  if (eventRemindersOn && /(true|false);(true|false)/m.test(eventRemindersOn)) {
+    const split = eventRemindersOn.split(';');
+    setEventReminders({ on: split[0] === 'true' });
     const { value: eventRemindersTime } = await Preferences.get({
       key: KEY_EVENTS_NOTIFICATIONS_TIME,
     });
