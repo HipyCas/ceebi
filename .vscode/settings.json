@@ -11,7 +11,18 @@
     "ios/**/*",
     "android/**/*"
   ],
-  "cSpell.words": ["'s", "AEBI", "ceebi", "pricetag", "wpapi"],
+  "cSpell.words": [
+    "'s",
+    "AEBI",
+    "ceebi",
+    "dont",
+    "friday",
+    "mlkit",
+    "pricetag",
+    "tuesday",
+    "wednesday",
+    "wpapi"
+  ],
   "cSpell.ignorePaths": [
     "package-lock.json",
     "node_modules",
