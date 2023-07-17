@@ -3,7 +3,7 @@ import App from './App.vue';
 import router from './router';
 import VWave from 'v-wave';
 
-import { IonicVue, alertController } from '@ionic/vue';
+import { IonicVue } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -24,14 +24,7 @@ import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { createI18n } from 'vue-i18n';
 import * as locale from 'locale-codes';
-import { KEY_LOCALE, KEY_WP_TOKEN } from './vars';
-import {
-  clearWPToken,
-  setWPToken,
-  updateUserFromServer,
-  validateWPToken,
-} from './wpauth';
-import { loadingUser } from './user';
+import { KEY_LOCALE } from './vars';
 import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 import loadSettings from './loadSettings';
 
@@ -43,7 +36,7 @@ logger.trace('main', App);
 
 //* I18n
 const i18n = createI18n({
-  locale: 'en',
+  locale: 'es',
   fallbackLocale: 'es',
   messages,
   legacy: false,
@@ -67,42 +60,6 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
       }
     );
   }
-
-  // TODO Make some loading ref so app can show loading while not finished the login checks
-  // TODO Move this to App.vue and show alert that Sesión caducó and suggest log in
-  //* ===== Login
-  if (keys.includes(KEY_WP_TOKEN)) {
-    Preferences.get({ key: KEY_WP_TOKEN }).then(async ({ value: token }) => {
-      setWPToken(token || '');
-      const validated = await validateWPToken();
-      if (validated.valid) {
-        updateUserFromServer().then(() => (loadingUser.value = false));
-      } else {
-        loadingUser.value = false;
-        alertController
-          .create({
-            header: 'Sesión caducada',
-            message:
-              'Inicia sesión de nuevo para poder seguir usando la app como antes',
-            buttons: [
-              {
-                text: 'No iniciar',
-                role: 'cancel',
-                handler: clearWPToken,
-              },
-              {
-                text: 'Iniciar sesión',
-                handler: () => router.push('/auth/login'),
-              },
-            ],
-          })
-          .then((a) => a.present());
-      }
-    });
-  } else {
-    loadingUser.value = false;
-  }
-  //* =====
 });
 //* =====
 

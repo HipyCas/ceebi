@@ -30,12 +30,19 @@ import {
 } from '@capawesome/capacitor-app-update';
 import { Translation, Language } from '@capacitor-mlkit/translation';
 
-import { KEY_PUSH_ENABLED, KEY_DARK_MODE } from './vars';
+import { KEY_PUSH_ENABLED, KEY_DARK_MODE, KEY_WP_TOKEN } from './vars';
 import { toggleDarkMode } from './ui';
 import { setDarkMode } from './darkMode';
+import {
+  clearWPToken,
+  setWPToken,
+  updateUserFromServer,
+  validateWPToken,
+} from './wpauth';
+import { loadingUser } from './user';
 
 const { locale, t } = useI18n();
-console.log(locale.value);
+const router = useIonRouter();
 
 console.log(
   'hello',
@@ -174,22 +181,61 @@ onMounted(async () => {
   // Set timeout to hide splash screen
   setTimeout(SplashScreen.hide, 250);
 
+  const { keys } = await Preferences.keys();
+
   // Load dark/light mode
-  if ((await Preferences.keys()).keys.includes(KEY_DARK_MODE)) {
-    const darkModeResult: boolean = JSON.parse(
-      (
-        await Preferences.get({
-          key: KEY_DARK_MODE,
-        })
-      ).value || 'false'
-    );
-    toggleDarkMode(darkModeResult);
-    setDarkMode(darkModeResult);
-  } else {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    toggleDarkMode(prefersDark.matches);
-    setDarkMode(prefersDark.matches);
-  }
+  (async () => {
+    if (keys.includes(KEY_DARK_MODE)) {
+      const darkModeResult: boolean = JSON.parse(
+        (
+          await Preferences.get({
+            key: KEY_DARK_MODE,
+          })
+        ).value || 'false'
+      );
+      toggleDarkMode(darkModeResult);
+      setDarkMode(darkModeResult);
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      toggleDarkMode(prefersDark.matches);
+      setDarkMode(prefersDark.matches);
+    }
+  })();
+
+  //* ===== Login
+  (async () => {
+    if (keys.includes(KEY_WP_TOKEN)) {
+      Preferences.get({ key: KEY_WP_TOKEN }).then(async ({ value: token }) => {
+        setWPToken(token || '');
+        const validated = await validateWPToken();
+        if (validated.valid) {
+          updateUserFromServer().then(() => (loadingUser.value = false));
+        } else {
+          loadingUser.value = false;
+          alertController
+            .create({
+              header: t('auth.sessionExpiredAlert.header'),
+              message: t('auth.sessionExpiredAlert.message'),
+              buttons: [
+                {
+                  text: t('auth.sessionExpiredAlert.dontLogin'),
+                  role: 'cancel',
+                  handler: clearWPToken,
+                },
+                {
+                  text: t('auth.login'),
+                  handler: () => router.push('/auth/login'),
+                },
+              ],
+            })
+            .then((a) => a.present());
+        }
+      });
+    } else {
+      loadingUser.value = false;
+    }
+  })();
+  //* =====
 
   (async () => {
     console.info('[TRANSLATION] Starting model downloads...');
