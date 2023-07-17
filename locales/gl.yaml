@@ -41,6 +41,7 @@ attendance:
   youveAssistedTo: Asistiches a
   outOfTotalOf: horas dun total de 25 horas
   availableWhenEventFinished: Dispoñible ao terminar o congreso
+  downloadCertificates: Descargar certificados
   errorGeneratingCertificate: Erro ao xerar o certificado
   generatingCertificate: Xerando certificado
   reasonLoginRequired: rexistrar e ver a tua asistencia´
@@ -50,12 +51,19 @@ attendance:
   selectCertificateHeader: Seleccionar certificado
   selectCertificateSelectMicrocourse: Selecciona o microcurso
   selectCertificateSubheader: Escolle o certificado que desexas descargar
+  errorObtainingAttendance: Erro ao obter a asistencia
+  eventsYouveAssisted: Eventos aos que asistiches
 schedule:
-  scheduleGoOnline: Recupera a conexión a internet para ver o horario
+  goOnline: Recupera a conexión a internet para ver o horario
   eventNoLocation: Sen localización asignada
   eventSpeakers: Poñentes
   eventsYouveAssisted: Eventos aos que asistiches
   eventViewOnWeb: Ver na web
+  tabs:
+    friday: V
+    thursday: X
+    tuesday: Ma
+    wednesday: Me
 news:
   cannotRefreshOffline: Non é posible recargar as noticias sen conexión
   connectAtLeastOnce: Conéctate a internet por lo menos una vez para poder ver las noticias

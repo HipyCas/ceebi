@@ -33,6 +33,10 @@ auth:
   loginToReason: Inicia sesión para poder
   password: Contraseña
   errorLoggingIn: Error al iniciar sesión
+  sessionExpiredAlert:
+    dontLogin: No iniciar
+    header: Sesión caducada
+    message: Inicia sesión de nuevo para poder seguir usando la app como antes
 attendance:
   attendance: Asistencia
   attendanceConnectToSee: Conéctate a internet para poder ver tu asistencia
@@ -51,12 +55,19 @@ attendance:
   selectCertificateHeader: Seleccionar certificado
   selectCertificateSelectMicrocourse: Selecciona el microcurso
   selectCertificateSubheader: Elige el certificado que deseas descargar
+  errorObtainingAttendance: Error al obtener la asistencia
+  eventsYouveAssisted: Eventos a los que has asistido
 schedule:
-  scheduleGoOnline: Conéctate de nuevo para ver el horario
+  goOnline: Conéctate de nuevo para ver el horario
   eventNoLocation: Sin localización asignada
   eventSpeakers: Ponentes
   eventsYouveAssisted: Eventos a los que has asistido
   eventViewOnWeb: Ver en la web
+  tabs:
+    friday: F
+    thursday: J
+    tuesday: M
+    wednesday: X
 news:
   cannotRefreshOffline: No es posible recargar las noticias sin conexión
   connectAtLeastOnce: Conéctese a internet polo menos unha vez para poder ver as novas
@@ -67,7 +78,7 @@ notifications:
   noneYet: Aún no hay notificaciones
   sentOn: Enviado el
   errorFetching: Error al obtener las notificaciones
-  reasonLoginRequired: poder ver todas las notificaciones
+  reasonLoginRequired: ver todas las notificaciones
 settings:
   darkMode: Modo oscuro
   eventRemindersChooseTime: Antelación al evento

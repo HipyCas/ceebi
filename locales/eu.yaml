@@ -18,7 +18,7 @@ attendance:
   youveAssistedTo: '-(e)ra azaldu zara'
   outOfTotalOf: ordu guztizko 25 orduetatik
 schedule:
-  scheduleGoOnline: Ordutegia ikusteko berriro konekta zaitez
+  goOnline: Ordutegia ikusteko berriro konekta zaitez
   eventNoLocation: Oraindik ez dago kokapenik
   eventSpeakers: Hizlariak
   eventsYouveAssisted: Azaldu naizen ekitaldiak

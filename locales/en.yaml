@@ -32,6 +32,10 @@ auth:
   loginToReason: Log in to be able to
   password: Password
   errorLoggingIn: Error logging in
+  sessionExpiredAlert:
+    dontLogin: Don't login
+    header: Session expired
+    message: Log in again to be able to use the app as you did before
 attendance:
   attendance: Attendance
   attendanceConnectToSee: Go online to check your attendance
@@ -50,12 +54,19 @@ attendance:
   selectCertificateHeader: Select certificate
   selectCertificateSelectMicrocourse: Select the microcourse
   selectCertificateSubheader: Select the certificate you want to download
+  errorObtainingAttendance: Error obtaining attendance data
+  eventsYouveAssisted: Events you have attended
 schedule:
-  scheduleGoOnline: Go back online to get the updated schedule
+  goOnline: Go back online to get the updated schedule
   eventNoLocation: No location assigned
   eventSpeakers: Speakers
   eventsYouveAssisted: Events you have attended
   eventViewOnWeb: View on the web
+  tabs:
+    friday: F
+    thursday: Th
+    tuesday: Tu
+    wednesday: W
 news:
   cannotRefreshOffline: Cannot refresh news while offline
   connectAtLeastOnce: You have to connect at least once to see news

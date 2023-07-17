@@ -22,6 +22,15 @@ auth:
     En usar l'aplicació, acceptes la <a
     href="https://biociencias.es/politica-privacidad/">Política de Privacitat
     d'AEBI</a>
+  continueWithoutLogin: Continuar sense iniciar sessió
+  email: Correu electrònic
+  login: 'Iniciar sessió '
+  loginToReason: Inicia sessió per poder
+  password: Contrassenya
+  sessionExpiredAlert:
+    dontLogin: No iniciar
+    header: Sessió caducada
+    message: Inicia sessió de nou per a poder seguir utilitzant l'app com abans
 attendance:
   attendance: Assistència
   attendanceConnectToSee: Connecta't a internet per veure la teva assistència
@@ -29,27 +38,53 @@ attendance:
   viewAttendance: Veure assistència
   youveAssistedTo: Has assistit a
   outOfTotalOf: hores d'un total de 25 hores
+  availableWhenEventFinished: Disponible en acabar l'esdeveniment
+  downloadCertificates: Descarregar certificats
+  errorGeneratingCertificate: Error en generar el certificat
+  generatingCertificate: Generant certificat
+  reasonLoginRequired: registrar i veure la teva assistència
+  selectCertificateButtonAttendance: Assistència
+  selectCertificateButtonMicrocourses: Microcurs
+  selectCertificateHeader: Selecciona certificat
+  selectCertificateSelectMicrocourse: Selecciona el microcurs
+  selectCertificateSubheader: Escull el certificat que vols descarregar
+  eventsYouveAssisted: Esdeveniments als quals has assistit
 schedule:
+  goOnline: Connecta't de nou per veure l'horari
   eventNoLocation: Sense localització assignada
   eventSpeakers: Ponents
   eventsYouveAssisted: Esdeveniments als quals has assistit
   eventViewOnWeb: Veure al web
+  tabs:
+    friday: DV
+    thursday: DJ
+    tuesday: DM
+    wednesday: DX
 news:
+  cannotRefreshOffline: No és possible recarregar les notícies sense connexió
   connectAtLeastOnce: Connecta't a internet com a mínim un cop per poder veure les notícies
+  loadedOffline: 'No es poden obtenir les notícies, carregant desades'
   moreOnWeb: Més al web
   readMore: Llegir més
 notifications:
   noneYet: Encara no hi ha notificacions
   sentOn: Enviat el
+  reasonLoginRequired: veure totes les notificacions
 settings:
   darkMode: Mode fosc
   eventRemindersChooseTime: Antelació a l'esdeveniment
   eventRemindersToggle: Habilitar recordatoris d'esdeveniments
   eventsRemindersTime0: En començar
+  helpFaqAndInfo: Preguntes freqüents i més informació
+  helpShareLogs: Compartir registre d'errors
+  helpShareLogsAlertHeader: Compartir registre d'errors
+  helpTitle: Ajuda
   interfaceTitle: Interfície
   localeSelection: Seleccionar idioma
   notificationsTitle: Notificacions
   title: Configuració
+  viewSlides: Veure introducció de nou
+  scheduleTranslate: Traduir horari
 about:
   aboutMe: Sobre mi
   bronze: Bronze
