@@ -187,3 +187,11 @@ console.log('decrypt', decrypted.toString(CryptoJS.enc.Latin1), 'base64', decryp
 ```
 
 TODO Migrate to [fluent-vue](https://fluent-vue.demivan.me) smaller and surely works better xd
+
+TODO https://opensource.huntersofbook.com/
+
+https://www.codeandweb.com/babeledit
+
+TODO v3 animated splash screen https://developer.android.com/develop/ui/views/launch/splash-screen#kts
+
+TODO Make schedule show the loading animations when reloading after locale change
