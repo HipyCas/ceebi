@@ -172,11 +172,52 @@ const main = async () => {
     .from('config')
     .getPublicUrl('attendance.json');
 
-  let attendanceSchema: typeof _attendanceSchema;
+  let attendanceSchema:
+    | typeof _attendanceSchema
+    | {
+        error: string;
+        message: string;
+        statusCode: string;
+      };
   try {
     const res = await fetch(fileURL.publicUrl);
-    // console.log(await res.text());
     attendanceSchema = await res.json();
+    if (attendanceSchema['error']) {
+      logger.error(
+        'attendanceModal:main',
+        'http error when fetching attendance',
+        { data: attendanceSchema }
+      );
+      FirebaseCrashlytics.setContext({
+        key: 'error',
+        type: 'string',
+        value: attendanceSchema['error'],
+      });
+      FirebaseCrashlytics.setContext({
+        key: 'message',
+        type: 'string',
+        value: attendanceSchema['message'],
+      });
+      FirebaseCrashlytics.setContext({
+        key: 'statusCode',
+        type: 'string',
+        value: attendanceSchema['statusCode'],
+      });
+      FirebaseCrashlytics.setContext({
+        key: 'response',
+        type: 'string',
+        value: JSON.stringify(attendanceSchema),
+      });
+      StackTrace.fromError(
+        new Error('http error when fetching attendance schema')
+      ).then((stacktrace) =>
+        FirebaseCrashlytics.recordException({
+          message: 'http error when fetching attendance',
+          stacktrace,
+        })
+      );
+      return;
+    }
   } catch (e) {
     logCatchError(
       logger,
@@ -207,12 +248,15 @@ const main = async () => {
       time: parseISO(att.date || ''),
       events: att.event
         ? [att.event]
-        : attendanceSchema.find((schema) => schema.name === att.session)
-            ?.events,
-      eventHours: attendanceSchema.find((schema) => schema.name === att.session)
-        ?.eventHours,
-      hours: attendanceSchema.find((schema) => schema.name === att.session)
-        ?.hours,
+        : (attendanceSchema as typeof _attendanceSchema).find(
+            (schema) => schema.name === att.session
+          )?.events,
+      eventHours: (attendanceSchema as typeof _attendanceSchema).find(
+        (schema) => schema.name === att.session
+      )?.eventHours,
+      hours: (attendanceSchema as typeof _attendanceSchema).find(
+        (schema) => schema.name === att.session
+      )?.hours,
     }));
     loading.value = false;
 
