@@ -63,11 +63,16 @@ import {
   calendarOutline,
   people,
   peopleOutline,
+  alertCircleOutline,
 } from 'ionicons/icons';
-import attendance from '../../attendance.json';
+import type attendanceSchema from '../../attendance.json';
 import { getUser } from '../user';
+import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
+import { logCatchError } from '@code/capacitor-utils';
 
 const router = useIonRouter();
+const logger = useLogger();
+const supabase = useSupabase();
 
 const user = getUser();
 const attendanceAllowed = computed(() => user.value?.supabase.allow_attendance);
@@ -104,10 +109,78 @@ const sessionSelected = (session: string, event?: string) => {
 const initScan = async () => {
   BarcodeScanner.prepare();
 
+  const { data: fileURL } = await supabase.storage
+    .from('config')
+    .getPublicUrl('attendance.json');
+  let attendance:
+    | typeof attendanceSchema
+    | {
+        error: string;
+        message: string;
+        statusCode: string;
+      };
+  try {
+    const res = await fetch(fileURL.publicUrl);
+    attendance = await res.json();
+    // @ts-expect-error This checks if there is an error
+    if (attendance['error']) {
+      logger.error(
+        'attendanceModal:main',
+        'http error when fetching attendance',
+        { data: attendance }
+      );
+      FirebaseCrashlytics.setContext({
+        key: 'error',
+        type: 'string',
+        // @ts-expect-error If it is an error, this will exist
+        value: attendance['error'],
+      });
+      FirebaseCrashlytics.setContext({
+        key: 'message',
+        type: 'string',
+        // @ts-expect-error If it is an error, this will exist
+        value: attendance['message'],
+      });
+      FirebaseCrashlytics.setContext({
+        key: 'statusCode',
+        type: 'string',
+        // @ts-expect-error If it is an error, this will exist
+        value: attendance['statusCode'],
+      });
+      FirebaseCrashlytics.setContext({
+        key: 'response',
+        type: 'string',
+        value: JSON.stringify(attendance),
+      });
+      StackTrace.fromError(
+        new Error('http error when fetching attendance schema')
+      ).then((stacktrace) =>
+        FirebaseCrashlytics.recordException({
+          message: 'http error when fetching attendance',
+          stacktrace,
+        })
+      );
+      return;
+    }
+  } catch (e) {
+    logCatchError(
+      logger,
+      'attendanceModal:main',
+      'error fetching attendance schema',
+      e
+    );
+    useToast({
+      message: 'Error al obtener la asistencia',
+      color: 'danger',
+      icon: alertCircleOutline,
+    });
+    return;
+  }
+
   const sheet = await actionSheetController.create({
     header: 'Seleccionar sesión',
     buttons: [
-      ...attendance.map((session) => ({
+      ...(attendance as typeof attendanceSchema).map((session) => ({
         text: session.name,
         handler: async () => {
           if (session.hasEvents) {
