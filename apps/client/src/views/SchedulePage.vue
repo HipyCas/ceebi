@@ -163,16 +163,29 @@ const loadEvents = async () => {
 
   logger.trace('schedule:loadEvents', {
     localeStr: locale.toString(),
-    // localeJSON: JSON.stringify(locale),
+    localeValue: locale.value,
+    locale,
   });
 
   const shouldTranslate =
-    locale.toString() !== 'es' &&
-    isPlatform('capacitor') &&
-    translateSchedule.value;
+    locale.value !== 'es' && isPlatform('capacitor') && translateSchedule.value;
+
+  if (shouldTranslate) {
+    const targetLanguage = (Language as Record<string, string>)[
+      locales.getByTag(locale.toString()).name
+    ] as Language;
+    const languageDownloaded = (
+      await Translation.getDownloadedModels()
+    ).languages.includes(targetLanguage);
+    if (!languageDownloaded) {
+      await Translation.downloadModel({
+        language: targetLanguage,
+      });
+    }
+  }
+
   const tmpTuesdayEvents = mec.get('2023-07-18');
   if (shouldTranslate) {
-    console.info('[EVENTS TRANSLATE] translate tuesday');
     tmpTuesdayEvents.translate(translate).then((evs) => {
       tuesdayEvents.value = evs.resolve();
       tuesdayLoading.value = false;
@@ -184,7 +197,6 @@ const loadEvents = async () => {
 
   const tmpWednesdayEvents = mec.get('2023-07-19');
   if (shouldTranslate) {
-    console.info('[EVENTS TRANSLATE] translate wednesday');
     tmpWednesdayEvents.translate(translate).then((evs) => {
       wednesdayEvents.value = evs.resolve();
       wednesdayLoading.value = false;
@@ -216,7 +228,7 @@ const loadEvents = async () => {
     fridayLoading.value = false;
   }
 
-  currentLanguage = locale.toString();
+  currentLanguage = locale.value;
 };
 loadEvents();
 // #endregion
