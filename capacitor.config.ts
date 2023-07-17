@@ -2,6 +2,13 @@ import type { CapacitorConfig } from '@capacitor/cli';
 import packageJSON from './package.json';
 import { join } from 'path';
 
+/**
+ * Get base Capacitor config
+ * @param dirname Pass __dirname
+ * @param project Project name, to match with pass and nx
+ * @param plugins A string array of the Capacitor plugins to include in the build
+ * @param customConfig Customize the configuration, keep in mind this is destructured at the end of the config, thus overwriting anything set before by this function
+ */
 export default (
   dirname: string,
   project: string,
