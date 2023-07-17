@@ -3,11 +3,9 @@
   <ion-label class="w-8/12 text-center" v-once
     >{{ $t('auth.loginToReason') }} {{ reason }}</ion-label
   >
-  <router-link to="/auth/login">
-    <ion-button class="ion-margin-top" router-link="/id-change">{{
-      $t('auth.login')
-    }}</ion-button>
-  </router-link>
+  <ion-button class="ion-margin-top" router-link="/auth/login">{{
+    $t('auth.login')
+  }}</ion-button>
 </template>
 
 <script setup lang="ts">
