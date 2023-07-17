@@ -10,9 +10,10 @@ import {
   IonRouterOutlet,
   isPlatform,
   alertController,
-  toastController,
 } from '@ionic/vue';
-import { onMounted } from 'vue';
+
+import * as locales from 'locale-codes';
+import * as StackTrace from 'stacktrace-js';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import {
@@ -27,14 +28,11 @@ import {
   AppUpdateAvailability,
   FlexibleUpdateInstallStatus,
 } from '@capawesome/capacitor-app-update';
+import { Translation, Language } from '@capacitor-mlkit/translation';
+
 import { KEY_PUSH_ENABLED, KEY_DARK_MODE } from './vars';
-import * as StackTrace from 'stacktrace-js';
 import { toggleDarkMode } from './ui';
 import { setDarkMode } from './darkMode';
-import { useI18n } from 'vue-i18n';
-import { Translation, Language } from '@capacitor-mlkit/translation';
-import * as locales from 'locale-codes';
-import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
 
 const { locale, t } = useI18n();
 console.log(locale.value);
