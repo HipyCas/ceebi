@@ -182,6 +182,7 @@ const main = async () => {
   try {
     const res = await fetch(fileURL.publicUrl);
     attendanceSchema = await res.json();
+    // @ts-expect-error This checks if there is an error
     if (attendanceSchema['error']) {
       logger.error(
         'attendanceModal:main',
@@ -191,16 +192,19 @@ const main = async () => {
       FirebaseCrashlytics.setContext({
         key: 'error',
         type: 'string',
+        // @ts-expect-error If it is an error, this will exist
         value: attendanceSchema['error'],
       });
       FirebaseCrashlytics.setContext({
         key: 'message',
         type: 'string',
+        // @ts-expect-error If it is an error, this will exist
         value: attendanceSchema['message'],
       });
       FirebaseCrashlytics.setContext({
         key: 'statusCode',
         type: 'string',
+        // @ts-expect-error If it is an error, this will exist
         value: attendanceSchema['statusCode'],
       });
       FirebaseCrashlytics.setContext({
@@ -292,6 +296,18 @@ const main = async () => {
 main();
 
 const certButtons = () => {
+  const fetchCertificate: (url: string) => Promise<string> = (url) =>
+    new Promise((resolve, reject) =>
+      fetch(url)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        })
+        .catch((e) => reject(e))
+    );
+
   const shareCertificate = async (name: string) => {
     try {
       actionSheetController.dismiss();
@@ -300,16 +316,37 @@ const certButtons = () => {
           message: `${t('attendance.generatingCertificate')}...`,
         })
         .then((l) => l.present());
+
       const { data } = supabase.storage
         .from('certificates')
         .getPublicUrl(
           name + '/' + user.value.acf.id_base_de_datos_app + '.pdf'
         );
-      const blobRes = await CapacitorHttp.get({
-        url: data.publicUrl,
-        responseType: 'blob',
-      });
-      const dataUri = 'data:application/pdf;base64,' + blobRes.data;
+
+      // const blobRes = await CapacitorHttp.get({
+      //   url: data.publicUrl,
+      //   responseType: 'blob',
+      // });
+      // const dataUri = 'data:application/pdf;base64,' + blobRes.data;
+      let dataUri;
+      try {
+        dataUri = await fetchCertificate(data.publicUrl);
+      } catch (e) {
+        logCatchError(
+          logger,
+          'attendanceModal:shareCertificate',
+          'error when obtaining certificate',
+          e
+        );
+        useToast({
+          message: t('attendance.errorCertificateNotFound'),
+          color: 'danger',
+          icon: alertCircleOutline,
+          cssClass: undefined,
+        });
+        return;
+      }
+
       const pdf = await Filesystem.writeFile({
         path: `__ceebi_${
           name === 'attendance' || name === 'poster'
