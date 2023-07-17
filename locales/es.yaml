@@ -55,6 +55,7 @@ attendance:
   selectCertificateHeader: Seleccionar certificado
   selectCertificateSelectMicrocourse: Selecciona el microcurso
   selectCertificateSubheader: Elige el certificado que deseas descargar
+  errorCertificateNotFound: 'Certificado no encontrado, contacta con la organización'
   errorObtainingAttendance: Error al obtener la asistencia
   eventsYouveAssisted: Eventos a los que has asistido
 schedule:

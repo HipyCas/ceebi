@@ -33,6 +33,9 @@ auth:
   loginToReason: Inicia sesión para poder
   password: Contrasinal
   errorLoggingIn: Erro ao iniciar sesión
+  sessionExpiredAlert:
+    dontLogin: Non iniciar
+    header: Sesión caducada
 attendance:
   attendance: Asistencia
   attendanceConnectToSee: Conéctate ao internet para poder ver a túa asistencia
@@ -51,6 +54,7 @@ attendance:
   selectCertificateHeader: Seleccionar certificado
   selectCertificateSelectMicrocourse: Selecciona o microcurso
   selectCertificateSubheader: Escolle o certificado que desexas descargar
+  errorCertificateNotFound: 'Certificado non atopado, contacta coa organización'
   errorObtainingAttendance: Erro ao obter a asistencia
   eventsYouveAssisted: Eventos aos que asistiches
 schedule:

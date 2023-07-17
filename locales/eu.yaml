@@ -6,23 +6,54 @@ ui:
   save: Gorde
   noConnection: Konexiorik gabe
 tab:
-  attendance: QR kodea
+  attendance: Bertaratzea
   news: Berriak
   notifications: Jakinarazpenak
   schedule: Ordutegia
+appUpdate:
+  alertLater: Später
+  alertUpdate: Eguneratu
+  toastUpdated: 'App-a eguneratu egin da, berrabiarazi ezazu aldaketak ezarritzeko'
+auth:
+  loggingIn: Saioa hasten
+  logout: Itxi saioa
+  continueWithoutLogin: Saioa hasi gabe jarraitu
+  email: Posta elektronikoa
+  login: Saioa hasi
+  loginToReason: Saioa has ezazu
+  password: Pasahitza
+  sessionExpiredAlert:
+    dontLogin: Ez hasi
+    header: Saioa itxi egin da
+    message: Saioa berriro hasi app-a lehen bezala erabiltzen jarraitzeko
 attendance:
-  attendance: Jendea
+  attendance: Bertaratzea
   attendanceConnectToSee: Internetera konektatu zure bertaratzea ikusteko
   noAttendance: Oraindik ez duzu zure etortzea erregistratu
   viewAttendance: Jendea ikusi
   youveAssistedTo: '-(e)ra azaldu zara'
   outOfTotalOf: ordu guztizko 25 orduetatik
+  availableWhenEventFinished: Ekitaldia amaitzerakoan egongo da erabilgarri
+  downloadCertificates: Ziurtagiriak deskargatu
+  errorGeneratingCertificate: Ziurtagiria sortzean errore bat gertatu da
+  generatingCertificate: Ziurtagiria sortzen...
+  reasonLoginRequired: erregistratzeko eta zure bertaratzea ikusteko
+  selectCertificateButtonAttendance: Bertaratzea
+  selectCertificateButtonMicrocourses: Mikroikastaro
+  selectCertificateHeader: Ziurtagiria aukeratu
+  selectCertificateSelectMicrocourse: Mikroikastaroa aukeratu
+  selectCertificateSubheader: Deskargatu nahi duzun ziurtagiria aukera ezazu
 schedule:
   goOnline: Ordutegia ikusteko berriro konekta zaitez
   eventNoLocation: Oraindik ez dago kokapenik
   eventSpeakers: Hizlariak
   eventsYouveAssisted: Azaldu naizen ekitaldiak
   eventViewOnWeb: Web-orrian ikusi
+  tabs:
+    friday: ol.
+    thursday: og.
+    tuesday: ar.
+    wednesday: az.
 news:
   cannotRefreshOffline: Ezin dira berriak berriro kargatu konexiorik gabe
   connectAtLeastOnce: Berriak ikusteko Internetera konekta zaitez gutxienez aldi bat
@@ -32,6 +63,13 @@ news:
 notifications:
   noneYet: Oraindik ez dago jakinarazpenik
   sentOn: '-(e)an bidalita'
+  reasonLoginRequired: jakinarazpen guztiak ikusteko
+settings:
+  helpFaqAndInfo: Ohiko galderak eta informazio gehiago
+  helpShareLogs: Akats erregistroa partekatu
+  helpTitle: Laguntza
+  viewSlides: Hitzaurrea berriro ikusi
+  scheduleTranslate: Ordutegia itzuli
 about:
   aboutMe: Niri buruz
   bronze: Brontzea

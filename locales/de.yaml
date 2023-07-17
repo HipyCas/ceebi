@@ -1,27 +1,68 @@
 ui:
+  cancel: Abbrechen
+  close: Schließen
+  loading: Laden gerade
   minutes: Minuten
   noConnection: Keine Verbindung
 tab:
-  attendance: QR-Code
+  attendance: Teilnahme
   news: Nachrichten
   notifications: Mitteilung
   schedule: Plan
+appUpdate:
+  alertLater: Geroago
+  alertUpdate: Aktualisieren
+  toastUpdated: Die Computer nach Abschluss der Aktualisierung wieder herunterfahren
+auth:
+  loggingIn: Anmelden gerade
+  logout: Abmelden
+  continueWithoutLogin: Ohne Anmeldung fortsetzen
+  email: Email
+  login: Anmelden
+  loginToReason: Anmelden noch einmal um
+  password: Kennwort
+  sessionExpiredAlert:
+    dontLogin: nicht anmelden
+    header: Internetseite ablaufen
+    message: 'Anmelden noch einmal um die App weiter zu nutzen '
 attendance:
-  attendance: Anwesenheit
+  attendance: Teilnahme
   viewAttendance: Anwesenheit nachweisen
   youveAssistedTo: Sie haben zu
   outOfTotalOf: von den ingesamt y Stunden  teilgenomen
+  availableWhenEventFinished: 'verfügbar nach Veranstaltungsende '
+  downloadCertificates: Zertifikate herunterladen
+  errorGeneratingCertificate: Bescheinigung Fehler
+  generatingCertificate: lagen Bescheinigung gerade
+  reasonLoginRequired: Eintragung und Teilname zu überprüfen
+  selectCertificateButtonAttendance: Teilnahme
+  selectCertificateButtonMicrocourses: kurzer Kurs
+  selectCertificateHeader: wählen Bescheinigung aus
+  selectCertificateSelectMicrocourse: wählen kurzen Kurs aus
+  selectCertificateSubheader: wählen zwischen folgenden Bescheinigungen
 schedule:
   eventSpeakers: Rednen
+  tabs:
+    friday: Fr
+    thursday: Do
+    tuesday: Di
+    wednesday: Mi
 news:
   cannotRefreshOffline: Nachrichten sind nicht offline zu laden
   moreOnWeb: Mehr im Web
   readMore: Lessen mehr
+notifications:
+  reasonLoginRequired: alle Meldungen zu sehen
 settings:
   darkMode: Dunkelmodus
   eventRemindersChooseTime: Zeit zu EventsMitteilung
   eventRemindersToggle: Aktivieren Eventserinnerungen
   eventsRemindersTime0: Im Startzeit
+  helpFaqAndInfo: Häufig gestellte Fragen und weitere Information
+  helpShareLogs: Fehlerprotokoll mitteilen
+  helpTitle: Hilfe
   interfaceTitle: Interface
   localeSelection: Wählen Sie die Sprache
   notificationsTitle: Mitteilungen
+  viewSlides: Nochmal Anleitung anfangen
+  scheduleTranslate: Plan übersetzen

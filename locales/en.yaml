@@ -54,6 +54,7 @@ attendance:
   selectCertificateHeader: Select certificate
   selectCertificateSelectMicrocourse: Select the microcourse
   selectCertificateSubheader: Select the certificate you want to download
+  errorCertificateNotFound: 'Certificate not found, contact the organization'
   errorObtainingAttendance: Error obtaining attendance data
   eventsYouveAssisted: Events you have attended
 schedule:
