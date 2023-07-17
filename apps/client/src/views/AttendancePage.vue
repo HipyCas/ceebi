@@ -4,7 +4,7 @@
     <ion-content :fullscreen="true">
       <div class="center-content">
         <canvas id="qrcode" height="300" width="300" v-show="user"></canvas>
-        <template v-if="loadingUser">
+        <template v-if="false && loadingUser">
           <PlainLoading :text="`${$t('auth.loggingIn')}...`" />
         </template>
         <ion-button v-else-if="user" class="asistencia" @click="openJesus">{{
@@ -14,7 +14,6 @@
           v-else
           :reason="$t('attendance.reasonLoginRequired')"
         ></LoginRequired>
-        <!-- TODO Comprobar letra DNI con el algoritmo de comprobación: dni_del_numero / 23 -> tomas resto -->
       </div>
     </ion-content>
   </ion-page>
