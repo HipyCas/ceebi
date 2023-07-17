@@ -55,7 +55,7 @@
       </div>
       <ion-list>
         <ion-list-header class="text-lg underline">
-          {{ $t('message.eventsYouveAssisted') }}
+          {{ $t('attendance.eventsYouveAssisted') }}
         </ion-list-header>
         <template v-for="item in items" :key="item.time">
           <ion-item
@@ -102,7 +102,7 @@ import NoConnection from './NoConnection.vue';
 //@ts-expect-error vue3-circle-progress has no support for TypeScript
 import CircleProgress from 'vue3-circle-progress';
 import { getUser } from '../user';
-import attendanceSchema from '../../attendance.json';
+import _attendanceSchema from '../../attendance.json';
 import parseISO from 'date-fns/parseISO';
 import { until, useMounted } from '@vueuse/core';
 import isBefore from 'date-fns/isBefore';
@@ -116,8 +116,6 @@ import {
 } from 'ionicons/icons';
 import { PlainLoading } from '@code/ceebi-ui';
 import type { WPUser } from '@code/wp-types';
-import { FirebaseCrashlytics } from '@capacitor-community/firebase-crashlytics';
-import { CapacitorHttp } from '@capacitor/core';
 import { logCatchError, logPostgrestError } from '@code/capacitor-utils';
 import isAfter from 'date-fns/isAfter';
 
@@ -169,6 +167,36 @@ const canDownloadCertificates = computed(
 );
 
 const main = async () => {
+  // let attendanceSchema: typeof _attendanceSchema;
+  const { data: fileURL } = await supabase.storage
+    .from('config')
+    .getPublicUrl('attendance.json');
+
+  let attendanceSchema: typeof _attendanceSchema;
+  try {
+    const res = await fetch(fileURL.publicUrl);
+    // console.log(await res.text());
+    attendanceSchema = await res.json();
+  } catch (e) {
+    logCatchError(
+      logger,
+      'attendanceModal:main',
+      'error fetching attendance schema',
+      e
+    );
+    useToast({
+      message: t('attendance.errorObtainingAttendance'),
+      color: 'danger',
+      icon: alertCircleOutline,
+    });
+    return;
+  }
+
+  async () =>
+    logger.trace('attendanceModal:main', 'loaded attendance schema', {
+      schema: attendanceSchema,
+    });
+
   const { data, error } = await supabase
     .from('attendance')
     .select('*')
@@ -210,6 +238,11 @@ const main = async () => {
       data,
       error
     );
+    useToast({
+      message: t('attendance.errorObtainingAttendance'),
+      color: 'danger',
+      icon: alertCircleOutline,
+    });
   }
 };
 main();
