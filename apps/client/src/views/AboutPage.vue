@@ -131,14 +131,13 @@ import Header from '../components/Header.vue';
 // import { trophy } from "ionicons/icons";
 
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, CapacitorHttp } from '@capacitor/core';
 
 import { logoGithub, planet } from 'ionicons/icons';
 import { wpapi } from '../wpapi';
 import { extractContent } from '../util';
 import parseISO from 'date-fns/parseISO';
 import formatISO from 'date-fns/formatISO';
-import { CapacitorHttp } from '@capacitor/core';
 
 import { logCatchError } from '@code/capacitor-utils';
 import { logEvent } from 'firebase/analytics';
