@@ -18,9 +18,8 @@ import * as StackTrace from 'stacktrace-js';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import {
   PushNotifications,
-  Token,
-  PushNotificationSchema,
-  ActionPerformed,
+  type PushNotificationSchema,
+  type ActionPerformed,
 } from '@capacitor/push-notifications';
 import { SplashScreen } from '@capacitor/splash-screen';
 import {
@@ -40,9 +39,11 @@ import {
   validateWPToken,
 } from './wpauth';
 import { loadingUser } from './user';
+import { logCatchError } from '@code/capacitor-utils';
 
 const { locale, t } = useI18n();
 const router = useIonRouter();
+const logger = useLogger();
 
 console.log(
   'hello',
@@ -52,21 +53,29 @@ console.log(
 );
 
 //* PUSH NOTIFICATIONS
-if (false && isPlatform('capacitor')) {
-  PushNotifications.addListener('registration', async (token: Token) => {
-    console.log('===== FIREBASE TOKEN: ' + token.value + ' =====');
-  }).catch((e) => console.warn('>>>> FIREBASE REGISTRATION ERROR: ' + e));
-
-  // TODO Move this to slides so you explain why you ask for this permission
-  PushNotifications.requestPermissions().then((res) => {
-    console.log('App:26 push permissions: ', res.receive);
-    if (res.receive === 'granted') PushNotifications.register();
-  });
+const registerPush = () => {
+  PushNotifications.addListener('registration', async (token) => {
+    logger.trace(
+      'pushNotifications:listener(registration)',
+      'registration successful',
+      { token }
+    );
+  }).catch((e) =>
+    logger.error(
+      'pushNotifications:listener(registration)',
+      'error registering device for push notifications',
+      { error: e }
+    )
+  );
 
   PushNotifications.addListener(
     'pushNotificationReceived',
     async (notification: PushNotificationSchema) => {
-      console.log('PUSH >>>> Push received: ' + JSON.stringify(notification));
+      logger.info(
+        'pushNotifications:listener(pushNotificationReceived)',
+        'received push notification',
+        { notification }
+      );
       // Show notification in case you don't have the app open
       LocalNotifications.schedule({
         notifications: [
@@ -80,10 +89,19 @@ if (false && isPlatform('capacitor')) {
         ],
       })
         .then((res) =>
-          console.info('PUSH >>>> Scheduled: ', JSON.stringify(res))
+          logger.trace(
+            'pushNotifications:listener(pushNotificationReceived)',
+            'shown notification with local notifications',
+            { res }
+          )
         )
         .catch((e) =>
-          console.warn('PUSH >>> ERROR while setting local notification: ' + e)
+          logCatchError(
+            logger,
+            'pushNotifications:listener(pushNotificationReceived)',
+            'error displaying push notification',
+            e
+          )
         );
       // Save notification
       const { value: notificationsJSON } = await Preferences.get({
@@ -102,21 +120,23 @@ if (false && isPlatform('capacitor')) {
         .then(() => console.info('PUSH >>>> Successfully saved notification'));
     }
   );
-
-  PushNotifications.addListener(
-    'pushNotificationActionPerformed',
-    async (notification: ActionPerformed) => {
-      const data = notification.notification.data;
-      console.log(
-        'PUSH >>>> Action performed: ' +
-          JSON.stringify(notification.notification)
-      );
-      if (data) {
-        console.info('PUSH >>> data ' + JSON.stringify(data));
-      }
+};
+(async () => {
+  if (isPlatform('capacitor')) {
+    const permissionGranted = await PushNotifications.checkPermissions().then(
+      (value) => value.receive === 'granted'
+    );
+    if (permissionGranted) {
+      registerPush();
+    } else {
+      PushNotifications.requestPermissions().then((permission) => {
+        if (permission.receive === 'granted') {
+          registerPush();
+        }
+      });
     }
-  );
-}
+  }
+})();
 
 //* CHECK FOR UPDATE
 if (isPlatform('capacitor')) {

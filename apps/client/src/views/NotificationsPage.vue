@@ -66,6 +66,10 @@ import { loadingUser, getUser } from '../user';
 import LoginRequired from '../components/LoginRequired.vue';
 import { logCatchError } from '@code/capacitor-utils';
 import differenceInMonths from 'date-fns/differenceInMonths';
+import {
+  ActionPerformed,
+  PushNotifications,
+} from '@capacitor/push-notifications';
 
 interface RenderableNotification {
   id: number;
@@ -169,6 +173,21 @@ const modal = (notification: RenderableNotification) => {
     logEvent(analytics, `notification_${notification.shortname}`);
   }
 };
+
+PushNotifications.addListener(
+  'pushNotificationActionPerformed',
+  async (action: ActionPerformed) => {
+    if (action.notification.data) {
+      const notificationShortname = action.notification.data[
+        'shortname'
+      ] as string;
+      const notification = showableNotifications.value.find(
+        (not) => not.shortname === notificationShortname
+      );
+      if (notification) modal(notification);
+    }
+  }
+);
 </script>
 
 <style scoped>

@@ -52,10 +52,10 @@
           <IonButton
             class="mt-2"
             @click="askNotificationsPermission"
-            :color="notificationPermissionSAuthorized ? 'success' : 'primary'"
+            :color="notificationPermissionsAuthorized ? 'success' : 'primary'"
           >
             <IonIcon
-              v-if="notificationPermissionSAuthorized"
+              v-if="notificationPermissionsAuthorized"
               slot="end"
               :icon="checkmarkOutline"
             ></IonIcon>
@@ -123,6 +123,7 @@ import { checkmarkOutline, closeCircleOutline } from 'ionicons/icons';
 import { wpLogin } from '../wpauth';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { logCatchError } from '@code/capacitor-utils';
+import { PushNotifications } from '@capacitor/push-notifications';
 
 const modules = [Thumbs, Pagination, IonicSlides];
 
@@ -130,7 +131,7 @@ const router = useIonRouter();
 const { t } = useI18n();
 const logger = useLogger();
 
-const notificationPermissionSAuthorized = ref(false);
+const notificationPermissionsAuthorized = ref(false);
 const askNotificationsPermission = async () => {
   const response = await LocalNotifications.requestPermissions();
   logger.info(
@@ -139,9 +140,10 @@ const askNotificationsPermission = async () => {
     response.display,
     { response }
   );
-  if (response.display === 'granted')
-    notificationPermissionSAuthorized.value = true;
-  else {
+  if (response.display === 'granted') {
+    notificationPermissionsAuthorized.value = true;
+    PushNotifications.register();
+  } else {
     alertController
       .create({
         header: t('slides.notificationsPermissionDenied.header'),
