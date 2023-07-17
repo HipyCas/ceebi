@@ -84,7 +84,7 @@ export const extendBaseConfig = (
             '@capacitor/network': ['Network'],
             '@capacitor/haptics': ['Haptics', 'NotificationType'],
             '@capacitor/toast': ['Toast'],
-            '@capacitor/core': ['Capacitor'],
+            '@capacitor/core': ['Capacitor', 'CapacitorHttp'],
             '@capacitor-community/barcode-scanner': [
               'BarcodeScanner',
               'SupportedFormat',
