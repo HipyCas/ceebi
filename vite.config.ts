@@ -90,6 +90,9 @@ export const extendBaseConfig = (
               'SupportedFormat',
             ],
             '@capacitor/app': ['App'],
+            '@capacitor-community/firebase-crashlytics': [
+              'FirebaseCrashlytics',
+            ],
           },
           {
             from: '@code/wp-types',
