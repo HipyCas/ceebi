@@ -209,7 +209,7 @@ async function getNews(finished: Ref<boolean>, toStore: Ref<Item[]>) {
 const news: Ref<Item[]> = ref([]);
 const loaded = ref(false);
 
-const connected = ref(false);
+const connected = ref(true);
 const haveCachedNews = ref(false);
 (async () => {
   const status = await Network.getStatus();
