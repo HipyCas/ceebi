@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2023/07/18
 
 ### Added
 
@@ -14,6 +14,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Re-added many analytics stuff
 - Overwritten Vue app error and warn handler to use logger and Crashlytics
 - Icon added for both iOS and Android
+- All strings are now translatable
+- Updated all existing language's translations
+- New languages: Catalan and French
+- Updated all translations to include new strings
+- Traces (new and existing) to Firebase Performance
+- More analytics to links that target outside of the app
+- Inline source maps to make reported errors more comprehensive
+- Event reminders notification channel is now removed
+- Push notifications back again, now when you click on one it should open the notification
+- Checks if certificate exists before download it
+- Improved FirebaseCrashlytics error reporting integration, adding log messages and more reports
 
 ### Fixed
 
@@ -24,6 +35,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated used plugins to match changes and solve breaks
 - Sliding through schedule now updates top segments
 - Selected language is properly saved to permanent preferences
+- All settings are now properly saved to persistent preferences
+- Local event notifications are now properly scheduled and fixes to settings accordingly
+- When entering Schedule it should now properly detect locale changes and reload events
 
 ### Changed
 
@@ -33,6 +47,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Removed unused dependencies and optimized other
 - Moved translate function declaration in schedule
 - Improved error logging on overwritten error and warning handlers
+- Notifications older than 10 months are now hidden
 
 ## [2.0.0-rc.2] - 2023/07/01
 

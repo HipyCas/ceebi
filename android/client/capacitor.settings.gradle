@@ -8,14 +8,20 @@ project(':capacitor-app').projectDir = new File('../../node_modules/.pnpm/@capac
 include ':capacitor-browser'
 project(':capacitor-browser').projectDir = new File('../../node_modules/.pnpm/@capacitor+browser@4.1.1_@capacitor+core@4.8.0/node_modules/@capacitor/browser/android')
 
+include ':capacitor-device'
+project(':capacitor-device').projectDir = new File('../../node_modules/.pnpm/@capacitor+device@4.1.0_@capacitor+core@4.8.0/node_modules/@capacitor/device/android')
+
+include ':capacitor-filesystem'
+project(':capacitor-filesystem').projectDir = new File('../../node_modules/.pnpm/@capacitor+filesystem@4.1.5_@capacitor+core@4.8.0/node_modules/@capacitor/filesystem/android')
+
+include ':capacitor-haptics'
+project(':capacitor-haptics').projectDir = new File('../../node_modules/.pnpm/@capacitor+haptics@4.1.0_@capacitor+core@4.8.0/node_modules/@capacitor/haptics/android')
+
 include ':capacitor-preferences'
 project(':capacitor-preferences').projectDir = new File('../../node_modules/.pnpm/@capacitor+preferences@4.0.2_@capacitor+core@4.8.0/node_modules/@capacitor/preferences/android')
 
 include ':capacitor-network'
 project(':capacitor-network').projectDir = new File('../../node_modules/.pnpm/@capacitor+network@4.1.0_@capacitor+core@4.8.0/node_modules/@capacitor/network/android')
-
-include ':capacitor-filesystem'
-project(':capacitor-filesystem').projectDir = new File('../../node_modules/.pnpm/@capacitor+filesystem@4.1.5_@capacitor+core@4.8.0/node_modules/@capacitor/filesystem/android')
 
 include ':capacitor-share'
 project(':capacitor-share').projectDir = new File('../../node_modules/.pnpm/@capacitor+share@4.1.1_@capacitor+core@4.8.0/node_modules/@capacitor/share/android')
