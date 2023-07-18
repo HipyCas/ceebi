@@ -1,0 +1,55 @@
+about:
+  aboutMe: À mon sujet
+  bronze: Bronze
+  collaborators: COLLABORATEURS
+  developedBy: Développé par
+  errorLoadingImages: Erreur à l'heure de télécharger images
+  gold: Or
+  patron: MÉCÈNES
+  platinum: Platine
+  silver: Argent
+  sourceCode: Code source
+appUpdate:
+  alertHeader: Actualisation disponible
+  alertLater: Plus tard
+  alertMessage: |-
+    Nous vous recommendons d'actualiser l'application à la dernière version.
+    Version actuelle: {currentVersion} . Version disponible: {availableVersion}
+  alertUpdate: Actualiser
+  toastUpdated: 'App actualisé, redémarrer pour appliquer les modifications'
+attendance:
+  attendance: Assistance
+  attendanceConnectToSee: Connecte-toi à l'Internet pour pouvoir voir ton assistance
+  availableWhenEventFinished: Disponible à la fin du congrès
+  downloadCertificates: Télécharger certificats
+  errorCertificateNotFound: "Certificat pas trouvé, communique-toi avec l'organisation"
+  errorGeneratingCertificate: Erreur dans la production du certificat
+  errorObtainingAttendance: Erreur à l'obtention de l'assistance
+  eventsYouveAssisted: Événements auxquels tu es allé
+  generatingCertificate: En produisant le certificat
+  noAttendance: Tu n'as pas encore assistance régistrée
+  outOfTotalOf: heures d'un total de 25 heures
+  reasonLoginRequired: régistrer et voir ton assistance
+  selectCertificateButtonAttendance: Assistance
+  selectCertificateButtonMicrocourses: Microcours
+  selectCertificateButtonPoster: Poster
+  selectCertificateHeader: Sélectionner certificat
+  selectCertificateSelectMicrocourse: Sélectionnez le microcours
+  selectCertificateSubheader: Sélectionnez le certificat lequel tu veux télécharger
+  viewAttendance: Voir assistance
+  youveAssistedTo: Tu es allé
+auth:
+  continueWithoutLogin: Continue sans s'identifier
+  email: Courrier
+  errorLoggingIn: Erreur en vous connectant
+  loggedOutSuccess: Session fermé avec succès
+  loggingIn: En vous connectant
+  login: Connectez-vous
+  loginToReason: Connectez-vous pour pouvoir
+ui:
+  cancel: Annuler
+  close: Fermer
+  loading: En téléchargeant
+  minutes: minutes
+  save: Sauvegarder
+  send: 'Envoyer'
