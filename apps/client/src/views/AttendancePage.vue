@@ -4,7 +4,7 @@
     <ion-content :fullscreen="true">
       <div class="center-content">
         <canvas id="qrcode" height="300" width="300" v-show="user"></canvas>
-        <template v-if="false && loadingUser">
+        <template v-if="loadingUser">
           <PlainLoading :text="`${$t('auth.loggingIn')}...`" />
         </template>
         <ion-button v-else-if="user" class="asistencia" @click="openJesus">{{
