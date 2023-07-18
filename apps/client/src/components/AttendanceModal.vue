@@ -105,7 +105,6 @@ import { getUser } from '../user';
 import _attendanceSchema from '../../attendance.json';
 import parseISO from 'date-fns/parseISO';
 import { until, useMounted } from '@vueuse/core';
-import isBefore from 'date-fns/isBefore';
 import {
   imageOutline,
   stopwatchOutline,
@@ -113,6 +112,7 @@ import {
   alertCircleOutline,
   schoolOutline,
   hourglassOutline,
+  closeCircleOutline,
 } from 'ionicons/icons';
 import { PlainLoading } from '@code/ceebi-ui';
 import type { WPUser } from '@code/wp-types';
@@ -233,6 +233,7 @@ const main = async () => {
       message: t('attendance.errorObtainingAttendance'),
       color: 'danger',
       icon: alertCircleOutline,
+      cssClass: undefined,
     });
     return;
   }
@@ -290,6 +291,7 @@ const main = async () => {
       message: t('attendance.errorObtainingAttendance'),
       color: 'danger',
       icon: alertCircleOutline,
+      cssClass: undefined,
     });
   }
 };
@@ -308,28 +310,154 @@ const certButtons = () => {
         .catch((e) => reject(e))
     );
 
+  const parseMicrocurso = (it: string) => {
+    const split = it.split('/');
+    const name = split
+      .slice(1)
+      .join('/')
+      .replace(/[áóéíú:(),¿?.ñ¡!\-\/“”–]/g, '_');
+    return split[0] + '/' + name;
+  };
+
   const shareCertificate = async (name: string) => {
     try {
       actionSheetController.dismiss();
-      loadingController
-        .create({
-          message: `${t('attendance.generatingCertificate')}...`,
-        })
-        .then((l) => l.present());
+      const generatingOverlay = await loadingController.create({
+        message: `${t('attendance.generatingCertificate')}...`,
+      });
+      generatingOverlay.present();
 
       const { data } = supabase.storage
         .from('certificates')
         .getPublicUrl(
-          name + '/' + user.value.acf.id_base_de_datos_app + '.pdf'
+          (name.startsWith('microcursos/') ? parseMicrocurso(name) : name) +
+            '/' +
+            user.value.acf.id_base_de_datos_app +
+            '.pdf'
         );
 
-      // const blobRes = await CapacitorHttp.get({
-      //   url: data.publicUrl,
-      //   responseType: 'blob',
-      // });
-      // const dataUri = 'data:application/pdf;base64,' + blobRes.data;
+      //* Prefetch to check file exists
+      // Get prefetch data as text
+      console.log('PREFETCH', await (await fetch(data.publicUrl)).text());
+      let prefetchText;
+      try {
+        FirebaseCrashlytics.addLogMessage({
+          message: 'executing pre-download request to check if file exists',
+        });
+        prefetchText = await (await fetch(data.publicUrl)).text();
+      } catch (e) {
+        useToast({
+          // TODO Translate
+          message: 'Error interno, ha sido registrado',
+          color: 'danger',
+          icon: alertCircleOutline,
+          cssClass: undefined,
+        });
+        FirebaseCrashlytics.setContext({
+          key: 'certificateName',
+          type: 'string',
+          value: name,
+        });
+        FirebaseCrashlytics.setContext({
+          key: 'url',
+          type: 'string',
+          value: data.publicUrl,
+        });
+        logCatchError(
+          logger,
+          'attendanceModal:shareCertificate',
+          'error with certificate prefetch',
+          e
+        );
+        generatingOverlay.dismiss();
+        return;
+      }
+      // Try parsing prefetch data and check errors
+      try {
+        const prefetchData = JSON.parse(prefetchText);
+        if (prefetchData.error) {
+          logger.error(
+            'attendanceModal:shareCertificate',
+            'error when getting certificate'
+          );
+          //! This is a relaxed comparison
+          if (prefetchData.statusCode == '404') {
+            useToast({
+              message: t('attendance.errorCertificateNotFound'),
+              color: 'danger',
+              icon: closeCircleOutline,
+              cssClass: undefined,
+            });
+            generatingOverlay.dismiss();
+            return;
+          } else {
+            useToast({
+              // TODO Translate
+              message: 'Error interno, ha sido registrado',
+              color: 'danger',
+              icon: alertCircleOutline,
+              cssClass: undefined,
+            });
+            logger.error(
+              'attendanceModal:shareCertificate',
+              'internal error while fetching certificate',
+              {
+                resText: prefetchText,
+                resJSON: prefetchData,
+                url: data.publicUrl,
+                certificateName: name,
+              }
+            );
+            FirebaseCrashlytics.setContext({
+              key: 'error',
+              type: 'string',
+              value: prefetchData.error,
+            });
+            FirebaseCrashlytics.setContext({
+              key: 'statusCode',
+              type: 'string',
+              value: prefetchData.statusCode,
+            });
+            FirebaseCrashlytics.setContext({
+              key: 'message',
+              type: 'string',
+              value: prefetchData.message,
+            });
+            FirebaseCrashlytics.setContext({
+              key: 'url',
+              type: 'string',
+              value: data.publicUrl,
+            });
+            FirebaseCrashlytics.setContext({
+              key: 'certificateName',
+              type: 'string',
+              value: name,
+            });
+            StackTrace.fromError(
+              new Error('internal error while fetching certificate')
+            ).then((stacktrace) =>
+              FirebaseCrashlytics.recordException({
+                stacktrace,
+                message: 'internal error while fetching certificate',
+              })
+            );
+          }
+          generatingOverlay.dismiss();
+          return;
+        }
+      } catch (e) {
+        logger.info(
+          'attendanceModal:shareCertificate',
+          'prefetch data is not JSON, therefore it must be the pdf',
+          { error: e, res: prefetchText }
+        );
+      }
+
       let dataUri;
       try {
+        FirebaseCrashlytics.addLogMessage({
+          message: 'fetching certificate blob as base64 url',
+        });
         dataUri = await fetchCertificate(data.publicUrl);
       } catch (e) {
         logCatchError(
@@ -344,21 +472,25 @@ const certButtons = () => {
           icon: alertCircleOutline,
           cssClass: undefined,
         });
+        generatingOverlay.dismiss();
         return;
       }
 
+      FirebaseCrashlytics.addLogMessage({
+        message: 'going to write pdf to cache for share',
+      });
       const pdf = await Filesystem.writeFile({
         path: `__ceebi_${
           name === 'attendance' || name === 'poster'
             ? name
             : name
                 .replace(/\//g, '__')
-                .replace(/[áóéíú:(),¿?.ñ¡!\-\/“”–]/g, '_')
+                .replace(/[áóéíú:(),¿?.ñ¡!\-\/“”– ]/g, '_')
         }_cert.pdf`,
         data: dataUri,
         directory: Directory.Cache,
       });
-      loadingController.dismiss();
+      generatingOverlay.dismiss();
       Share.share({
         files: [pdf.uri],
       });
@@ -402,7 +534,6 @@ const certButtons = () => {
         FirebaseCrashlytics.addLogMessage({
           message: 'handling poster certificate download',
         });
-        if (isBefore(new Date(), new Date(2023, 6, 21, 23, 59, 59))) return; // TODO Show some alert or toast saying that it is only available after the congress itself
         if ((user.value as WPUser).acf.has_poster) {
           shareCertificate('poster');
         }
