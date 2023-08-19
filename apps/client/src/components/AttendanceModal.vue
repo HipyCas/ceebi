@@ -102,7 +102,7 @@ import NoConnection from './NoConnection.vue';
 //@ts-expect-error vue3-circle-progress has no support for TypeScript
 import CircleProgress from 'vue3-circle-progress';
 import { getUser } from '../user';
-import _attendanceSchema from '../../attendance.json';
+import type _attendanceSchema from '../../attendance.json';
 import parseISO from 'date-fns/parseISO';
 import { until, useMounted } from '@vueuse/core';
 import {
@@ -114,10 +114,11 @@ import {
   hourglassOutline,
   closeCircleOutline,
 } from 'ionicons/icons';
+import isAfter from 'date-fns/isAfter';
 import { PlainLoading } from '@code/ceebi-ui';
 import type { WPUser } from '@code/wp-types';
 import { logCatchError, logPostgrestError } from '@code/capacitor-utils';
-import isAfter from 'date-fns/isAfter';
+import { MICROCURSOS_DOS_DIAS } from '../vars';
 
 const { t } = useI18n();
 const supabase = useSupabase();
@@ -145,6 +146,18 @@ const microcursosDone = computed(() =>
     .flatMap((item) => item.events)
     .filter((ev) => microRegEx.test(ev ?? ''))
     .map((ev) => (microRegEx.exec(ev as string) as RegExpExecArray)[1] ?? ev)
+    .map(
+      (ev, _, arr) =>
+        [ev, arr.filter((thisCourse) => thisCourse === ev).length] as [
+          string,
+          number
+        ]
+    )
+    .filter(
+      ([ev, times]) => !(MICROCURSOS_DOS_DIAS.includes(ev) && times !== 2)
+    )
+    .map(([ev]) => ev)
+    .filter((ev, pos, self) => self.indexOf(ev) === pos)
 );
 
 const dismissModal = () => modalController.dismiss();
@@ -167,7 +180,6 @@ const canDownloadCertificates = computed(
 );
 
 const main = async () => {
-  // let attendanceSchema: typeof _attendanceSchema;
   const { data: fileURL } = await supabase.storage
     .from('config')
     .getPublicUrl('attendance.json');
@@ -179,6 +191,7 @@ const main = async () => {
         message: string;
         statusCode: string;
       };
+
   try {
     const res = await fetch(fileURL.publicUrl);
     attendanceSchema = await res.json();
@@ -238,10 +251,9 @@ const main = async () => {
     return;
   }
 
-  async () =>
-    logger.trace('attendanceModal:main', 'loaded attendance schema', {
-      schema: attendanceSchema,
-    });
+  logger.trace('attendanceModal:main', 'loaded attendance schema', {
+    schema: attendanceSchema,
+  });
 
   const { data, error } = await supabase
     .from('attendance')
@@ -315,7 +327,8 @@ const certButtons = () => {
     const name = split
       .slice(1)
       .join('/')
-      .replace(/[áóéíú:(),¿?.ñ¡!\-\/“”–]/g, '_');
+      .replace(/[áóéíú:(),¿?.ñ¡!\-\/“”– ]/g, '_');
+    console.info('transformed', split, name);
     return split[0] + '/' + name;
   };
 
@@ -327,18 +340,31 @@ const certButtons = () => {
       });
       generatingOverlay.present();
 
-      const { data } = supabase.storage
-        .from('certificates')
-        .getPublicUrl(
-          (name.startsWith('microcursos/') ? parseMicrocurso(name) : name) +
-            '/' +
-            user.value.acf.id_base_de_datos_app +
-            '.pdf'
-        );
+      // const { data } = supabase.storage
+      //   .from('certificates')
+      //   .getPublicUrl(
+      //     (name.startsWith('microcursos/') ? parseMicrocurso(name) : name) +
+      //       '/' +
+      //       user.value.acf.id_base_de_datos_app +
+      //       '.pdf'
+      //   );
+
+      const data = {
+        publicUrl:
+          'https://ceebi.wupp.dev/api/ceebi-ii/certificado/' +
+          (name.startsWith('microcurso/') ? parseMicrocurso(name) : name) +
+          '/' +
+          user.value.acf.id_base_de_datos_app +
+          '.pdf',
+      };
 
       //* Prefetch to check file exists
       // Get prefetch data as text
-      console.log('PREFETCH', await (await fetch(data.publicUrl)).text());
+      console.log(
+        'PREFETCH',
+        data.publicUrl,
+        await (await fetch(data.publicUrl)).text()
+      );
       let prefetchText;
       try {
         FirebaseCrashlytics.addLogMessage({
@@ -373,78 +399,9 @@ const certButtons = () => {
         return;
       }
       // Try parsing prefetch data and check errors
+      let prefetchData;
       try {
-        const prefetchData = JSON.parse(prefetchText);
-        if (prefetchData.error) {
-          logger.error(
-            'attendanceModal:shareCertificate',
-            'error when getting certificate'
-          );
-          //! This is a relaxed comparison
-          if (prefetchData.statusCode == '404') {
-            useToast({
-              message: t('attendance.errorCertificateNotFound'),
-              color: 'danger',
-              icon: closeCircleOutline,
-              cssClass: undefined,
-            });
-            generatingOverlay.dismiss();
-            return;
-          } else {
-            useToast({
-              // TODO Translate
-              message: 'Error interno, ha sido registrado',
-              color: 'danger',
-              icon: alertCircleOutline,
-              cssClass: undefined,
-            });
-            logger.error(
-              'attendanceModal:shareCertificate',
-              'internal error while fetching certificate',
-              {
-                resText: prefetchText,
-                resJSON: prefetchData,
-                url: data.publicUrl,
-                certificateName: name,
-              }
-            );
-            FirebaseCrashlytics.setContext({
-              key: 'error',
-              type: 'string',
-              value: prefetchData.error,
-            });
-            FirebaseCrashlytics.setContext({
-              key: 'statusCode',
-              type: 'string',
-              value: prefetchData.statusCode,
-            });
-            FirebaseCrashlytics.setContext({
-              key: 'message',
-              type: 'string',
-              value: prefetchData.message,
-            });
-            FirebaseCrashlytics.setContext({
-              key: 'url',
-              type: 'string',
-              value: data.publicUrl,
-            });
-            FirebaseCrashlytics.setContext({
-              key: 'certificateName',
-              type: 'string',
-              value: name,
-            });
-            StackTrace.fromError(
-              new Error('internal error while fetching certificate')
-            ).then((stacktrace) =>
-              FirebaseCrashlytics.recordException({
-                stacktrace,
-                message: 'internal error while fetching certificate',
-              })
-            );
-          }
-          generatingOverlay.dismiss();
-          return;
-        }
+        prefetchData = JSON.parse(prefetchText);
       } catch (e) {
         logger.info(
           'attendanceModal:shareCertificate',
@@ -453,12 +410,88 @@ const certButtons = () => {
         );
       }
 
+      if (prefetchData?.error) {
+        logger.error(
+          'attendanceModal:shareCertificate',
+          'error when getting certificate'
+        );
+        //! This is a relaxed comparison
+        if (prefetchData.statusCode == '404') {
+          useToast({
+            message: t('attendance.errorCertificateNotFound'),
+            color: 'danger',
+            icon: closeCircleOutline,
+            cssClass: undefined,
+          });
+          generatingOverlay.dismiss();
+          return;
+        } else {
+          useToast({
+            // TODO Translate
+            message: 'Error interno, ha sido registrado',
+            color: 'danger',
+            icon: alertCircleOutline,
+            cssClass: undefined,
+          });
+          logger.error(
+            'attendanceModal:shareCertificate',
+            'internal error while fetching certificate',
+            {
+              resText: prefetchText,
+              resJSON: prefetchData,
+              url: data.publicUrl,
+              certificateName: name,
+            }
+          );
+          FirebaseCrashlytics.setContext({
+            key: 'error',
+            type: 'string',
+            value: prefetchData.error,
+          });
+          FirebaseCrashlytics.setContext({
+            key: 'statusCode',
+            type: 'string',
+            value: prefetchData.statusCode,
+          });
+          FirebaseCrashlytics.setContext({
+            key: 'message',
+            type: 'string',
+            value: prefetchData.message,
+          });
+          FirebaseCrashlytics.setContext({
+            key: 'url',
+            type: 'string',
+            value: data.publicUrl,
+          });
+          FirebaseCrashlytics.setContext({
+            key: 'certificateName',
+            type: 'string',
+            value: name,
+          });
+          StackTrace.fromError(
+            new Error('internal error while fetching certificate')
+          ).then((stacktrace) =>
+            FirebaseCrashlytics.recordException({
+              stacktrace,
+              message: 'internal error while fetching certificate',
+            })
+          );
+        }
+        generatingOverlay.dismiss();
+        return;
+      }
+
       let dataUri;
       try {
         FirebaseCrashlytics.addLogMessage({
           message: 'fetching certificate blob as base64 url',
         });
         dataUri = await fetchCertificate(data.publicUrl);
+        logger.trace(
+          'attendanceModal:shareCertificate',
+          'fetched certificate and got dataUri',
+          dataUri
+        );
       } catch (e) {
         logCatchError(
           logger,
@@ -480,16 +513,21 @@ const certButtons = () => {
         message: 'going to write pdf to cache for share',
       });
       const pdf = await Filesystem.writeFile({
-        path: `__ceebi_${
-          name === 'attendance' || name === 'poster'
-            ? name
-            : name
-                .replace(/\//g, '__')
-                .replace(/[áóéíú:(),¿?.ñ¡!\-\/“”– ]/g, '_')
-        }_cert.pdf`,
+        path: `CEEBI ${
+          name === 'attendance'
+            ? 'Asistencia'
+            : name === 'poster'
+            ? 'Poster'
+            : 'Microcurso ' + name.split('/').slice(1).join('/')
+        } Certificado.pdf`,
         data: dataUri,
         directory: Directory.Cache,
       });
+      logger.trace(
+        'attendanceModal:shareCertificate',
+        'temporally saved certificate to disk',
+        pdf.uri
+      );
       generatingOverlay.dismiss();
       Share.share({
         files: [pdf.uri],
@@ -499,7 +537,7 @@ const certButtons = () => {
       logCatchError(
         logger,
         `attendanceModal:shareCertificate(${name})`,
-        `error when fetching and sharing ${name} certificatie`,
+        `(generic try catch) error when fetching and sharing ${name} certificate: ${error}`,
         error
       );
       useToast({
@@ -521,7 +559,7 @@ const certButtons = () => {
           message: 'handling attendance certificate download',
         });
         if (hoursDone.value >= 25 * 0.8) {
-          shareCertificate('attendance');
+          shareCertificate('asistencia');
         }
       },
     });
@@ -542,6 +580,7 @@ const certButtons = () => {
 
   if (microcursosDone.value.length > 0) {
     console.log(
+      microcursosDone.value,
       microcursosDone.value.map((mic) =>
         mic.replace(/\//g, '__').replace(/[áóéíú:(),¿?.ñ¡!\-\/“”–]/g, '_')
       )
@@ -556,7 +595,7 @@ const certButtons = () => {
             buttons: [
               ...microcursosDone.value.map((ev) => ({
                 text: ev,
-                handler: () => shareCertificate(`microcursos/${ev}`),
+                handler: () => shareCertificate(`microcurso/${ev}`),
               })),
               {
                 text: t('ui.cancel'),

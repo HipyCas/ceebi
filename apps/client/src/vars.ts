@@ -34,3 +34,14 @@ export const firebaseConfig = {
 export const FIREBASE_APP = 'firebaseApp';
 export const FIREBASE_ANALYTICS = 'firebaseAnalytics';
 export const FIREBASE_PERFORMANCE = 'firebasePerformance';
+
+export const MICROCURSOS_DOS_DIAS = [
+  'Investigación Traslacional y Terapias Avanzadas en Dermatología: de la investigación básica a la clínica',
+  'Estudio de las enfermedades genéticas humanas: análisis molecular mediante el uso de herramientas online',
+  'Uso de parámetros usados actualmente en la Antropología Física y Forense. Identificación de restos óseos, patologías y traumatismos',
+  'Diseño digital e Impresión 3D para el desarrollo de dispositivos personalizados en biomedicina',
+  'Técnicas de (Bio)Impresión 3D y desarrollo de biotintas para aplicación en biomedicina',
+  'Difracción de rayos X. Identificación de fases sólidas en muestras mono y polifásicas. Informaciones complementarias que ofrece la técnica',
+  'Bases moleculares de la nutrición personalizada: Nutrigenómica',
+  'HANDS-ON! Aprende las diferencias técnicas para el análisis de la microbiota intestinal con ejemplos prácticos',
+];
