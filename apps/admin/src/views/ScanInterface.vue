@@ -115,8 +115,6 @@ import {
   timeOutline,
   closeOutline,
   warningOutline,
-  closeCircleOutline,
-  alertCircleOutline,
 } from 'ionicons/icons';
 import scanTone from '../assets/scan.wav';
 import { version as uuidVersion, validate as uuidValidate } from 'uuid';
