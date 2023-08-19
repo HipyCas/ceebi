@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2023/07/31
+
+### Changed
+
+- Updated from where certificates are downloaded
+
+### Fixed
+
+- The app now considers if microcourses that last 2 days when showing the list of available certificates
+
 ## [2.0.0] - 2023/07/18
 
 ### Added
@@ -302,7 +312,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Images not properly loading from cache
 - Showing _alt_ text in case images don't load
 
-[unreleased]: https://github.com/biocienciasgrx/ceebi/compare/v1.1.2...HEAD
+[unreleased]: https://github.com/HipyCas/ceebi-2023/compare/v2.0.1...HEAD
+[v2.0.1]: https://github.com/HipyCas/ceebi-2023/compare/836f23841436dc8204ca0bf6260fb66d32a03bcb...287003f5edb9a16fd7ecae28b8ae1e2efe1fffdd
+[2.0.0-rc.2]: https://github.com/HipyCas/ceebi-2023/compare/3afadf3cfa9d53752b2c2ff75d1916637fcff910...11ca91dba582651b136ca05bd46161deab8c777a
+[2.0.0-rc.1]: https://github.com/HipyCas/ceebi-2023/tree/3afadf3cfa9d53752b2c2ff75d1916637fcff910
 [1.3.15]: https://github.com/biocienciasgrx/ceebi/releases/tag/v1.3.15
 [1.3.7]: https://github.com/biocienciasgrx/ceebi/releases/tag/v1.3.7
 [1.1.2]: https://github.com/biocienciasgrx/ceebi/releases/tag/v1.1.2
