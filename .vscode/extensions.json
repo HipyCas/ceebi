@@ -2,6 +2,7 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "firsttris.vscode-jest-runner",
-    "lokalise.i18n-ally"
+    "lokalise.i18n-ally",
+    "esbenp.prettier-vscode"
   ]
 }
