@@ -39,8 +39,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Auto-generated
 **/auto-imports.d.ts
 
+# Sensitive files
 keystores/
 .env
 **/.env
