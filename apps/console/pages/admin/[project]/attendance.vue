@@ -1,0 +1,1 @@
+<template>Attendance</template>

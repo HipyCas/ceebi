@@ -1,0 +1,1 @@
+<template>Certificates</template>

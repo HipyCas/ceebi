@@ -1,0 +1,188 @@
+.header {
+  @apply dark:bg-cblue-900 /* -m-5 */ p-5 mb-6;
+}
+
+.header-title {
+  @apply text-3xl font-bold mb-1;
+}
+
+/** INPUT **/
+
+.input {
+  @apply border-2 pl-3 pr-3 py-2 rounded border-solid focus:border-cblue-500 focus:ring-0 focus:outline-none placeholder-cblue-400 dark:bg-transparent dark:text-cblue-50;
+}
+
+.input.with-icon {
+  @apply pl-9;
+}
+
+.input.with-action {
+  @apply pr-9;
+}
+
+.input-icon,
+.input-action {
+  @apply absolute top-2.5;
+}
+
+.input-icon {
+  @apply left-2.5 text-cblue-400;
+}
+
+.input-action {
+  @apply right-2.5 hover:text-cblue-500 dark:text-cblue-50;
+}
+
+/** BUTTON **/
+
+.button {
+  @apply uppercase rounded;
+}
+
+.button:not([disabled]) {
+  @apply active:scale-95;
+}
+
+.button.primary {
+  @apply px-3.5 py-1 bg-gradient-to-br hover:bg-gradient-to-tl text-white  transition-all shadow;
+}
+
+.button.primary:not([disabled]) {
+  @apply from-cblue-700 to-cblue-500 shadow-cblue-800 hover:shadow-cblue-600;
+}
+
+.button.primary[disabled] {
+  @apply from-gray-700 to-gray-500 shadow-gray-800;
+}
+
+.button.secondary {
+  @apply px-3.5 py-1 border-2 shadow;
+}
+
+.button.secondary:not([disabled]) {
+  @apply border-cblue-600 hover:border-cblue-500 hover:bg-cblue-500 hover:text-white transition-all shadow-cblue-600 hover:shadow-cblue-500;
+}
+
+/* TODO Change to :disabled? https://stackoverflow.com/questions/20141450/should-i-use-css-disabled-pseudo-class-or-disabled-attribute-selector-or-is-i */
+.button.secondary[disabled] {
+  @apply border-gray-600 hover:border-gray-500 hover:bg-gray-500 hover:text-white transition-all shadow-gray-600;
+}
+
+/* TODO Gray out when disabled and remove animation when disabled */
+.button.text {
+  @apply py-[0.08rem] /* text-sm */ bg-transparent transition-all text-cblue-900 dark:text-cblue-50;
+}
+
+.button.text:not([disabled]) {
+  @apply hover:text-cblue-500;
+}
+
+.button.text[disabled] {
+  @apply hover:text-gray-500;
+}
+
+.button.ghost {
+  @apply hover:text-cblue-500 transition-colors;
+}
+
+.button-icon {
+  @apply w-full h-full p-2 text-cblue-500;
+}
+
+.button-icon__wrapper {
+  @apply rounded-full transition-[background-color] duration-300 ease-out hover:bg-cblue-200 dark:hover:bg-cblue-500 dark:hover:bg-opacity-25;
+}
+
+/** NOTIFICATION **/
+
+.notification {
+  @apply relative border-2 rounded pl-2 pr-7 py-1 h-fit  text-cblue-700;
+}
+
+.notification.error {
+  @apply border-cblue-800 bg-cblue-200;
+}
+
+.notification.success {
+  @apply border-emerald-800 bg-emerald-200;
+}
+
+.notification > .close {
+  @apply absolute right-2;
+}
+
+/** CARD **/
+
+.card {
+  @apply shadow-md bg-cblue-50 rounded-md p-4 dark:bg-cblue-950 text-white;
+}
+
+/** MODAL **/
+
+.modal-wrapper {
+  @apply z-10 w-screen h-screen top-0 left-0 fixed bg-black bg-opacity-50 grid place-content-center;
+}
+
+.modal-content {
+  @apply relative w-[80vw] h-max bg-cblue-50 dark:bg-cblue-800 rounded-lg p-6;
+}
+
+.modal-close {
+  @apply absolute top-2 right-2 h-12 w-12 my-1 mx-0.5 p-1;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease, bounce-in 0.5s;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-active .modal-content {
+  animation: bounce-in 0.5s;
+}
+.modal-leave-active .modal-content {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.login-leave-active {
+  transition: all 0.8s ease-out;
+}
+
+.login-enter-active {
+  transition: all 1.75s ease-in-out;
+}
+
+.login-enter-from,
+.login-leave-to {
+  transform: translateX(-100vw);
+  opacity: 0;
+}
+
+.register-leave-active {
+  transition: all 0.8s ease-out;
+}
+
+.register-enter-active {
+  transition: all 1.75s ease-in-out;
+}
+
+.register-enter-from,
+.register-leave-to {
+  transform: translateX(100vw);
+  opacity: 0;
+}

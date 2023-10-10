@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "es.biociencias.admin",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 2000005,
+      "versionName": "2.0.0-rc.5",
+      "outputFile": "app-release.apk"
+    }
+  ],
+  "elementType": "File"
+}
