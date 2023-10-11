@@ -1,3 +1,3 @@
-# wp-types
+# `wp-types`
 
-This library was generated with [Nx](https://nx.dev).
+> A set of TS types for the API of CEEBI's official WP

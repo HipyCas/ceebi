@@ -1,7 +1,3 @@
-# capacitor-utils
+# `capacitor-utils`
 
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test capacitor-utils` to execute the unit tests via [Jest](https://jestjs.io).
+> A handful of ready to use Capacitor utilities, specifically designed for the CEEBI apps

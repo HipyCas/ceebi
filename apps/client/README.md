@@ -1,6 +1,6 @@
-# CEEBI - Admin
+# CEEBI - Client
 
-> Manage everything and register attendance from any mobile phone
+> All the info about the congress in your fingertips
 
 # TODO
 
