@@ -1,0 +1,139 @@
+// TODO https://github.com/omar-dulaimi/prisma-trpc-shield-generator
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+//* Zod schemas generator https://github.com/chrishoermann/zod-prisma-types
+generator zod {
+  provider                  = "npx zod-prisma-types"
+  output                    = "./schemas"
+  createRelationValuesTypes = true
+}
+
+//* Schema documentation generator https://github.com/pantharshit00/prisma-docs-generator/
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+  output   = "./docs"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database.db"
+}
+
+/// User with access to the console, used with `lucia-auth`. They are uniquely identified with the email.
+model User {
+  id             String  @id @unique
+  email          String  @unique /// The email unique to the user @zod.string.email()
+  email_verified Boolean @default(false) /// Whether the email is verified or not (WIP)
+
+  auth_session  Session[] /// lucia auth sessions
+  key           Key[] /// lucia auth key
+
+  dev        Boolean @default(false) @map("is_dev")
+  organizations Organization[] /// One or many organizations that the user manages
+}
+
+/// Used by `lucia-auth`
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+/// Used by `lucia-auth`
+model Key {
+  id              String  @id @unique
+  hashed_password String?
+  user_id         String
+  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+/// Represents an organization inside the system, which holds the different projects and data sources
+model Organization {
+  id            String @id @default(cuid())
+  initials      String @unique /// The initials representing the organization, must be unique across the system
+  full_name     String @unique /// The full and unique name
+  public_email  String /// A public email for the end user to contact
+  contact_email String /// An email to send notifications from the console as well as for comunication from the dev
+
+  users         User[]
+  proyects      Project[]
+  projectTokens ProjectToken[]
+}
+
+// enum ProyectStatus {
+//   SUSPENDED
+//   ACTIVE
+//   CONSERVATION
+// }
+
+model Project {
+  id     String   @id @default(cuid())
+  name   String
+  status String   @default("active") /// Must be either `active`, `conservation` or `suspended` @zod.string.regex(/(active|conservation|suspended)/)
+  end    DateTime
+  legacy Boolean  @default(false)
+
+  certificatesAttendancePercent Float? /// [config:certificates] Required attendance percent to receive certificate
+  certificatesDownloadDatetime  DateTime? /// [config:certificates] Date and time when certificates will be available to download
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
+  apps AppProject[]
+  // @@map("Proyect")
+}
+
+model ProjectToken {
+  id               String    @id @default(uuid())
+  limit_start_date DateTime?
+  limit_end_date   DateTime?
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  enabled_apps App[]
+}
+
+model App {
+  id          String @id @default(cuid())
+  name        String @unique
+  description String
+
+  projectTokens ProjectToken[]
+  appProjects   AppProject[]
+}
+
+model AppProject {
+  id        Int     @id @default(autoincrement())
+  bundle_id String?
+  frozen    Boolean @default(false)
+  public    Boolean @default(false) /// Indicates the main and attendant-facing app for the proyect
+
+  appId     String
+  app       App     @relation(fields: [appId], references: [id], onDelete: Restrict)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  versions AppVersion[]
+
+  @@unique([appId, projectId])
+}
+
+model AppVersion {
+  id   Int      @id @default(autoincrement())
+  code String
+  date DateTime @default(now())
+  // notes String? Using storage in its place
+
+  appProjectId Int
+  appProject   AppProject @relation(fields: [appProjectId], references: [id], onDelete: Restrict)
+}
