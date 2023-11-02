@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import { extendBaseConfig } from '../../vite.config';
 
 // https://vitejs.dev/config/
-export default extendBaseConfig('register', __dirname, {
+export default extendBaseConfig('desktop', __dirname, {
   extend: {
     base: './',
     // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`

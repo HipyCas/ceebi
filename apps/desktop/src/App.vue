@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// TODO Migrate to Ionic
+
 import { IconCopy } from '@tabler/icons-vue';
 import { emit, listen } from '@tauri-apps/api/event';
 import { invoke } from '@tauri-apps/api/tauri';
