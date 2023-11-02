@@ -9,20 +9,20 @@ use_frameworks!
 install! 'cocoapods', :disable_input_output_paths => true
 
 def capacitor_pods
-  pod 'Capacitor', :path => '../../../node_modules/@capacitor/ios'
-  pod 'CapacitorCordova', :path => '../../../node_modules/@capacitor/ios'
-  pod 'CapacitorNativeBiometric', :path => '../../../node_modules/capacitor-native-biometric'
-  pod 'CapacitorNativeSettings', :path => '../../../node_modules/capacitor-native-settings'
-  pod 'CapacitorApp', :path => '../../../node_modules/@capacitor/app'
-  pod 'CapacitorBrowser', :path => '../../../node_modules/@capacitor/browser'
-  pod 'CapacitorToast', :path => '../../../node_modules/@capacitor/toast'
-  pod 'CapacitorHaptics', :path => '../../../node_modules/@capacitor/haptics'
-  pod 'CapacitorPreferences', :path => '../../../node_modules/@capacitor/preferences'
-  pod 'CapacitorNetwork', :path => '../../../node_modules/@capacitor/network'
-  pod 'CapacitorFilesystem', :path => '../../../node_modules/@capacitor/filesystem'
-  pod 'CapacitorShare', :path => '../../../node_modules/@capacitor/share'
-  pod 'CapacitorCommunityBarcodeScanner', :path => '../../../node_modules/@capacitor-community/barcode-scanner'
-  pod 'CapacitorCommunityFirebaseCrashlytics', :path => '../../../node_modules/@capacitor-community/firebase-crashlytics'
+  pod 'Capacitor', :path => '../../../node_modules/.pnpm/@capacitor+ios@4.8.0_@capacitor+core@4.8.0/node_modules/@capacitor/ios'
+  pod 'CapacitorCordova', :path => '../../../node_modules/.pnpm/@capacitor+ios@4.8.0_@capacitor+core@4.8.0/node_modules/@capacitor/ios'
+  pod 'CapacitorNativeBiometric', :path => '../../../node_modules/.pnpm/capacitor-native-biometric@4.2.2/node_modules/capacitor-native-biometric'
+  pod 'CapacitorNativeSettings', :path => '../../../node_modules/.pnpm/capacitor-native-settings@4.0.3_@capacitor+core@4.8.0/node_modules/capacitor-native-settings'
+  pod 'CapacitorApp', :path => '../../../node_modules/.pnpm/@capacitor+app@4.1.1_@capacitor+core@4.8.0/node_modules/@capacitor/app'
+  pod 'CapacitorBrowser', :path => '../../../node_modules/.pnpm/@capacitor+browser@4.1.1_@capacitor+core@4.8.0/node_modules/@capacitor/browser'
+  pod 'CapacitorToast', :path => '../../../node_modules/.pnpm/@capacitor+toast@4.1.0_@capacitor+core@4.8.0/node_modules/@capacitor/toast'
+  pod 'CapacitorHaptics', :path => '../../../node_modules/.pnpm/@capacitor+haptics@4.1.0_@capacitor+core@4.8.0/node_modules/@capacitor/haptics'
+  pod 'CapacitorPreferences', :path => '../../../node_modules/.pnpm/@capacitor+preferences@4.0.2_@capacitor+core@4.8.0/node_modules/@capacitor/preferences'
+  pod 'CapacitorNetwork', :path => '../../../node_modules/.pnpm/@capacitor+network@4.1.0_@capacitor+core@4.8.0/node_modules/@capacitor/network'
+  pod 'CapacitorFilesystem', :path => '../../../node_modules/.pnpm/@capacitor+filesystem@4.1.5_@capacitor+core@4.8.0/node_modules/@capacitor/filesystem'
+  pod 'CapacitorShare', :path => '../../../node_modules/.pnpm/@capacitor+share@4.1.1_@capacitor+core@4.8.0/node_modules/@capacitor/share'
+  pod 'CapacitorCommunityBarcodeScanner', :path => '../../../node_modules/.pnpm/@capacitor-community+barcode-scanner@3.0.3_@capacitor+core@4.8.0/node_modules/@capacitor-community/barcode-scanner'
+  pod 'CapacitorCommunityFirebaseCrashlytics', :path => '../../../node_modules/.pnpm/@capacitor-community+firebase-crashlytics@2.0.0_@capacitor+core@4.8.0/node_modules/@capacitor-community/firebase-crashlytics'
 end
 
 def firebase_pods
