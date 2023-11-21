@@ -321,7 +321,7 @@ async function handleSubmit() {
   };
   try {
     const response = await fetch(
-      `https://ceebi.wupp.dev/api/ceebi-ii/consulta/certificado?nif=${nif.value.trim()}&email=${email.value.trim()}`
+      `https://ceebi.wupp.dev/api/ceebi-ii/consulta/certificado?nif=${nif.value.trim()}&email=${email.value.trim()}`,
     );
     if (response.status === 200) {
       results.value = await response.json();

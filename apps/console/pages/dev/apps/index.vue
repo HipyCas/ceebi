@@ -79,9 +79,9 @@ const apps = shallowRef(
     icon: `/apps/icons/${app.id}.png`,
     organizations: unique(
       app.appProjects.map((proj) => proj.project.organization),
-      (org) => org.id
+      (org) => org.id,
     ),
-  }))
+  })),
 );
 
 console.info(apps.value);

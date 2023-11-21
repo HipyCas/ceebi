@@ -36,6 +36,6 @@ export default defineEventHandler(async (event) => {
   });
   return path.join(
     `/apps/versions/${query.appProjectId}/`,
-    `${query.version}.apk`
+    `${query.version}.apk`,
   );
 });

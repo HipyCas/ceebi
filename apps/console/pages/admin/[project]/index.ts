@@ -6,5 +6,5 @@ export default defineRedirect(
   {
     redirectCode: 301,
     replace: true,
-  }
+  },
 );

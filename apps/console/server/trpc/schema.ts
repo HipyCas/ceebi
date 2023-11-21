@@ -23,7 +23,7 @@ const restrictedPages = z.array(
     z.literal('Noticias'),
     z.literal('Horario'),
     z.literal('Sobre y Patrocinadores'),
-  ])
+  ]),
 );
 
 export const authenticationConfigInputSchema = z.object({

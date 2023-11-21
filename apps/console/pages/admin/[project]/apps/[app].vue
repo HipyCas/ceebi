@@ -125,7 +125,7 @@ const versions = ref(
     date: string;
     id: number;
     appProjectId: number;
-  }[]
+  }[],
 );
 
 (async () => {
@@ -135,10 +135,10 @@ const versions = ref(
       open: false,
       notesHtml: DOMPurify.sanitize(
         marked.parse(
-          await $fetch(`/apps/notes/${appProject.appId}/${ver.code}.md`)
-        )
+          await $fetch(`/apps/notes/${appProject.appId}/${ver.code}.md`),
+        ),
       ),
-    }))
+    })),
   );
   versions.value.reverse();
 })();
@@ -148,6 +148,6 @@ watch(
   (val) => {
     console.log('va', val);
   },
-  { deep: true }
+  { deep: true },
 );
 </script>

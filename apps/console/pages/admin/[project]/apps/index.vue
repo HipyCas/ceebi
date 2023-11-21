@@ -32,6 +32,6 @@ const { $trpc } = useNuxtApp();
 const route = useRoute();
 
 const apps = shallowRef(
-  await $trpc.getApps.query({ projectId: route.params.project as string })
+  await $trpc.getApps.query({ projectId: route.params.project as string }),
 );
 </script>

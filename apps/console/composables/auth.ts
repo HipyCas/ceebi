@@ -9,7 +9,7 @@ export const useAuthenticatedUser = () => {
     const userValue = unref(user);
     if (!userValue) {
       throw createError(
-        'useAuthenticatedUser() can only be used in protected pages'
+        'useAuthenticatedUser() can only be used in protected pages',
       );
     }
     return userValue;

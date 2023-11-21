@@ -114,7 +114,7 @@ console.log(loadedConfig.certificatesDownloadDatetime);
 
 const downloadDate = format(
   parseISO(loadedConfig.certificatesDownloadDatetime ?? formatISO(new Date())),
-  "yyyy-MM-dd'T'HH:mm"
+  "yyyy-MM-dd'T'HH:mm",
 );
 console.log('downdate', downloadDate);
 
@@ -131,7 +131,7 @@ const { baseWordpressURL, restrictedPages } =
   });
 
 const saveAuthenticationConfig = async (
-  fields: AuthenticationConfig['fields']
+  fields: AuthenticationConfig['fields'],
 ) => {
   await $trpc.setAuthenticationConfig.mutate({
     projectName: route.params.project as string,

@@ -171,7 +171,7 @@ const projectStatusTooltip = computed(
   () => (status: 'active' | 'conservation' | 'suspended') =>
     status === 'active'
       ? 'El proyecto está activo y se puede modificar'
-      : 'Se mantiene para permitir acceso a asistentes, pero no se puede modificar'
+      : 'Se mantiene para permitir acceso a asistentes, pero no se puede modificar',
 );
 
 const projectStatusBgClass = computed(
@@ -179,8 +179,8 @@ const projectStatusBgClass = computed(
     status === 'active'
       ? 'bg-emerald-600'
       : status === 'conservation'
-      ? 'bg-zinc-600'
-      : 'bg-amber-600'
+        ? 'bg-zinc-600'
+        : 'bg-amber-600',
 );
 
 const projectStatusName = computed(
@@ -188,8 +188,8 @@ const projectStatusName = computed(
     status === 'active'
       ? 'Activo'
       : status === 'conservation'
-      ? 'Conservación'
-      : 'Suspendido'
+        ? 'Conservación'
+        : 'Suspendido',
 );
 
 const logout = async () => {

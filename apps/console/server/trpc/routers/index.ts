@@ -171,7 +171,7 @@ export const appRouter = router({
             certificatesAttendancePercent: true,
             certificatesDownloadDatetime: true,
           },
-        })
+        }),
     ),
 
   setCertificateConfig: publicProcedure
@@ -179,13 +179,13 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       await useStorage('db').setItem(
         `${input.projectName}.certificateDownloadDate`,
-        input.fields.downloadDate
+        input.fields.downloadDate,
       );
       console.log(
         'set',
         await useStorage('db').getItem(
-          `${input.projectName}.certificateDownloadDate`
-        )
+          `${input.projectName}.certificateDownloadDate`,
+        ),
       );
     }),
 
@@ -193,12 +193,12 @@ export const appRouter = router({
     .input(
       z.object({
         projectName: z.string(),
-      })
+      }),
     )
     // .output(certificateConfigOutputSchema)
     .query(async ({ input }) => ({
       downloadDate: await useStorage('db').getItem(
-        `${input.projectName}.certificateDownloadDate`
+        `${input.projectName}.certificateDownloadDate`,
       ),
     })),
 
@@ -207,30 +207,30 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       await useStorage('db').setItem(
         `${input.projectName}.authenticationBaseWordpressURL`,
-        input.fields.baseWordpressURL
+        input.fields.baseWordpressURL,
       );
       await useStorage('db').setItem(
         `${input.projectName}.authenticationRestrictedPages`,
-        input.fields.restrictedPages
+        input.fields.restrictedPages,
       );
     }),
   getAuthenticationConfig: publicProcedure
     .input(
       z.object({
         projectName: z.string(),
-      })
+      }),
     )
     .output(authenticationConfigOutputSchema)
     .query(
       async ({ input }) =>
         ({
           baseWordpressURL: await useStorage('db').getItem(
-            `${input.projectName}.authenticationBaseWordpressURL`
+            `${input.projectName}.authenticationBaseWordpressURL`,
           ),
           restrictedPages: await useStorage('db').getItem(
-            `${input.projectName}.authenticationRestrictedPages`
+            `${input.projectName}.authenticationRestrictedPages`,
           ),
-        } as z.infer<typeof authenticationConfigOutputSchema>)
+        }) as z.infer<typeof authenticationConfigOutputSchema>,
     ),
 
   // TODO This is a dev thing
@@ -239,7 +239,7 @@ export const appRouter = router({
       // TODO Move this that you use often to ../schema.ts and make the other inputs merge with this
       z.object({
         projectName: z.string(),
-      })
+      }),
     )
     .output(z.void())
     .mutation(async ({ input }) => {
@@ -250,12 +250,12 @@ export const appRouter = router({
     .input(
       z.object({
         projectName: z.string(),
-      })
+      }),
     )
     .output(
       z.object({
         legacy: z.boolean().nullable(),
-      })
+      }),
     )
     .query(async ({ input }) => ({
       legacy: await useStorage('db').getItem(`${input.projectName}.legacy`),
@@ -266,12 +266,12 @@ export const appRouter = router({
       z.object({
         where: OrganizationWhereInputSchema.optional(),
         include: OrganizationIncludeSchema.optional(),
-      })
+      }),
     )
     // .output(OrganizationSchema.array())
     .query(
       async ({ input: { where, include } }) =>
-        await prisma.organization.findMany({ where, include })
+        await prisma.organization.findMany({ where, include }),
     ),
 
   getOrganization: publicProcedure
@@ -279,7 +279,7 @@ export const appRouter = router({
       z.object({
         id: z.string().cuid(),
         select: OrganizationSelectSchema.optional(),
-      })
+      }),
     )
     .output(OrganizationSchema)
     .query(async ({ input }) => {
@@ -313,8 +313,8 @@ export const appRouter = router({
       ProjectSchema.merge(
         z.object({
           status: z.enum(['active', 'conservation', 'suspended']),
-        })
-      ).array()
+        }),
+      ).array(),
     )
     //@ts-expect-error I know it will be that enum, but in DB I cannot write that enum bc its sqlite
     .query(async ({ input }) => await prisma.project.findMany(input)),
@@ -329,14 +329,14 @@ export const appRouter = router({
       z.object({
         token: z.string().uuid(),
         organizationID: z.string(),
-      })
+      }),
     )
     .output(
       ProjectTokenSchema.merge(
         z.object({
           enabled_apps: z.object({ name: z.string(), id: z.string() }).array(),
-        })
-      )
+        }),
+      ),
     )
     .query(async ({ input }) => await validateToken(input)),
 
@@ -350,12 +350,12 @@ export const appRouter = router({
           name: true,
           end: true,
         }),
-      })
+      }),
     )
     .output(
       z.object({
         projectID: z.string().cuid(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       const projectToken = await validateToken(input);
@@ -396,8 +396,8 @@ export const appRouter = router({
               }),
             })
             .array(),
-        })
-      ).array()
+        }),
+      ).array(),
     )
     .query(
       async () =>
@@ -416,7 +416,7 @@ export const appRouter = router({
               },
             },
           },
-        })
+        }),
     ),
 
   getApp: publicProcedure
@@ -429,13 +429,13 @@ export const appRouter = router({
               project: ProjectSchema.merge(
                 z.object({
                   organization: OrganizationSchema,
-                })
+                }),
               ),
               versions: AppVersionSchema.array(),
-            })
+            }),
           ).array(),
-        })
-      ).nullable()
+        }),
+      ).nullable(),
     )
     .query(
       async ({ input }) =>
@@ -455,7 +455,7 @@ export const appRouter = router({
               },
             },
           },
-        })
+        }),
     ),
 
   getAppProject: publicProcedure
@@ -463,7 +463,7 @@ export const appRouter = router({
       z.object({
         projectId: z.string().cuid(),
         appId: z.string().cuid(),
-      })
+      }),
     )
     .query(
       async ({ input }) =>
@@ -478,7 +478,7 @@ export const appRouter = router({
             app: true,
             versions: true,
           },
-        })
+        }),
     ),
 
   getAppsWithProjects: publicProcedure.query(
@@ -500,7 +500,7 @@ export const appRouter = router({
             },
           },
         },
-      })
+      }),
   ),
 
   // uploadVersionAPK: publicProcedure.input(z.object({
@@ -511,8 +511,8 @@ export const appRouter = router({
   createVersion: publicProcedure
     .input(
       AppVersionSchema.omit({ id: true }).merge(
-        z.object({ notes: z.string(), appId: z.string().cuid() })
-      )
+        z.object({ notes: z.string(), appId: z.string().cuid() }),
+      ),
     )
     .output(AppVersionSchema)
     .mutation(async ({ input }) => {
@@ -527,7 +527,7 @@ export const appRouter = router({
       try {
         await writeFile(
           `/home/hipy/ceebi/code2/apps/console/public/apps/notes/${input.appId}/${version.code}.md`,
-          input.notes ?? ''
+          input.notes ?? '',
         );
       } catch (e) {
         console.error('internal error saving notes', e);
@@ -547,8 +547,8 @@ export const appRouter = router({
           app: AppSchema,
           project: ProjectSchema,
           versions: AppVersionSchema.array(),
-        })
-      ).array()
+        }),
+      ).array(),
     )
     .query(
       async () =>
@@ -561,7 +561,7 @@ export const appRouter = router({
             app: true,
             versions: true,
           },
-        })
+        }),
     ),
 });
 

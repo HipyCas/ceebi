@@ -68,7 +68,7 @@
               ...objectify(
                 apps.map((app) => ({ label: app.name, value: app.id })),
                 (a) => a.value,
-                (a) => a.label
+                (a) => a.label,
               ),
             }"
             v-model="appId"
@@ -163,8 +163,8 @@
             isOverDropZone
               ? 'outline outline-4 outline-accent'
               : fileError
-              ? 'outline outline-4 outline-error'
-              : ''
+                ? 'outline outline-4 outline-error'
+                : ''
           "
         >
           <template v-if="uploadedFile">
@@ -313,7 +313,7 @@ const route = useRoute();
 const TOTAL_STEPS = 5;
 const step = ref(0);
 const progress = computed(() =>
-  Math.min((100 / (TOTAL_STEPS - 1)) * step.value, 100)
+  Math.min((100 / (TOTAL_STEPS - 1)) * step.value, 100),
 );
 const progressCSS = computed(() => progress.value.toString() + '%');
 
@@ -325,18 +325,18 @@ const apps = await $trpc.getAppsWithProjects.query();
 const appId = ref(route.query.id ?? '');
 
 const _partialSchema = AppVersionSchema.merge(
-  z.object({ notes: z.string(), appId: z.string().cuid() })
+  z.object({ notes: z.string(), appId: z.string().cuid() }),
 ).partial();
 let totalVersionData: z.infer<typeof _partialSchema> = {};
 
 const uploadedFile = ref(null as string | null);
 const uploadedFileName = computed(() =>
-  uploadedFile ? uploadedFile.value?.split('/').at(-1) : ''
+  uploadedFile ? uploadedFile.value?.split('/').at(-1) : '',
 );
 const fileError = ref(false);
 const fileHandler = async (
   files: File[] | FileList | null,
-  tooManyErrorMsg: string
+  tooManyErrorMsg: string,
 ) => {
   fileError.value = false;
   if (files && files.length > 0) {
@@ -363,11 +363,11 @@ const fileHandler = async (
 };
 const { open, files } = useFileDialog();
 watch(files, (uploaded) =>
-  fileHandler(uploaded, 'No puedes seleccionar más de un archivo')
+  fileHandler(uploaded, 'No puedes seleccionar más de un archivo'),
 );
 const dropZoneRef = ref();
 const { isOverDropZone } = useDropZone(dropZoneRef, (files) =>
-  fileHandler(files, 'No puedes arrastrar más de un archivo')
+  fileHandler(files, 'No puedes arrastrar más de un archivo'),
 );
 
 const selectedAppProject: Ref<
@@ -379,7 +379,7 @@ const handlePickAppProject = async (fields: {
 }) => {
   selectedAppProject.value =
     unique(apps.flatMap((app) => app.appProjects)).find(
-      (ap) => ap.id === Number.parseInt(fields.appProjectId)
+      (ap) => ap.id === Number.parseInt(fields.appProjectId),
     ) ?? null;
   totalVersionData['appProjectId'] = selectedAppProject.value?.id;
   totalVersionData['appId'] = selectedAppProject.value?.appId;

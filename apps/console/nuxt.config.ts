@@ -17,7 +17,7 @@ function getMonorepoTsConfigPaths(tsConfigPath: string) {
       // '@org/something/*': ['libs/something/src/*'] => '@org/something': '{pathToWorkspaceRoot}/libs/something/src'
       alias[p.replace(/\/\*$/, '')] = join(
         workspaceRoot,
-        tsPaths[p][0].replace(/\/\*$/, '')
+        tsPaths[p][0].replace(/\/\*$/, ''),
       );
     }
   }
