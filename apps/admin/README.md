@@ -1,3 +1,5 @@
+![](banner.png)
+
 # CEEBI - Admin
 
 > Manage everything and register attendance from any mobile phone
