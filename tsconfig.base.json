@@ -17,13 +17,19 @@
     "baseUrl": ".",
     "types": ["@intlify/unplugin-vue-i18n/messages"],
     "paths": {
+      "@ceebi/ui": ["libs/ceebi-ui/src/"],
+      "@ceebi/util": ["libs/ceebi-util/src"],
       "@code/*": ["libs/*/src/index.ts"],
       "@code2/@wupp/nx": ["libs/@wupp/nx/src/index.ts"],
       "@code2/capacitor-utils": ["libs/capacitor-utils/src/index.ts"],
       "@code2/ceebi-ui": ["libs/ceebi-ui/src/"],
+      "@code2/ceebi-util": ["libs/ceebi-util/src/index.ts"],
       "@code2/db": ["libs/db/src/index.ts"],
       "@code2/logger": ["libs/logger/src/index.ts"],
+      "@code2/supabase": ["libs/supabase/src/index.ts"],
       "@code2/wp-types": ["libs/wp-types/src/index.ts"],
+      "@prisma/schemas": ["prisma/schemas/"],
+      "@prisma/source": ["prisma/"],
       "@wupp/mec-ts": ["libs/mec-ts/src/index.ts"],
       "@wupp/nx": ["libs/@wupp/nx/"]
     }
