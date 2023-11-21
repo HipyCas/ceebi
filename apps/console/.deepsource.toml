@@ -3,6 +3,9 @@ version = 1
 exclude_patterns = [".nuxt/**"]
 
 [[analyzers]]
+name = "secrets"
+
+[[analyzers]]
 name = "javascript"
 
   [analyzers.meta]
