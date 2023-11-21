@@ -63,7 +63,7 @@ const goto = (url: string, msg: string) => {
 };
 
 const logoHorizontal = computed(() =>
-  isDarkMode.value ? logoHorizontalBlanco : logoHorizontalNegro
+  isDarkMode.value ? logoHorizontalBlanco : logoHorizontalNegro,
 );
 
 function link(url: string, name: string) {

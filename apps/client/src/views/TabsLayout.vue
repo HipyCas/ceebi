@@ -60,7 +60,7 @@ onMounted(() => {
   logger.trace(
     'tabs:onMounted',
     document.body.style.getPropertyValue('env(safe-area-inset-top)'),
-    document.body.style.getPropertyValue('env(safe-area-inset-bottom)')
+    document.body.style.getPropertyValue('env(safe-area-inset-bottom)'),
   );
 });
 

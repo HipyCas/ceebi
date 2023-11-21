@@ -138,7 +138,7 @@ const askNotificationsPermission = async () => {
     'slides:askNotificationsPermission',
     'response to permission request',
     response.display,
-    { response }
+    { response },
   );
   if (response.display === 'granted') {
     notificationPermissionsAuthorized.value = true;

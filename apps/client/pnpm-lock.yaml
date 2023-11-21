@@ -13,27 +13,38 @@ dependencies:
   '@capawesome/capacitor-app-update': 2.1.0
 
 packages:
-
   /@capacitor/local-notifications/4.1.5:
-    resolution: {integrity: sha512-zUU4WvXxweALIDp9gBjurpwF9drLeMNe+O5tVKiUr/8PsaxB9dlv2ciuN5Seq4b+9LftOfTuzEX2PY7JkOJy1g==}
+    resolution:
+      {
+        integrity: sha512-zUU4WvXxweALIDp9gBjurpwF9drLeMNe+O5tVKiUr/8PsaxB9dlv2ciuN5Seq4b+9LftOfTuzEX2PY7JkOJy1g==,
+      }
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dev: false
 
   /@capacitor/push-notifications/4.1.2:
-    resolution: {integrity: sha512-ok6CGvedwK1azmf8VWhrNlg6jhi4PFz3HoyS0GNE2ew7+JGnxN77sgK5q1TVzdkge+vkqipO6uu5bD1xfj/pWQ==}
+    resolution:
+      {
+        integrity: sha512-ok6CGvedwK1azmf8VWhrNlg6jhi4PFz3HoyS0GNE2ew7+JGnxN77sgK5q1TVzdkge+vkqipO6uu5bD1xfj/pWQ==,
+      }
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dev: false
 
   /@capacitor/splash-screen/4.1.4:
-    resolution: {integrity: sha512-ETCxsJa94H4vYOXWLd0KKEmMwme4jrJddfieU0wXhhkRq3Fohv6CxTiG07vYbVzdMkzmWyq17yM5o3TKa3AQCA==}
+    resolution:
+      {
+        integrity: sha512-ETCxsJa94H4vYOXWLd0KKEmMwme4jrJddfieU0wXhhkRq3Fohv6CxTiG07vYbVzdMkzmWyq17yM5o3TKa3AQCA==,
+      }
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dev: false
 
   /@capawesome/capacitor-app-update/2.1.0:
-    resolution: {integrity: sha512-2hMm6ErNlgU+1IjmWPu3ZXq15JAS0LNDlBGQyFM4ZB/tEXw9fLnxg0kgaxwXeSgqHkbh2UOkGNx3QWbZGmWWpg==}
+    resolution:
+      {
+        integrity: sha512-2hMm6ErNlgU+1IjmWPu3ZXq15JAS0LNDlBGQyFM4ZB/tEXw9fLnxg0kgaxwXeSgqHkbh2UOkGNx3QWbZGmWWpg==,
+      }
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dev: false

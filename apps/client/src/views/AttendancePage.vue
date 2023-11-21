@@ -54,7 +54,7 @@ function genCode() {
   console.log(
     'rendering code',
     document.getElementById('qrcode'),
-    user.value.acf.id_base_de_datos_app
+    user.value.acf.id_base_de_datos_app,
   );
   QRCode.toCanvas(
     document.getElementById('qrcode'),
@@ -62,14 +62,14 @@ function genCode() {
     {
       scale: Math.min(screen.width / 30, 10),
       margin: 2,
-    }
+    },
   )
     .then(() => {
       console.log('redenred code');
       showQR.value = true;
     })
     .catch((e) =>
-      logger.error('qrcode:genCode', 'error thrown by code generator', e)
+      logger.error('qrcode:genCode', 'error thrown by code generator', e),
     );
 }
 

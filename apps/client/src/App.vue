@@ -49,7 +49,7 @@ console.log(
   'hello',
   typeof import.meta.env.VITE_ENCRYPTION_KEY,
   import.meta.env.VITE_ENCRYPTION_KEY,
-  JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY)
+  JSON.parse(import.meta.env.VITE_ENCRYPTION_KEY),
 );
 
 //* PUSH NOTIFICATIONS
@@ -58,14 +58,14 @@ const registerPush = () => {
     logger.trace(
       'pushNotifications:listener(registration)',
       'registration successful',
-      { token }
+      { token },
     );
   }).catch((e) =>
     logger.error(
       'pushNotifications:listener(registration)',
       'error registering device for push notifications',
-      { error: e }
-    )
+      { error: e },
+    ),
   );
 
   PushNotifications.addListener(
@@ -74,7 +74,7 @@ const registerPush = () => {
       logger.info(
         'pushNotifications:listener(pushNotificationReceived)',
         'received push notification',
-        { notification }
+        { notification },
       );
       // Show notification in case you don't have the app open
       LocalNotifications.schedule({
@@ -92,23 +92,23 @@ const registerPush = () => {
           logger.trace(
             'pushNotifications:listener(pushNotificationReceived)',
             'shown notification with local notifications',
-            { res }
-          )
+            { res },
+          ),
         )
         .catch((e) =>
           logCatchError(
             logger,
             'pushNotifications:listener(pushNotificationReceived)',
             'error displaying push notification',
-            e
-          )
+            e,
+          ),
         );
       // Save notification
       const { value: notificationsJSON } = await Preferences.get({
         key: KEY_PUSH_ENABLED,
       });
       const notifications: PushNotificationSchema[] = JSON.parse(
-        notificationsJSON || ''
+        notificationsJSON || '',
       );
       console.info('PUSH >>>> Saving notification');
       notifications.push(notification);
@@ -118,13 +118,13 @@ const registerPush = () => {
       })
         .catch((e) => console.error('PUSH >>>> Error while saving push: ' + e))
         .then(() => console.info('PUSH >>>> Successfully saved notification'));
-    }
+    },
   );
 };
 (async () => {
   if (isPlatform('capacitor')) {
     const permissionGranted = await PushNotifications.checkPermissions().then(
-      (value) => value.receive === 'granted'
+      (value) => value.receive === 'granted',
     );
     if (permissionGranted) {
       registerPush();
@@ -181,7 +181,7 @@ if (isPlatform('capacitor')) {
                         },
                       ],
                     });
-                }
+                },
               );
             } else if (immediateUpdateAllowed) {
               AppUpdate.performImmediateUpdate();
@@ -211,7 +211,7 @@ onMounted(async () => {
           await Preferences.get({
             key: KEY_DARK_MODE,
           })
-        ).value || 'false'
+        ).value || 'false',
       );
       toggleDarkMode(darkModeResult);
       setDarkMode(darkModeResult);
@@ -268,23 +268,23 @@ onMounted(async () => {
     console.log(
       `[TRANSLATION] Checking if model exists for locale ${locale} (${
         locales.getByTag(locale as unknown as string).name
-      })...`
+      })...`,
     );
     console.log(
       `[TRANSLATION] Available models are (${Array.isArray(
-        Object.keys(Language)
-      )}): ${Object.keys(Language).join(', ')}`
+        Object.keys(Language),
+      )}): ${Object.keys(Language).join(', ')}`,
     );
     if (
       locale !== undefined &&
       Object.keys(Language).includes(
-        locales.getByTag(locale as unknown as string).name
+        locales.getByTag(locale as unknown as string).name,
       )
     ) {
       console.log(
         `[TRANSLATION] Downloading actual locale (${locale}) model: ${
           Language[locales.getByTag(locale as unknown as string).name]
-        }...`
+        }...`,
       );
       await Translation.downloadModel({
         //@ts-expect-error Checked model exists before
@@ -295,7 +295,7 @@ onMounted(async () => {
       console.error(
         '[TRANSLATION] Language',
         locale,
-        'not available for translation'
+        'not available for translation',
       );
   })();
 
@@ -307,7 +307,7 @@ onMounted(async () => {
     (async () => {
       const stacktrace = await StackTrace.fromError(
         error ||
-          new Error(`ERROR from ev ${ev} (${source} - L${lineno}:C${colno})`)
+          new Error(`ERROR from ev ${ev} (${source} - L${lineno}:C${colno})`),
       );
       await FirebaseCrashlytics.recordException({
         message: `Unhandled error ocurred: ${error} [event: ${ev}; source: ${source}] - L${lineno}:C${colno}`,

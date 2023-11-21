@@ -134,7 +134,7 @@ const loadNotifications = async () => {
                 //@ts-expect-error Cannot index ionicons with this, but I'm sure it will be an ionicon valid key
                 ionIcon: ionicons[but.icon || 'openOutline'],
               })),
-          } as RenderableNotification)
+          }) as RenderableNotification,
       )
       .filter((not) => differenceInMonths(today, not.schedule) <= 10)
       .sort((a, b) => getUnixTime(b.schedule) - getUnixTime(a.schedule));
@@ -143,7 +143,7 @@ const loadNotifications = async () => {
       logger,
       'notifications:loadNotifications',
       'error fetching notifications from server',
-      error
+      error,
     );
     useToast({
       message: t('notifications.errorFetching'),
@@ -156,11 +156,11 @@ const loadNotifications = async () => {
 
 const { state: notifications, isLoading } = useAsyncState(
   loadNotifications,
-  []
+  [],
 );
 
 const showableNotifications = computed(() =>
-  notifications.value.filter((not) => isAfter(today, not.schedule))
+  notifications.value.filter((not) => isAfter(today, not.schedule)),
 );
 
 let notificationOpen = false;
@@ -168,7 +168,7 @@ const modal = (notification: RenderableNotification) => {
   if (!notificationOpen) {
     notificationOpen = true;
     showNotification(notification, analytics).then((modal) =>
-      modal.onWillDismiss().then(() => (notificationOpen = false))
+      modal.onWillDismiss().then(() => (notificationOpen = false)),
     );
     logEvent(analytics, `notification_${notification.shortname}`);
   }
@@ -182,11 +182,11 @@ PushNotifications.addListener(
         'shortname'
       ] as string;
       const notification = showableNotifications.value.find(
-        (not) => not.shortname === notificationShortname
+        (not) => not.shortname === notificationShortname,
       );
       if (notification) modal(notification);
     }
-  }
+  },
 );
 </script>
 

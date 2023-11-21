@@ -57,7 +57,7 @@
             >
               <ion-select-option
                 v-for="locale in $i18n.availableLocales.sort((a, b) =>
-                  getLocaleName(a).localeCompare(getLocaleName(b))
+                  getLocaleName(a).localeCompare(getLocaleName(b)),
                 )"
                 :key="`locale-${locale}`"
                 :value="locale"
@@ -236,7 +236,7 @@ const preshareLogs = async () => {
             useToast({
               message: 'error when sharing notifications:' + e,
               color: 'danger',
-            })
+            }),
           );
         },
       },
@@ -280,7 +280,7 @@ const saveLocale = async (ev: SelectCustomEvent) => {
     logger.error(
       'settings:saveLocale',
       `error when updating locale to ${ev.detail.value} from ${locale.value}`,
-      { error: e, event: ev, locale }
+      { error: e, event: ev, locale },
     );
     FirebaseCrashlytics.setContext({
       key: 'i18n.locale',
@@ -297,7 +297,7 @@ const saveLocale = async (ev: SelectCustomEvent) => {
       'settings:saveLocale',
       `error when updating locale to ${ev.detail.value} from ${locale.value}`,
       e,
-      false
+      false,
     );
   }
 };
@@ -310,7 +310,7 @@ watch(translateSchedule, (translate) =>
   Preferences.set({
     key: KEY_TRANSLATE_SCHEDULE,
     value: translate ? 'true' : 'false',
-  })
+  }),
 );
 
 const darkMode = ref(getDarkMode());

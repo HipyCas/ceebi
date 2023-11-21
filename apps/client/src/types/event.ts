@@ -35,8 +35,8 @@ export interface Event {
   dates: {
     start: DateTime;
     end: DateTime;
-    allday: "0" | "1";
-    hide_time: "0" | "1";
+    allday: '0' | '1';
+    hide_time: '0' | '1';
     past: number;
   }[];
   date: {
@@ -49,7 +49,7 @@ interface DateTime {
   date: string;
   hour: Hour12;
   minutes: Minutes;
-  ampm: "am" | "pm";
+  ampm: 'am' | 'pm';
   timestamp: number;
 }
 
@@ -61,34 +61,34 @@ type DateString = string;
 //   | 3}${Digit}`;
 
 type Hour12 =
-  | "00"
-  | "01"
-  | "02"
-  | "03"
-  | "04"
-  | "05"
-  | "06"
-  | "07"
-  | "08"
-  | "09"
-  | "10"
-  | "11"
-  | "12";
+  | '00'
+  | '01'
+  | '02'
+  | '03'
+  | '04'
+  | '05'
+  | '06'
+  | '07'
+  | '08'
+  | '09'
+  | '10'
+  | '11'
+  | '12';
 
 type Hour24 =
   | Hour12
-  | "13"
-  | "14"
-  | "15"
-  | "16"
-  | "17"
-  | "18"
-  | "19"
-  | "20"
-  | "21"
-  | "22"
-  | "23"
-  | "24";
+  | '13'
+  | '14'
+  | '15'
+  | '16'
+  | '17'
+  | '18'
+  | '19'
+  | '20'
+  | '21'
+  | '22'
+  | '23'
+  | '24';
 
 type Minutes = `${0 | 1 | 2 | 3 | 4 | 5}${Digit}`;
 
@@ -106,9 +106,9 @@ interface EventPost {
   post_content: string;
   post_title: string;
   post_excerpt: string;
-  post_status: "publish" | string;
-  comment_status: "closed" | string;
-  png_status: "closed" | string;
+  post_status: 'publish' | string;
+  comment_status: 'closed' | string;
+  png_status: 'closed' | string;
   post_password: MayEmptyString;
   post_name: string;
   to_ping: MayEmptyString;
@@ -119,15 +119,15 @@ interface EventPost {
   post_parent: number; // Guess its the id of the post
   guid: URL; //URL type?
   menu_order: number;
-  post_type: "mec-events" | string;
+  post_type: 'mec-events' | string;
   post_mime_type: MayEmptyString;
   comment_count: `${number}`;
-  filter: "raw" | string;
+  filter: 'raw' | string;
 }
 
-type URL = `${"http" | "https"}://${string}`;
+type URL = `${'http' | 'https'}://${string}`;
 
-type MayEmptyString = "" | string;
+type MayEmptyString = '' | string;
 
 interface EventThumbnails {
   thumbnail: MayEmptyString;
@@ -145,11 +145,11 @@ interface EventSpeaker {
   name: string;
   job_title: MayEmptyString;
   tel: MayEmptyString;
-  email: "" | Email;
-  facebook: "" | URL;
-  twitter: "" | URL;
-  gplus: "" | URL;
-  thumbnail: "" | URL;
+  email: '' | Email;
+  facebook: '' | URL;
+  twitter: '' | URL;
+  gplus: '' | URL;
+  thumbnail: '' | URL;
 }
 
 type Email = `${string}@${string}`;
@@ -158,12 +158,12 @@ interface EventCategory {
   id: number;
   name: string;
   icon: string;
-  color: "" | ColorString;
+  color: '' | ColorString;
 }
 
 type ColorString = `#${string}`;
 
-type HexChar = Digit | "a" | "b" | "c" | "d" | "e" | "f";
+type HexChar = Digit | 'a' | 'b' | 'c' | 'd' | 'e' | 'f';
 
 interface EventLocation {
   id: number;
@@ -171,6 +171,6 @@ interface EventLocation {
   addres: string;
   latitude: `${number}`;
   longitude: `${number}`;
-  url: "" | URL;
+  url: '' | URL;
   thumbnail: MayEmptyString;
 }
