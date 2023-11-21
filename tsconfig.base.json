@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "types": ["@intlify/unplugin-vue-i18n/messages"],
+    "types": ["@intlify/unplugin-vue-i18n/messages", "unplugin-fonts/client"],
     "paths": {
       "@ceebi/ui": ["libs/ceebi-ui/src/"],
       "@ceebi/util": ["libs/ceebi-util/src"],
