@@ -8,6 +8,9 @@ exclude_patterns = [
 ]
 
 [[analyzers]]
+name = "secrets"
+
+[[analyzers]]
 name = "rust"
 
   [analyzers.meta]
