@@ -133,7 +133,9 @@
 
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 0.3s ease, bounce-in 0.5s;
+  transition:
+    opacity 0.3s ease,
+    bounce-in 0.5s;
 }
 
 .modal-enter-from,

@@ -224,14 +224,14 @@ const createdProjectID = ref(null as string | null);
 const TOTAL_STEPS = 4;
 const step = ref(0);
 const progress = computed(() =>
-  Math.min((100 / (TOTAL_STEPS - 1)) * step.value, 100)
+  Math.min((100 / (TOTAL_STEPS - 1)) * step.value, 100),
 );
 const progressCSS = computed(() => progress.value.toString() + '%');
 
 const projectToken = ref(
   null as
     | (ProjectToken & { enabled_apps: { name: string; id: string }[] })
-    | null
+    | null,
 );
 
 const orgOptions = await (async () => {
@@ -280,7 +280,7 @@ const endDateValidation = computed(() =>
     projectToken.value?.limit_end_date
       ? ['date_before', projectToken.value.limit_end_date]
       : null,
-  ])
+  ]),
 );
 
 const handleCreateProyect = async (fields: { name: string; end: Date }) => {

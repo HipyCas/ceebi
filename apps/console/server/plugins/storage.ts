@@ -12,7 +12,7 @@ export default defineNitroPlugin(() => {
 
   console.info(
     'mounts',
-    storage.getMounts().map((m) => m.base)
+    storage.getMounts().map((m) => m.base),
   );
 
   if (

@@ -48,7 +48,7 @@ const supabase = useSupabase();
 function findNifMailMatch(
   csvPath: string,
   nif: string,
-  email: string
+  email: string,
 ): Promise<[string, boolean] | null> {
   return new Promise((resolve, reject) =>
     fs
@@ -73,13 +73,13 @@ function findNifMailMatch(
           ) {
             resolve([row.id, row.modalidad.trim() === 'Online']);
           }
-        }
+        },
       )
       .on('error', (err: unknown) => {
         console.error(err);
         reject(err);
       })
-      .on('end', () => resolve(null))
+      .on('end', () => resolve(null)),
   );
 }
 
@@ -102,13 +102,13 @@ function isIDOnline(id: string) {
           if (row.id.trim().toLowerCase() === id) {
             resolve(row.modalidad.trim() === 'Online');
           }
-        }
+        },
       )
       .on('error', (err) => {
         console.error(err);
         reject(err);
       })
-      .on('end', () => resolve(null))
+      .on('end', () => resolve(null)),
   );
 }
 
@@ -127,7 +127,7 @@ async function checkAttendance(id: string) {
 
   if (error) {
     console.error(
-      `Something went wrong while trying to check attendance for id: ${id}`
+      `Something went wrong while trying to check attendance for id: ${id}`,
     );
     return null;
   }
@@ -139,13 +139,13 @@ async function checkAttendance(id: string) {
         data
           .map((att) => ({
             hours: attendanceSchema.find(
-              (schema) => schema.name === att.session
+              (schema) => schema.name === att.session,
             )?.hours,
           }))
-          .reduce((acc, curr) => acc + curr.hours, 0)
+          .reduce((acc, curr) => acc + curr.hours, 0),
       ) /
         25) *
-        100
+        100,
     );
     return isNaN(asistencia) ? 0 : asistencia;
   }
@@ -167,7 +167,7 @@ async function checkMicro(id: string) {
 
   if (error) {
     console.error(
-      `Something went wrong while trying to check attendance for id: ${id}`
+      `Something went wrong while trying to check attendance for id: ${id}`,
     );
     return null;
   }
@@ -178,7 +178,7 @@ async function checkMicro(id: string) {
         att.event
           ? [att.event]
           : attendanceSchema.find((schema) => schema.name === att.session)
-              ?.events
+              ?.events,
       )
       .flat()
       .filter((ev) => microRegEx.test(ev ?? ''))
@@ -188,14 +188,14 @@ async function checkMicro(id: string) {
         arr.filter((thisCourse) => thisCourse === ev).length,
       ])
       .filter(
-        ([ev, times]) => !(MICROCURSOS_DOS_DIAS.includes(ev) && times !== 2)
+        ([ev, times]) => !(MICROCURSOS_DOS_DIAS.includes(ev) && times !== 2),
       )
       .map(([ev]) => ev)
       .filter((ev, pos, self) => self.indexOf(ev) === pos);
 
     if (microcursos.length > 2) {
       console.error(
-        `Found more than two microcourses for id "${id}": ${microcursos}`
+        `Found more than two microcourses for id "${id}": ${microcursos}`,
       );
       return null;
     } else {
@@ -214,7 +214,7 @@ async function checkPoster(id: string) {
       })
       .on('error', (err: any) => {
         resolve(false);
-      })
+      }),
   );
   /*
   const res = await fetch(`https://biociencias.es/wp-json/wp/v2/users?search=${email}`)
@@ -259,7 +259,7 @@ router.get(
       const res = (await findNifMailMatch(
         path.join(privatePath, 'users-data.csv'),
         nif,
-        email
+        email,
       )) ?? [null, false];
       id = res[0];
       isOnline = res[1];
@@ -294,8 +294,8 @@ router.get(
             microcursos.length === 2
               ? true
               : microcursos.length === 1
-              ? !MICROCURSOS_DOS_DIAS.includes(microcursos[0])
-              : false,
+                ? !MICROCURSOS_DOS_DIAS.includes(microcursos[0])
+                : false,
           micro1: microcursos.length > 0 ? microcursos[0] : null,
           micro2: microcursos.length === 2 ? microcursos[1] : null,
         },
@@ -307,7 +307,7 @@ router.get(
         error: 'Something went wrong while trying to achieve user data',
       };
     }
-  })
+  }),
 );
 
 router.get(
@@ -355,12 +355,12 @@ router.get(
         }
         try {
           const [err, filestream] = (await tryit(promisifiedFileStream)(
-            path.join(privatePath, 'certificado', certType, rawId.join('.'))
+            path.join(privatePath, 'certificado', certType, rawId.join('.')),
           )) as [unknown, unknown] as [unknown, fs.ReadStream];
           if (err) {
             console.error(
               `Certificate "${certType}/${rawId.join('.')}" not found!`,
-              err
+              err,
             );
             setResponseStatus(event, 404);
             return { error: 'Could not find certificate file' };
@@ -368,14 +368,14 @@ router.get(
           setHeader(
             event,
             'Content-disposition',
-            `attachment; filename=${rawId.join('.')}`
+            `attachment; filename=${rawId.join('.')}`,
           );
           setHeader(event, 'Content-type', 'application/pdf');
           sendStream(event, filestream);
         } catch (err) {
           // Return an internal server error if file is not found
           console.error(
-            `Certificate "${certType}/${rawId.join('.')}"  not found!`
+            `Certificate "${certType}/${rawId.join('.')}"  not found!`,
           );
           setResponseStatus(event, 404);
           return { error: 'Could not find certificate file' };
@@ -388,7 +388,7 @@ router.get(
     } else if (certType === 'microcurso') {
       if (isIdValid) {
         const microcursos = ((await checkMicro(rawId[0])) ?? []).map((mic) =>
-          mic.replace(/[áóéíú:(),¿?.ñ¡!\-\/“”– ]/g, '_')
+          mic.replace(/[áóéíú:(),¿?.ñ¡!\-\/“”– ]/g, '_'),
         );
         if (microcursos === null) {
           setResponseStatus(event, 500);
@@ -407,12 +407,14 @@ router.get(
               'certificado',
               certType,
               micro,
-              rawId.join('.')
-            )
+              rawId.join('.'),
+            ),
           )) as [unknown, unknown] as [unknown, fs.ReadStream];
           if (err) {
             console.error(
-              `Certificate "${certType}/${micro}/${rawId.join('.')}" not found!`
+              `Certificate "${certType}/${micro}/${rawId.join(
+                '.',
+              )}" not found!`,
             );
             setResponseStatus(event, 404);
             return { error: 'Could not find certificate file' };
@@ -420,7 +422,7 @@ router.get(
           setHeader(
             event,
             'Content-disposition',
-            `attachment; filename=${rawId.join('.')}`
+            `attachment; filename=${rawId.join('.')}`,
           );
           setHeader(event, 'Content-type', 'application/pdf');
           sendStream(event, filestream);
@@ -428,7 +430,7 @@ router.get(
           // Return an internal server error if file is not found
           console.error(
             `Certificate "${certType}/${micro}/${rawId.join('.')}"  not found!`,
-            err
+            err,
           );
           setResponseStatus(event, 404);
           return { error: 'Could not find certificate file' };
@@ -442,12 +444,12 @@ router.get(
       if (isIdValid) {
         try {
           const [err, filestream] = (await tryit(promisifiedFileStream)(
-            path.join(privatePath, 'certificado', certType, rawId.join('.'))
+            path.join(privatePath, 'certificado', certType, rawId.join('.')),
           )) as [unknown, unknown] as [unknown, fs.ReadStream];
           if (err) {
             console.error(
               `Certificate "${certType}/${rawId.join('.')}" not found!`,
-              err
+              err,
             );
             setResponseStatus(event, 404);
             return { error: 'Could not find certificate file' };
@@ -456,14 +458,14 @@ router.get(
           setHeader(
             event,
             'Content-disposition',
-            `attachment; filename=${rawId.join('.')}`
+            `attachment; filename=${rawId.join('.')}`,
           );
           setHeader(event, 'Content-type', 'application/pdf');
           sendStream(event, filestream);
         } catch (err) {
           // Return an internal server error if file is not found
           console.error(
-            `Certificate "${certType}/${rawId.join('.')}"  not found!`
+            `Certificate "${certType}/${rawId.join('.')}"  not found!`,
           );
           setResponseStatus(event, 404);
           return { error: 'Could not find certificate file' };
@@ -478,7 +480,7 @@ router.get(
       setResponseStatus(event, 400);
       return { error: 'Wrong certificate type in path!' };
     }
-  })
+  }),
 );
 
 function promisifiedFileStream(filePath: string): Promise<fs.ReadStream> {

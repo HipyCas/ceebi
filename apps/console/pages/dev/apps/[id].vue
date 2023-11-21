@@ -155,35 +155,35 @@ const organizations = ref(
   (() =>
     unique(
       app?.appProjects.map((ap) => ap.project.organization) ?? [],
-      (org) => org.id
+      (org) => org.id,
     ).map((org) => ({
       ...org,
       appProjects: app?.appProjects.filter(
-        (ap) => ap.project.organization.id === org.id
+        (ap) => ap.project.organization.id === org.id,
       ),
       projects: unique(
         app?.appProjects
           .filter((ap) => ap.project.organization.id === org.id)
           .map((ap) => ({ ...ap.project, isCardOpen: false })) ?? [],
-        (proj) => proj.id
+        (proj) => proj.id,
       ).map((prj) => ({
         ...prj,
         appProject: app?.appProjects.find(
           (ap) =>
-            ap.project.organization.id === org.id && ap.projectId === prj.id
+            ap.project.organization.id === org.id && ap.projectId === prj.id,
         ),
       })),
-    })))()
+    })))(),
 );
 
 const orgHash = computed(
-  () => (initials: string) => `#${initials.toLowerCase()}`
+  () => (initials: string) => `#${initials.toLowerCase()}`,
 );
 
 const showingOrg = computed(() =>
   organizations.value.find(
-    (org) => '#' + org.initials.toLowerCase() === route.hash
-  )
+    (org) => '#' + org.initials.toLowerCase() === route.hash,
+  ),
 );
 
 console.log(route.hash);
@@ -204,7 +204,7 @@ const selectedReleaseNotes = shallowRef({
 - The app now considers if microcourses that last 2 days when showing the list of available certificates`,
 });
 const selectedReleaseNotesHTML = computed(() =>
-  DOMPurify.sanitize(marked.parse(selectedReleaseNotes.value.content))
+  DOMPurify.sanitize(marked.parse(selectedReleaseNotes.value.content)),
 );
 
 const showReleaseNotes = async (version: AppVersion) => {

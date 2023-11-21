@@ -158,7 +158,7 @@ const pageIndex = ref(switchPath());
 
 watch(
   () => route.fullPath,
-  (path) => (pageIndex.value = switchPath())
+  (path) => (pageIndex.value = switchPath()),
 );
 </script>
 

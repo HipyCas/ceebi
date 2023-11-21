@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
   const [err, output] = (await tryit(promiseDataResolve)(
     input,
-    path.join(privatePath, 'query-data.csv')
+    path.join(privatePath, 'query-data.csv'),
   )) as [unknown, unknown] as [{ code: number; msg: string }, { id: string }];
 
   if (err) {

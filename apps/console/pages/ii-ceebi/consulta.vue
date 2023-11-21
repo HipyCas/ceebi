@@ -85,7 +85,7 @@ async function search() {
 
   try {
     const response = await fetch(
-      `https://ceebi.wupp.dev/api/ceebi-ii/consulta/turnos?id=${searchTerm.value}`
+      `https://ceebi.wupp.dev/api/ceebi-ii/consulta/turnos?id=${searchTerm.value}`,
     );
     if (response.status === 200) {
       const data = await response.json();

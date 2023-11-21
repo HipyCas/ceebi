@@ -1,3 +1,3 @@
 export default defineRedirect(() =>
-  useUser().value ? '/admin' : '/auth/login'
+  useUser().value ? '/admin' : '/auth/login',
 );

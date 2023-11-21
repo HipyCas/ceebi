@@ -8,7 +8,7 @@ console.log('warming up');
 export default defineNuxtPlugin((app) => {
   const { vWave, vWaveTrigger } = VWave.createLocalWaveDirective(
     {},
-    app.vueApp
+    app.vueApp,
   );
 
   app.vueApp.directive(directiveName, {
