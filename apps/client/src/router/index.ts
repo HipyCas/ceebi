@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
         beforeEnter: async () => {
           console.info(
             'mmmmm',
-            await Preferences.get({ key: 'ceebiClient.slidesDone' })
+            await Preferences.get({ key: 'ceebiClient.slidesDone' }),
           );
           if (
             (await Preferences.get({ key: 'ceebiClient.slidesDone' })).value ===

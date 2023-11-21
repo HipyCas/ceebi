@@ -204,7 +204,7 @@ const parsed = ref([] as Mecena[]);
     logger.trace(
       'about:mainAsync',
       'loading date cache file:',
-      'ceebi-mecenas-cache/__cap_cache_datetime.txt'
+      'ceebi-mecenas-cache/__cap_cache_datetime.txt',
     );
     const cacheDateFile = await Filesystem.readFile({
       directory: Directory.Cache,
@@ -242,14 +242,14 @@ const parsed = ref([] as Mecena[]);
         'about:mainAsync',
         'error when loading cache data from',
         'ceebi-mecenas-cache/__cap_cache_data.json',
-        { error: e, lastFetchDate, cacheExists, dirExisted }
+        { error: e, lastFetchDate, cacheExists, dirExisted },
       );
       logCatchError(
         logger,
         'about:mainAsync',
         'error when loading cache data from ceebi-mecenas-cache/__cap_cache_data.json',
         e,
-        false
+        false,
       );
       lastFetchDate = undefined;
       cacheExists = false;
@@ -277,15 +277,15 @@ const parsed = ref([] as Mecena[]);
     .filter((media) =>
       dbg(
         'MEDIA> to extracted',
-        extractContent(dbg('MEDIA> to extract', media.description.rendered))
+        extractContent(dbg('MEDIA> to extract', media.description.rendered)),
       )
         .trim()
-        .startsWith('=Mecenas= ')
+        .startsWith('=Mecenas= '),
     )
     .map((media) => {
       const matches =
         /=Mecenas= =(?<category>(Bronce|Colaborador|Oro|Plata|Platino))= =(?<site>.+)=/gim.exec(
-          extractContent(media.description.rendered).trim()
+          extractContent(media.description.rendered).trim(),
         )?.groups;
       return dbg('MEDIA > map', {
         name: media.alt_text,
@@ -301,7 +301,7 @@ const parsed = ref([] as Mecena[]);
 function saveToCache(
   cacheExists: boolean,
   newData: Mecena[],
-  cacheData?: Mecena[]
+  cacheData?: Mecena[],
 ) {
   logger.info('about:saveToCache', 'saving new mecenas to cache', {
     cacheExists,
@@ -326,14 +326,14 @@ function saveToCache(
         (error as unknown & { toString: () => string }).toString(),
         {
           error,
-        }
+        },
       );
       logCatchError(
         logger,
         'about:saveToCache',
         'error fetching mecena img',
         error,
-        false
+        false,
       );
       return;
     }
@@ -348,14 +348,14 @@ function saveToCache(
         (error as unknown & { toString: () => string }).toString(),
         {
           error,
-        }
+        },
       );
       logCatchError(
         logger,
         'about:saveToCache',
         'error getting blob of image for',
         error,
-        false
+        false,
       );
       return;
     }
@@ -368,7 +368,7 @@ function saveToCache(
         blob: imageBlob,
         type: typeof imageBlob,
         // instanceof: imageBlob instanceof Blob,
-      }
+      },
     );
     try {
       // const reader = new FileReader();
@@ -379,7 +379,7 @@ function saveToCache(
         'about:saveToCache',
         'obtained image as data URL for mecena',
         mecena.name,
-        dataUri
+        dataUri,
       );
       const newFile = await Filesystem.writeFile({
         directory: Directory.Cache,
@@ -405,14 +405,14 @@ function saveToCache(
         (error as unknown & { toString: () => string }).toString(),
         {
           error,
-        }
+        },
       );
       logCatchError(
         logger,
         'about:saveToCache',
         'error when saving mecena',
         error,
-        false
+        false,
       );
     }
   });
@@ -437,19 +437,19 @@ function saveToCache(
 }
 
 const mecenasPlatino = computed(() =>
-  parsed.value.filter((p) => p.category === 'Platino')
+  parsed.value.filter((p) => p.category === 'Platino'),
 );
 const mecenasOro = computed(() =>
-  parsed.value.filter((p) => p.category === 'Oro')
+  parsed.value.filter((p) => p.category === 'Oro'),
 );
 const mecenasPlata = computed(() =>
-  parsed.value.filter((p) => p.category === 'Plata')
+  parsed.value.filter((p) => p.category === 'Plata'),
 );
 const mecenasBronce = computed(() =>
-  parsed.value.filter((p) => p.category === 'Bronce')
+  parsed.value.filter((p) => p.category === 'Bronce'),
 );
 const mecenasColaborador = computed(() =>
-  parsed.value.filter((p) => p.category === 'Colaborador')
+  parsed.value.filter((p) => p.category === 'Colaborador'),
 );
 
 const open = (url: string, msg: string) => {

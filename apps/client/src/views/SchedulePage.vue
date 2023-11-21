@@ -113,7 +113,7 @@ const setSwiperInstance = (_swiper: any) => {
   logger.info(
     'schedule:setSwiperInstance',
     'setting swipper instance',
-    _swiper
+    _swiper,
   );
   swiper.value = _swiper;
   _swiper.slideTo(today() - 2, 300);
@@ -157,7 +157,7 @@ const translate = async (text: string) => {
 const loadEvents = async () => {
   logger.trace('schedule:loadEvents', 'load MEC');
   const mec = await MEC.init(
-    'https://biociencias.es/wp-json/mecexternal/v1/calendar/5518'
+    'https://biociencias.es/wp-json/mecexternal/v1/calendar/5518',
   );
 
   logger.trace('schedule:loadEvents', {
@@ -284,7 +284,7 @@ if (isPlatform('capacitor')) {
                 } else {
                   logger.warn(
                     'schedule:setNotifications',
-                    'Permissions not granted'
+                    'Permissions not granted',
                   );
                 }
               });
@@ -302,7 +302,7 @@ if (isPlatform('capacitor')) {
             logger.trace(
               'schedule:setNotifications',
               'Notifications set, take a look: ',
-              LocalNotifications.getPending()
+              LocalNotifications.getPending(),
             );
           }
         });
@@ -312,7 +312,7 @@ if (isPlatform('capacitor')) {
         logger,
         'schedule:LocalNotifications.createChannel',
         'error creating notification channel',
-        e
+        e,
       );
     });
 }

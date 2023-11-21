@@ -40,15 +40,15 @@ export const wpLogin = async (username: string, password: string) => {
     .then(() =>
       logger.trace(
         'wpauth:wpLogin',
-        'saved wp token with Capacitor Preferences'
-      )
+        'saved wp token with Capacitor Preferences',
+      ),
     )
     .catch((e) =>
       logger.error(
         'wpauth:wpLogin',
         'error when trying to save token to device',
-        { error: e }
-      )
+        { error: e },
+      ),
     );
   await updateUserFromServer();
 

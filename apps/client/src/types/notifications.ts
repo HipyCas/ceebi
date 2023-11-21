@@ -1,4 +1,4 @@
-import { ButtonSettings } from ".";
+import { ButtonSettings } from '.';
 
 export interface RawNotification {
   id: string;

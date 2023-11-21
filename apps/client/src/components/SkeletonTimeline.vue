@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { IonSkeletonText } from "@ionic/vue";
+import { IonSkeletonText } from '@ionic/vue';
 
 const randItems = () => Math.floor(Math.random() * 2 + 1);
 const randWidth = () => `${Math.floor(Math.random() * 3 + 10)}em`;

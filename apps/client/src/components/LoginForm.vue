@@ -48,7 +48,7 @@ const emit = defineEmits<{
     {
       username: string;
       password: string;
-    }
+    },
   ];
   continue: [];
 }>();

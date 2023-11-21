@@ -57,7 +57,7 @@ Preferences.keys().then(({ keys }: { keys: string[] }) => {
       ({ value }: { value: string | null }) => {
         // ts-expect-error After a couple tries this is what works, even though the types are messed up
         i18n.global.locale.value = value ?? 'en'; // The saved value will always be a valid locale code
-      }
+      },
     );
   }
 });
@@ -75,7 +75,7 @@ app.config.errorHandler = async (error, instance, info) => {
     message: 'fired Vue app errorHandler',
   });
   const stacktrace = await StackTrace.fromError(
-    new Error(`ERROR ${error}: ${info}`)
+    new Error(`ERROR ${error}: ${info}`),
   );
   logger.error('vueApp:errorHandler', 'error in vue app', {
     info,

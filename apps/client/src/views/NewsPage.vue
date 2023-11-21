@@ -179,8 +179,8 @@ async function getNews(finished: Ref<boolean>, toStore: Ref<Item[]>) {
       excerpt: extractContent(
         it.excerpt.rendered.replace(
           `<span class="screen-reader-text">${it.title.rendered}</span> Leer más »`,
-          ''
-        )
+          '',
+        ),
       ),
     }));
 
@@ -201,7 +201,7 @@ async function getNews(finished: Ref<boolean>, toStore: Ref<Item[]>) {
       logger,
       'news:getNews',
       'error when getting and saving news from the server',
-      e
+      e,
     );
   }
 }

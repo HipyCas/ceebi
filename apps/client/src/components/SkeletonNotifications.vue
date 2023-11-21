@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { IonList, IonItem, IonSkeletonText } from "@ionic/vue";
+import { IonList, IonItem, IonSkeletonText } from '@ionic/vue';
 
 const randItems = () => Math.floor(Math.random() * 5 + 5);
 const randTitleWidth = () => `${Math.floor(Math.random() * 2 + 8)}em`;

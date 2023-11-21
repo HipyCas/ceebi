@@ -4,7 +4,7 @@ const eventRemindersTime = ref(15);
 export const useEventReminders = () =>
   [eventRemindersOn, eventRemindersTime] as [
     typeof eventRemindersOn,
-    typeof eventRemindersTime
+    typeof eventRemindersTime,
   ];
 
 export const setEventReminders = ({

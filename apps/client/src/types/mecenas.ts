@@ -1,9 +1,9 @@
 export type MecenasLevel =
-  | "bronce"
-  | "colaborador"
-  | "plata"
-  | "oro"
-  | "platino";
+  | 'bronce'
+  | 'colaborador'
+  | 'plata'
+  | 'oro'
+  | 'platino';
 export interface Mecenas {
   colaborador: Mecena[];
   bronce: Mecena[];
