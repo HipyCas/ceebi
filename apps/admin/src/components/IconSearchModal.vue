@@ -54,8 +54,8 @@ const query = ref('');
 let icons: [string, string][] = [];
 const filteredIcons = computed(() =>
   icons.filter(([name, _]) =>
-    name.toLowerCase().includes(query.value.toLowerCase())
-  )
+    name.toLowerCase().includes(query.value.toLowerCase()),
+  ),
 );
 
 const dismissModal = modalController.dismiss;
@@ -66,11 +66,11 @@ onMounted(() =>
     console.log(Object.entries(ionicons));
 
     icons = Object.entries(ionicons).filter(([name, icon]) =>
-      name.includes('Outline')
+      name.includes('Outline'),
     );
 
     loading.value = false;
     console.info(icons);
-  }, 100)
+  }, 100),
 );
 </script>

@@ -38,7 +38,7 @@ app.config.errorHandler = async (error, instance, info) => {
     message: 'fired Vue app errorHandler',
   });
   const stacktrace = await StackTrace.fromError(
-    new Error(`ERROR ${error}: ${info}`)
+    new Error(`ERROR ${error}: ${info}`),
   );
   logger.error('vueApp:errorHandler', 'error in vue app', {
     info,

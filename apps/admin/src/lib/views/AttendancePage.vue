@@ -72,7 +72,7 @@ const items = [
 ];
 
 const filteredItems = computed(() =>
-  items.filter((item) => item.id.toLowerCase().includes(search.value))
+  items.filter((item) => item.id.toLowerCase().includes(search.value)),
 );
 
 const showAttendance = (id: string) => {

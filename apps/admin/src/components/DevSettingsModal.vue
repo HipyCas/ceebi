@@ -95,8 +95,8 @@ Preferences.get({
       value === 'ios'
         ? !isPlatform('ios')
         : value === 'md'
-        ? !(isPlatform('android') || isPlatform('desktop'))
-        : false)
+          ? !(isPlatform('android') || isPlatform('desktop'))
+          : false),
 );
 
 watch(
@@ -122,6 +122,6 @@ watch(
       })
       .then((toast) => toast.present());
   },
-  { deep: true }
+  { deep: true },
 );
 </script>

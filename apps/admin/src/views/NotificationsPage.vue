@@ -118,7 +118,7 @@ const logger = useLogger();
 const user = getUser();
 
 const notificationsAllowed = computed(
-  () => user.value?.supabase.allow_notifications
+  () => user.value?.supabase.allow_notifications,
 );
 
 const noPermission = () => {
@@ -195,7 +195,7 @@ const deleteNotification = (notification: FetchNotification) => {
               `wp/v2/notificacion/${notification.id}`,
               {
                 headers: authHeaders({}),
-              }
+              },
             );
             if (res.ok) {
               useToast({
@@ -224,7 +224,7 @@ const deleteNotification = (notification: FetchNotification) => {
 const notificationPrettyStatus = computed(
   () =>
     ({ schedule }: FetchNotification) =>
-      isAfter(new Date(), schedule) ? 'Publicada' : 'Programada'
+      isAfter(new Date(), schedule) ? 'Publicada' : 'Programada',
 );
 
 const loadNotifications = async () => {
@@ -270,7 +270,7 @@ const loadNotifications = async () => {
       logger,
       'notifications:loadNotifications',
       'error fetching notifications from server',
-      error
+      error,
     );
     return [];
   }
@@ -278,6 +278,6 @@ const loadNotifications = async () => {
 
 const { state: notifications, isLoading } = useAsyncState(
   loadNotifications,
-  []
+  [],
 );
 </script>

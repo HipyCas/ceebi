@@ -94,7 +94,7 @@ const biometricsAreEnabled = ref(false);
 
 if (isPlatform('capacitor'))
   NativeBiometric.isAvailable().then(
-    ({ isAvailable }) => (supportsBiometrics.value = isAvailable)
+    ({ isAvailable }) => (supportsBiometrics.value = isAvailable),
   );
 
 // TODO in login you have to also check if biometrics is available, imagine that someone toggles on the option and the disables biometrics, it should't prompt them for biometrics
@@ -155,7 +155,7 @@ const toggleBiometrics = async (ev: any) => {
                     message: 'Ajustes de autenticación guardados',
                     color: 'success',
                     icon: checkmarkCircleOutline,
-                  })
+                  }),
                 );
                 Preferences.set({
                   key: 'ceebiAdmin.biometricsEnabled',
@@ -178,13 +178,13 @@ const toggleBiometrics = async (ev: any) => {
             message: 'Inicio de sesión biométrico desactivado',
             color: 'success',
             icon: checkmarkCircleOutline,
-          })
+          }),
         )
         .catch((error) => {
           logger.error(
             'settings:toggleBiometrics',
             'error when deactivating biometrics',
-            { error }
+            { error },
           );
         });
     }
@@ -219,7 +219,7 @@ watch(supportsBiometrics, (val) => {
   logger.trace(
     'settings:watch(supportsBiometrics)',
     'changed supports biometrics',
-    val
+    val,
   );
 });
 </script>

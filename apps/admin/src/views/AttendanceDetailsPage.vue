@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper :title="(userName as string)" back>
+  <PageWrapper :title="userName as string" back>
     <FullpageNoPermission
       v-if="!canAccessAttendance"
       permission="visualizar o editar la asistencia"
@@ -89,7 +89,7 @@
                   <template v-if="item.event === null">
                     <ion-item
                       class="attendance-list-item"
-                      v-for="(event, index) in  (item.schema?.events as string[])"
+                      v-for="(event, index) in item.schema?.events as string[]"
                       :key="event"
                     >
                       <span
@@ -189,7 +189,7 @@ type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 const deleteItem = async (
-  item: ArrayElement<Awaited<ReturnType<typeof loadAttendance>>>
+  item: ArrayElement<Awaited<ReturnType<typeof loadAttendance>>>,
 ) => {
   const { error } = await supabase
     .from('attendance')
@@ -205,7 +205,7 @@ const deleteItem = async (
       'attendanceDetails:addAttendance',
       'error from supabase when deleting attendance',
       error,
-      { userId, userName }
+      { userId, userName },
     );
   } else {
     useToast({
@@ -234,7 +234,7 @@ const addAttendance = async (session: string, event: string | null = null) => {
       'attendanceDetails:addAttendance',
       'error from supabase when adding attendance',
       error,
-      { userId, userName }
+      { userId, userName },
     );
   } else {
     useToast({
@@ -304,7 +304,7 @@ const loadAttendance = async () => {
       'attendanceDetails:loadAttendance',
       'error when loading user attendance details from supabase',
       data,
-      error
+      error,
     );
     useToast({
       color: 'danger',
@@ -330,12 +330,12 @@ const totalHours = computed(
   () =>
     attendance.value?.reduce(
       (acc, curr) => acc + (curr.schema?.hours ?? 0),
-      0
-    ) ?? 0
+      0,
+    ) ?? 0,
 );
 
 const totalPercent = computed(() =>
-  Math.round((Math.min(25, totalHours.value) / 25) * 100)
+  Math.round((Math.min(25, totalHours.value) / 25) * 100),
 );
 
 const hasCertificate = computedEager(() => (totalHours.value ?? 0) > 25 * 0.8);

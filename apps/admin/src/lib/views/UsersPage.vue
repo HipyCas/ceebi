@@ -56,10 +56,10 @@ const users = [
 
 const filteredUsers = computed(() => {
   console.log(
-    users.filter(({ name }) => name.toLowerCase().includes(searchQuery.value))
+    users.filter(({ name }) => name.toLowerCase().includes(searchQuery.value)),
   );
   return users.filter(({ name }) =>
-    name.toLowerCase().includes(searchQuery.value)
+    name.toLowerCase().includes(searchQuery.value),
   );
 });
 </script>

@@ -4,7 +4,11 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Network } from '@capacitor/network';
 
 export interface DefinedCacheable<I> {
-  (key: string, get: () => I | undefined | Promise<I | undefined>, def: I): {
+  (
+    key: string,
+    get: () => I | undefined | Promise<I | undefined>,
+    def: I,
+  ): {
     value: Ref<typeof def>;
     isLoading: Ref<boolean>;
     isSaving: Ref<boolean>;
@@ -16,7 +20,7 @@ export interface DefinedCacheable<I> {
 export function useCacheable<T>(
   key: string,
   get: () => T | undefined | Promise<T | undefined>,
-  def?: T
+  def?: T,
 ): { value: Ref<typeof def>; isLoading: Ref<boolean>; isSaving: Ref<boolean> } {
   //@ts-expect-error Giving a weird error
   const value: Ref<T | undefined> = ref(def);
@@ -46,7 +50,7 @@ export function useCacheable<T>(
 
 export function useOffline<T>(
   key: string,
-  get: () => T | undefined | Promise<T | undefined>
+  get: () => T | undefined | Promise<T | undefined>,
 ) {
   const value: Ref<T | undefined> = ref();
   const isLoading = ref(true);

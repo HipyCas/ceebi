@@ -41,6 +41,6 @@ const props = withDefaults(
     back?: boolean;
     title?: string;
   }>(),
-  { back: false, title: 'CEEBI Admin' }
+  { back: false, title: 'CEEBI Admin' },
 );
 </script>

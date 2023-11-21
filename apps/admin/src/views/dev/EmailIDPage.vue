@@ -35,10 +35,10 @@ const loading = ref(true);
     'wp/v2/users?context=edit&per_page=100&_files=email,acf.id_base_de_datos_app',
     {
       headers: authHeaders({}),
-    }
+    },
   );
   const total_pages = Number.parseInt(
-    res.headers.get('X-WP-TotalPages') || '0'
+    res.headers.get('X-WP-TotalPages') || '0',
   );
   console.info('[UPDATE USERS] Total pages:', total_pages);
   users.value.push(...(await res.json<WPUser[]>()));
@@ -48,7 +48,7 @@ const loading = ref(true);
       `wp/v2/users?context=edit&per_page=100&page=${page}&_files=email,acf.id_base_de_datos_app`,
       {
         headers: authHeaders({}),
-      }
+      },
     );
     console.log('[UPDATE USERS] Fetched page ' + page, res);
     users.value.push(...(await res.json<WPUser[]>()));
@@ -62,7 +62,7 @@ const shareCSV = async () => {
     'correo,id\n' +
       users.value
         .map((u) => `${u.email},${u.acf.id_base_de_datos_app}`)
-        .join('\n')
+        .join('\n'),
   );
   await Filesystem.writeFile({
     path: 'users.csv',

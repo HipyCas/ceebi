@@ -112,7 +112,7 @@ onIonViewDidEnter(() => {
     logger.trace(
       'auth',
       'ceebiAdmin.biometricsEnabled preferences value',
-      res.value
+      res.value,
     );
     if (res.value || '' != '') {
       biometricsEnabled.value = true;
@@ -147,7 +147,7 @@ const verifyWithBiometrics = async () => {
     logger.trace(
       'auth:verifyWithBiometrics',
       'Biometric Type',
-      res.biometryType
+      res.biometryType,
     );
 
     if (!res.isAvailable) {
@@ -191,7 +191,7 @@ const verifyWithBiometrics = async () => {
         'auth:verifyWithBiometrics',
         'Verified identity, credentials',
         thisUsername,
-        thisPassword
+        thisPassword,
       );
       email.value = thisUsername;
       password.value = thisPassword;
@@ -208,11 +208,11 @@ const verifyWithBiometrics = async () => {
 const emailItemClass = computed(() =>
   email.value.length > 0
     ? email.value.match(
-        /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+        /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
       )
       ? 'ion-valid'
       : 'ion-invalid'
-    : ''
+    : '',
 );
 
 async function login() {
@@ -318,25 +318,25 @@ async function login() {
       'redirecting to',
       route.query.next === undefined
         ? '/p/notifications'
-        : route.query.next + '?back=/p/notifications'
+        : route.query.next + '?back=/p/notifications',
     );
     router.push(
       route.query.next === undefined
         ? '/p/notifications'
-        : route.query.next + '?back=/p/notifications'
+        : route.query.next + '?back=/p/notifications',
     );
   } catch (error) {
     loginTrace.putAttribute('is_error', 'true');
     loginTrace.putAttribute(
       'error',
-      (error as { toString: () => string }).toString()
+      (error as { toString: () => string }).toString(),
     );
     loginTrace.stop();
     logger.error(
       'login:login',
       'error when logging in',
       (error as HTTPError).response.json(),
-      JSON.stringify((error as HTTPError).response.json())
+      JSON.stringify((error as HTTPError).response.json()),
     );
     toastController
       .create({

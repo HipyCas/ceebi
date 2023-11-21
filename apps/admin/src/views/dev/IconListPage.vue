@@ -10,7 +10,7 @@
         <li
           class="mt-2"
           v-for="[name, value] in entries(ionicons).filter(
-            ([key, _]) => key.endsWith('Outline') || key.startsWith('logo')
+            ([key, _]) => key.endsWith('Outline') || key.startsWith('logo'),
           )"
           :key="name"
         >
@@ -26,13 +26,13 @@
                 capitalizeFirstLetter(
                   name
                     .replace('Outline', '')
-                    .replace(/([a-z])([A-Z])/g, '$1 $2')
-                )
+                    .replace(/([a-z])([A-Z])/g, '$1 $2'),
+                ),
               )
             "
             >{{
               capitalizeFirstLetter(
-                name.replace('Outline', '').replace(/([a-z])([A-Z])/g, '$1 $2')
+                name.replace('Outline', '').replace(/([a-z])([A-Z])/g, '$1 $2'),
               )
             }}</span
           >
@@ -73,8 +73,8 @@ const copyList = async () => {
     .map(
       (icon) =>
         `${icon} : ${capitalizeFirstLetter(
-          icon.replace('Outline', '').replace(/([a-z])([A-Z])/g, '$1 $2')
-        )}`
+          icon.replace('Outline', '').replace(/([a-z])([A-Z])/g, '$1 $2'),
+        )}`,
     )
     .join('\n');
 
@@ -89,7 +89,7 @@ const copyList = async () => {
           icon: ionicons.checkmarkCircleOutline,
           duration: 1000,
         })
-        .then((t) => t.present())
+        .then((t) => t.present()),
     )
     .catch(() =>
       toastController
@@ -99,7 +99,7 @@ const copyList = async () => {
           icon: ionicons.closeCircleOutline,
           duration: 1000,
         })
-        .then((t) => t.present())
+        .then((t) => t.present()),
     );
 };
 </script>
