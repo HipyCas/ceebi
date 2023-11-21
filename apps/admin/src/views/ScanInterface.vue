@@ -57,8 +57,8 @@
                   code.status === 'uploaded'
                     ? deleteCode(index)
                     : code.status === 'pending'
-                    ? timerInfo()
-                    : showCodeError(index)
+                      ? timerInfo()
+                      : showCodeError(index)
                 "
                 :disabled="code.status === 'pending'"
               >
@@ -200,7 +200,7 @@ const deleteCode = async (index: number) => {
       logger,
       'scan:deleteCode',
       'error from supabase when deleting attendance in scan',
-      new Error(error.message)
+      new Error(error.message),
     );
   } else {
     Toast.show({
@@ -269,13 +269,13 @@ const startScan = async () => {
                 color: 'danger',
               });
               const thisCode = codes.value.find(
-                (c) => c.id === res.content
+                (c) => c.id === res.content,
               ) as Code;
               thisCode.status = 'error';
               thisCode.error = error;
             } else {
               const thisCode = codes.value.find(
-                (c) => c.id === res.content
+                (c) => c.id === res.content,
               ) as Code;
               thisCode.status = 'uploaded';
               thisCode.supabaseId = data?.id;
@@ -305,7 +305,7 @@ const startScan = async () => {
         });
         flashBorder(false);
       }
-    }
+    },
   );
 };
 
@@ -357,7 +357,7 @@ const closeModal = () => {
 const showCodeError = (index: number) => {
   modalController.create({
     component: defineAsyncComponent(
-      () => import('../components/JSONViewer.vue')
+      () => import('../components/JSONViewer.vue'),
     ),
     componentProps: {
       data: codes.value.at(index)?.error,

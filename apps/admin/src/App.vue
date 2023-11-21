@@ -18,7 +18,7 @@ onMounted(async () => {
     });
 
     const stacktrace = await StackTrace.fromError(
-      error || new Error('undefined error')
+      error || new Error('undefined error'),
     );
 
     logger.error('window:onerror', 'global window error', {

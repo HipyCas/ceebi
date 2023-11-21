@@ -92,7 +92,7 @@ const loadUsers = async () => {
     });
 
     const total_pages = Number.parseInt(
-      res.headers.get('X-WP-TotalPages') || '0'
+      res.headers.get('X-WP-TotalPages') || '0',
     );
     usersLoadTrace.putMetric('total_pages', total_pages);
     users.push(...(await res.json<WPUser[]>()));
@@ -121,14 +121,14 @@ const loadUsers = async () => {
       message: JSON.stringify(
         (error as HTTPError).response.json(),
         undefined,
-        2
+        2,
       ),
     });
     logCatchError(
       logger,
       'userVirtualList:loadUsers',
       'error when fetching users',
-      error
+      error,
     );
   }
 };
@@ -136,12 +136,13 @@ const loadUsers = async () => {
 const { state: users, isLoading } = useAsyncState(loadUsers, []);
 
 const searchQuery = ref('');
-const filteredUsers = computed(() =>
-  users.value?.filter(
-    (user: { name: string; email: string } | undefined) =>
-      user?.name?.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      user?.email?.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
+const filteredUsers = computed(
+  () =>
+    users.value?.filter(
+      (user: { name: string; email: string } | undefined) =>
+        user?.name?.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        user?.email?.toLowerCase().includes(searchQuery.value.toLowerCase()),
+    ),
 );
 
 console.log('filteredUsers', filteredUsers);

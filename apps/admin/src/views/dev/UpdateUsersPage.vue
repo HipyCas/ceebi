@@ -98,10 +98,10 @@ const currentUpdatedUser = ref(1);
     'wp/v2/users?context=edit&per_page=100&_fields=acf.id_base_de_datos_app,roles,email,id',
     {
       headers: authHeaders({}),
-    }
+    },
   );
   const total_pages = Number.parseInt(
-    res.headers.get('X-WP-TotalPages') || '0'
+    res.headers.get('X-WP-TotalPages') || '0',
   );
   console.info('[UPDATE USERS] Total pages:', total_pages);
   users.push(...(await res.json<WPUser[]>()));
@@ -111,7 +111,7 @@ const currentUpdatedUser = ref(1);
       `wp/v2/users?context=edit&per_page=100&page=${page}&_fields=acf.id_base_de_datos_app,roles,email,id`,
       {
         headers: authHeaders({}),
-      }
+      },
     );
     console.log('[UPDATE USERS] Fetched page ' + page, res);
     users.push(...(await res.json<WPUser[]>()));
@@ -152,7 +152,7 @@ const syncUsers = async () => {
               modalController
                 .create({
                   component: defineAsyncComponent(
-                    () => import('../../components/JSONViewer.vue')
+                    () => import('../../components/JSONViewer.vue'),
                   ),
                   componentProps: {
                     data: {

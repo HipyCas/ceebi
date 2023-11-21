@@ -127,7 +127,7 @@ const initScan = async () => {
       logger.error(
         'attendanceModal:main',
         'http error when fetching attendance',
-        { data: attendance }
+        { data: attendance },
       );
       FirebaseCrashlytics.setContext({
         key: 'error',
@@ -153,12 +153,12 @@ const initScan = async () => {
         value: JSON.stringify(attendance),
       });
       StackTrace.fromError(
-        new Error('http error when fetching attendance schema')
+        new Error('http error when fetching attendance schema'),
       ).then((stacktrace) =>
         FirebaseCrashlytics.recordException({
           message: 'http error when fetching attendance',
           stacktrace,
-        })
+        }),
       );
       return;
     }
@@ -167,7 +167,7 @@ const initScan = async () => {
       logger,
       'attendanceModal:main',
       'error fetching attendance schema',
-      e
+      e,
     );
     useToast({
       message: 'Error al obtener la asistencia',

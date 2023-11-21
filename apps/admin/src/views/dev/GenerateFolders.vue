@@ -46,8 +46,8 @@ const foundMicrocursos = [
     attendanceSchema.flatMap((session) =>
       session.events
         .filter((ev) => microcursoRegex.test(ev))
-        .map((ev) => microcursoRegex.exec(ev)?.at(1))
-    )
+        .map((ev) => microcursoRegex.exec(ev)?.at(1)),
+    ),
   ),
 ];
 

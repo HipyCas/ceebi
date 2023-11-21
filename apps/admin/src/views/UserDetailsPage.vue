@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper back :title="(userName as string)">
+  <PageWrapper back :title="userName as string">
     <FullpageNoPermission
       v-if="!me?.supabase.allow_users"
       permission="visualizar o editar usuarios"
@@ -287,7 +287,7 @@ const { state: user, isLoading } = useAsyncState(async () => {
             color: 'danger',
             icon: alertCircleOutline,
           },
-          ImpactStyle.Heavy
+          ImpactStyle.Heavy,
         );
         FirebaseCrashlytics.setContext({
           key: 'errorCode',
@@ -313,7 +313,7 @@ const { state: user, isLoading } = useAsyncState(async () => {
           logger,
           'userDetails:useAsyncState',
           'error from supabase when getting specific user',
-          new Error(error.message)
+          new Error(error.message),
         );
         return null;
       } else {
@@ -330,7 +330,7 @@ const { state: user, isLoading } = useAsyncState(async () => {
       logger,
       'userDetails:useAsyncState',
       'error when fetching user from WP and Supabase',
-      e
+      e,
     );
   }
 }, null);
@@ -338,18 +338,19 @@ const { state: user, isLoading } = useAsyncState(async () => {
 const isAdmin = computed(() =>
   user.value === null || user.value?.supabase === undefined
     ? false
-    : user.value.supabase?.is_admin
+    : user.value.supabase?.is_admin,
 );
 
 const canINOTModifyAdmins = computed(() =>
   me.value === null || me.value.supabase === undefined
     ? true
     : me.value?.wp.id === user.value?.wp.id &&
-      me.value?.supabase.id === me.value?.supabase.id &&
-      me.value.supabase.allow_admins
-    ? false
-    : (!me.value.supabase.allow_admins || user.value?.supabase?.allow_admins) ??
-      true
+        me.value?.supabase.id === me.value?.supabase.id &&
+        me.value.supabase.allow_admins
+      ? false
+      : (!me.value.supabase.allow_admins ||
+          user.value?.supabase?.allow_admins) ??
+        true,
 );
 
 watch(userId, () => {
@@ -362,7 +363,7 @@ watch(isLoading, (val) => {
 
 const updateProperty = (
   key: keyof Database['public']['Tables']['users']['Update'],
-  status: boolean
+  status: boolean,
 ) => {
   supabase
     .from('users')
@@ -378,12 +379,12 @@ const updateProperty = (
             color: 'danger',
             icon: closeCircleOutline,
           },
-          ImpactStyle.Medium
+          ImpactStyle.Medium,
         );
         logger.error(
           'userDetails:updatePermissions',
           'error from supabase on update',
-          { data, error }
+          { data, error },
         );
         // FirebaseCrashlytics.recordException({
         //   stacktrace: StackTrace,
@@ -420,12 +421,12 @@ const updatePoster = async (value: boolean) => {
           color: 'danger',
           icon: closeCircleOutline,
         },
-        ImpactStyle.Medium
+        ImpactStyle.Medium,
       );
       logger.error(
         'userDetails:updatePoster',
         'error from wp api when updating post info',
-        { res, json: await res.json() }
+        { res, json: await res.json() },
       );
       FirebaseCrashlytics.setContext({
         key: 'responseStatusText',
@@ -441,7 +442,7 @@ const updatePoster = async (value: boolean) => {
         FirebaseCrashlytics.recordException({
           message: 'error from wp api when updating user presents post',
           stacktrace,
-        })
+        }),
       );
     }
   } catch (error) {
@@ -451,13 +452,13 @@ const updatePoster = async (value: boolean) => {
         color: 'danger',
         icon: closeCircleOutline,
       },
-      ImpactStyle.Medium
+      ImpactStyle.Medium,
     );
     logCatchError(
       logger,
       'userDetails:updatePoster',
       'error when trying to update poster',
-      error
+      error,
     );
   }
 };

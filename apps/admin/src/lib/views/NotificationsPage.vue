@@ -30,8 +30,8 @@
               Math.random() > 0.5
                 ? 'success'
                 : Math.random() > 0.49
-                ? 'medium'
-                : 'primary'
+                  ? 'medium'
+                  : 'primary'
             "
             >Borrador</ion-badge
           >
@@ -69,7 +69,7 @@ const notifications = ref([]);
 
 (async () => {
   const res = await fetch(
-    'https://raw.githubusercontent.com/biocienciasgrx/ceebi/master/notificaciones.json'
+    'https://raw.githubusercontent.com/biocienciasgrx/ceebi/master/notificaciones.json',
   );
   notifications.value = await res.json();
 })();

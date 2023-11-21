@@ -59,7 +59,7 @@ const supportsBiometrics = ref(true);
 const enableBiometrics = ref(false);
 
 NativeBiometric.isAvailable().then(
-  ({ isAvailable }) => (supportsBiometrics.value = !isAvailable)
+  ({ isAvailable }) => (supportsBiometrics.value = !isAvailable),
 );
 
 // TODO in login you have to also check if biometrics is available, imagine that someone toggles on the option and the disables biometrics, it should't prompt them for biometrics
@@ -101,7 +101,7 @@ const toggleBiometrics = async (ev: any) => {
             message: 'Ajustes de autenticación guardados',
             duration: 1500,
           })
-          .then((toast) => toast.present())
+          .then((toast) => toast.present()),
       );
       Preferences.set({
         key: 'ceebiAdmin.biometricsEnabled',

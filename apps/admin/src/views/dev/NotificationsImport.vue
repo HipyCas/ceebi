@@ -71,10 +71,10 @@ const notificationsSchema = z
             icon: z.string({
               required_error: 'Icono del botón requerido',
             }),
-          })
+          }),
         )
         .optional(),
-    })
+    }),
   )
   .nonempty({
     message: 'Se requiere por lo menos una notificación',
@@ -115,7 +115,7 @@ const importFile = async () => {
               schedule.day,
               schedule.hour,
               schedule.minutes,
-              schedule.seconds
+              schedule.seconds,
             ),
             title,
             body,
@@ -133,7 +133,7 @@ const importFile = async () => {
                     modalController
                       .create({
                         component: defineAsyncComponent(
-                          () => import('../../components/JSONViewer.vue')
+                          () => import('../../components/JSONViewer.vue'),
                         ),
                         componentProps: {
                           data: error,
@@ -144,7 +144,7 @@ const importFile = async () => {
               ],
             });
         }
-      }
+      },
     );
   } else {
     useToast({
@@ -157,7 +157,7 @@ const importFile = async () => {
             modalController
               .create({
                 component: defineAsyncComponent(
-                  () => import('../../components/JSONViewer.vue')
+                  () => import('../../components/JSONViewer.vue'),
                 ),
                 componentProps: {
                   data: parseResult,
