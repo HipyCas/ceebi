@@ -1,0 +1,26 @@
+version = 1
+
+exclude_patterns = [
+  "dist/**",
+  "node_modules/**",
+  "src/auto-import.d.ts",
+  "typed-router.d.ts"
+]
+
+[[analyzers]]
+name = "rust"
+
+  [analyzers.meta]
+  msrv = "stable"
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  plugins = ["vue"]
+
+[[transformers]]
+name = "prettier"
+
+[[transformers]]
+name = "rustfmt"
