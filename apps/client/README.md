@@ -1,3 +1,5 @@
+![](banner.png)
+
 # CEEBI - Client
 
 > All the info about the congress in your fingertips
