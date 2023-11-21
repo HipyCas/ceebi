@@ -5,6 +5,9 @@ test_patterns = ["tests/**"]
 exclude_patterns = ["node_modules/**"]
 
 [[analyzers]]
+name = "secrets"
+
+[[analyzers]]
 name = "javascript"
 
   [analyzers.meta]
