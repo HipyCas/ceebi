@@ -46,3 +46,5 @@ Thumbs.db
 keystores/
 .env
 **/.env
+
+.nx/cache

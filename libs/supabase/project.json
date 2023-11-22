@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/supabase/**/*.ts"]
@@ -13,10 +13,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/libs/supabase"],
+      "outputs": ["{workspaceRoot}/coverage/libs/supabase"],
       "options": {
-        "jestConfig": "libs/supabase/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/supabase/jest.config.ts"
       }
     },
     "gen-types": {

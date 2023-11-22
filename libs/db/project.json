@@ -6,14 +6,14 @@
   "targets": {
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["coverage/libs/db"],
+      "outputs": ["{workspaceRoot}/coverage/libs/db"],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/libs/db"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/db/**/*.ts"]
