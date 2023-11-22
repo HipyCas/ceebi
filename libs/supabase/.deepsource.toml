@@ -1,0 +1,12 @@
+version = 1
+
+test_patterns = ["**.spec.ts"]
+
+[[analyzers]]
+name = "secrets"
+
+[[analyzers]]
+name = "javascript"
+
+[[transformers]]
+name = "prettier"
