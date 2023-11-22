@@ -21,7 +21,7 @@
     "gen-types": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpx supabase gen types typescript --project-id \"wdnhocgzsoziljwnvvbo\" --schema public > ./libs/supabase/src/types.ts"
+        "command": "pnpx supabase gen types typescript --project-id \"wdnhocgzsoziljwnvvbo\" --schema public > {projectRoot}/src/types.ts"
       }
     }
   },
