@@ -28,7 +28,7 @@ export class MEC {
             fields: event.data.fields,
             startDate: new Date(event.data.time.start_timestamp * 1000),
             link: event.data.permalink,
-          } as Event)
+          }) as Event,
       );
       this._parsed[date] = events;
     }
