@@ -1,13 +1,13 @@
 import * as components from './components';
 import type { App } from 'vue';
 import { modalController } from '@ionic/vue';
-import { encode } from 'js-base64';
 import type { Logger } from '@code/logger';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import type { ShareOptions } from '@capacitor/share';
 import type { Analytics } from 'firebase/analytics';
-import { stringify } from 'flatted';
+import { Packr } from 'msgpackr';
+import { fromUint8Array } from 'js-base64';
 
 export default {
   install(vue: App) {
@@ -36,7 +36,7 @@ export type NotificationContents = {
 
 export const showNotification = async (
   notification: NotificationContents,
-  analytics?: Analytics
+  analytics?: Analytics,
 ) => {
   // TODO Error handling
   // const { data } = await supabase
@@ -60,21 +60,15 @@ export const showNotification = async (
 export const shareLogs = async (
   logger: Logger,
   exportFileName: string,
-  shareOptions?: ShareOptions
+  shareOptions?: ShareOptions,
 ) => {
-  const data = encode(
-    logger.stream
-      .map(
-        (log) =>
-          `${log.time.toISOString()};${log.level};${log.scope};${stringify(
-            log.parts
-          )}`
-      )
-      .join('\n')
-  );
+  const msg = new Packr({ structuredClone: true }).pack(logger.stream);
+  // .toString('base64');
+  // const str = new Uint8Array(msg).reduce((str, byte) => str + byte.toString(2).padStart(8, '0'), '');
+  // const data = btoa(str)
   const file = await Filesystem.writeFile({
     path: `${exportFileName}.log`,
-    data,
+    data: fromUint8Array(msg),
     directory: Directory.Cache,
   });
   Share.share({
