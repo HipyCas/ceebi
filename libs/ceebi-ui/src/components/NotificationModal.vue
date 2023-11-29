@@ -9,7 +9,10 @@
   </ion-header>
   <ion-content fullscreen>
     <div class="ion-padding">
-      <ion-text class="block" v-html="notification.body"></ion-text>
+      <article
+        class="block prose prose-zync dark:prose-invert"
+        v-html="notification.body"
+      ></article>
       <ion-text color="medium" class="block smaller ion-margin-top"
         >{{ $t('notifications.sentOn') }}
         {{
