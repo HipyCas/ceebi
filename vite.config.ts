@@ -18,6 +18,10 @@ export const extendBaseConfig = (
 ) =>
   defineConfig({
     plugins: [
+      ...(extraConfig?.plugins?.include === undefined
+        ? []
+        : extraConfig?.plugins?.include),
+
       vue(extraConfig?.plugins?.extend?.vue),
       tsconfigPaths({
         loose: true,
@@ -125,9 +129,6 @@ export const extendBaseConfig = (
         strictMessage: false, // TODO This disables check for HTML in messages, you should change the messages instead and revert this to true
         ...extraConfig?.plugins?.extend?.VueI18nPlugin,
       }),
-      ...(extraConfig?.plugins?.include === undefined
-        ? []
-        : extraConfig?.plugins?.include),
     ],
     root: dirname,
     build: {
